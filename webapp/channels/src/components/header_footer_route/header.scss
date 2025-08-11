@@ -8,9 +8,10 @@
     display: flex;
     width: 100%;
     max-width: 1520px;
-    min-height: 100px;
+    min-height: 50px;
     align-self: center;
     padding: 0 40px;
+    background-color: var(--button-bg);
 
     .header-main {
         display: flex;
@@ -42,14 +43,15 @@
             }
 
             svg {
-                width: 170px;
+                width: 50px;
+                height: auto;
                 fill: var(--center-channel-color);
             }
 
             .freeBadge {
                 position: relative;
                 top: 1px;
-                display: flex;
+                display: none;
                 align-self: center;
                 padding: 2px 6px;
                 border-radius: var(--radius-s);
@@ -97,7 +99,7 @@
 
         .header-main {
             .header-logo-link svg {
-                width: 145px;
+                width: 50px;
             }
         }
 

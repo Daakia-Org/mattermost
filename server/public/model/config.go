@@ -144,8 +144,8 @@ const (
 	EmailSettingsDefaultFeedbackOrganization = ""
 
 	SupportSettingsDefaultTermsOfServiceLink = "https://mattermost.com/pl/terms-of-use/"
-	SupportSettingsDefaultPrivacyPolicyLink  = "https://mattermost.com/pl/privacy-policy/"
-	SupportSettingsDefaultAboutLink          = "https://mattermost.com/pl/about-mattermost"
+	SupportSettingsDefaultPrivacyPolicyLink  = "hhttps://www.daakia.co.in/privacy-policy"
+	SupportSettingsDefaultAboutLink          = "https://www.daakia.co.in/about-us"
 	SupportSettingsDefaultHelpLink           = "https://mattermost.com/pl/help/"
 	SupportSettingsDefaultReportAProblemLink = "https://mattermost.com/pl/report-a-bug"
 	SupportSettingsDefaultSupportEmail       = ""
