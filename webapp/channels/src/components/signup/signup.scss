@@ -4,9 +4,26 @@
 @use 'utils/mixins';
 
 .signup-body {
+    position: relative;
     display: flex;
     flex-direction: column;
     margin: auto;
+
+    .signup-body-message .header-back-button {
+        margin: 0 0 20px 0;
+        padding: 0;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+        align-self: flex-start;
+
+        &:hover {
+            color: black;
+        }
+    }
 
     .signup-body-action {
         display: flex;
@@ -56,7 +73,7 @@
 
         .signup-body-message-subtitle {
             padding-right: 170px;
-            color: rgba(var(--center-channel-color-rgb), 0.75);
+            color: white !important ;
             font-size: 18px;
             font-weight: 400;
             line-height: 28px;
@@ -70,7 +87,7 @@
 
             .signup-body-message-title {
                 padding-right: 60px;
-                color: var(--title-color-indigo-500);
+                color: white;
                 font-family: Metropolis;
                 font-size: 80px;
                 font-weight: 600;
@@ -176,6 +193,7 @@
                         font-style: normal;
                         font-weight: 400;
                         line-height: 16px;
+                        display: none;
 
                         .interested {
                             display: block;
@@ -187,7 +205,8 @@
                         @include mixins.primary-button;
                         @include mixins.button-large;
 
-                        width: 100%;                    
+                        width: 100%;
+                        margin-top: 20px;
                     }
                 }
 
@@ -224,16 +243,7 @@
                 }
 
                 .signup-body-card-agreement {
-                    margin-top: 32px;
-                    color: rgba(var(--center-channel-color-rgb), 0.75);
-                    font-size: 11px;
-                    line-height: 16px;
-
-                    a {
-                        @include mixins.link;
-
-                        font-size: 11px;
-                    }
+                    display: none;
                 }
             }
         }
@@ -360,6 +370,31 @@
                         .signup-body-card-form-name-input,
                         .signup-body-card-form-password-input {
                             background-color: var(--center-channel-bg);
+                        }
+
+                        .newsletter {
+                            color: white;
+                            display: none;
+
+                            .interested {
+                                color: white;
+                                display: none;
+                            }
+
+                            .link a {
+                                color: white;
+                                display: none;
+                            }
+                        }
+
+                        .signup-body-card-form-button-submit {
+                            background-color: white !important;
+                            color: black !important;
+
+                            &:disabled {
+                                background-color: rgba(255, 255, 255, 0.5) !important;
+                                color: rgba(0, 0, 0, 0.5) !important;
+                            }
                         }
                     }
                 }

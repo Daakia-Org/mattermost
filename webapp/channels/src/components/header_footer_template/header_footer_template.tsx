@@ -40,61 +40,31 @@ const HeaderFooterNotLoggedIn = (props: Props) => {
 
     const content = [];
 
-    if (config.AboutLink) {
-        content.push(
-            <ExternalLink
-                key='about_link'
-                id='about_link'
-                className='footer-link'
-                location='header_footer_template'
-                href={config.AboutLink}
-            >
-                {formatMessage({id: 'web.footer.about', defaultMessage: 'About'})}
-            </ExternalLink>,
-        );
-    }
+    // Always show About link with Daakia URL
+    content.push(
+        <ExternalLink
+            key='about_link'
+            id='about_link'
+            className='footer-link'
+            location='header_footer_template'
+            href='https://www.daakia.co.in/about-us'
+        >
+            {formatMessage({id: 'web.footer.about', defaultMessage: 'About'})}
+        </ExternalLink>,
+    );
 
-    if (config.PrivacyPolicyLink) {
-        content.push(
-            <ExternalLink
-                key='privacy_link'
-                id='privacy_link'
-                className='footer-link'
-                location='header_footer_template'
-                href={config.PrivacyPolicyLink}
-            >
-                {formatMessage({id: 'web.footer.privacy', defaultMessage: 'Privacy Policy'})}
-            </ExternalLink>,
-        );
-    }
-
-    if (config.TermsOfServiceLink) {
-        content.push(
-            <ExternalLink
-                key='terms_link'
-                id='terms_link'
-                className='footer-link'
-                location='header_footer_template'
-                href={config.TermsOfServiceLink}
-            >
-                {formatMessage({id: 'web.footer.terms', defaultMessage: 'Terms'})}
-            </ExternalLink>,
-        );
-    }
-
-    if (config.HelpLink) {
-        content.push(
-            <ExternalLink
-                key='help_link'
-                id='help_link'
-                className='footer-link'
-                location='header_footer_template'
-                href={config.HelpLink}
-            >
-                {formatMessage({id: 'web.footer.help', defaultMessage: 'Help'})}
-            </ExternalLink>,
-        );
-    }
+    // Always show Privacy Policy link with Daakia URL
+    content.push(
+        <ExternalLink
+            key='privacy_link'
+            id='privacy_link'
+            className='footer-link'
+            location='header_footer_template'
+            href='https://www.daakia.co.in/privacy-policy'
+        >
+            {formatMessage({id: 'web.footer.privacy', defaultMessage: 'Privacy Policy'})}
+        </ExternalLink>,
+    );
 
     return (
         <div className='inner-wrap'>
@@ -111,7 +81,7 @@ const HeaderFooterNotLoggedIn = (props: Props) => {
                             id='company_name'
                             className='pull-right footer-site-name'
                         >
-                            {'Mattermost'}
+                            {'Daakia'}
                         </span>
                     </div>
                     <div className='col-xs-12'>
@@ -119,7 +89,7 @@ const HeaderFooterNotLoggedIn = (props: Props) => {
                             id='copyright'
                             className='pull-right footer-link copyright'
                         >
-                            {`© 2015-${new Date().getFullYear()} Mattermost, Inc.`}
+                            {`© 2015-${new Date().getFullYear()} Daakia, Inc.`}
                         </span>
                         <span className='pull-right'>
                             {content}

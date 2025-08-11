@@ -5504,7 +5504,7 @@
   "signup_user_completed.return": "Return to log in",
   "signup_user_completed.saving": "Creating account…",
   "signup_user_completed.signIn": "Log in",
-  "signup_user_completed.subtitle": "Create your Mattermost account to start collaborating with your team",
+  "signup_user_completed.subtitle": "Create your Daakia account to start collaborating with your team",
   "signup_user_completed.title": "Let’s get started",
   "signup_user_completed.userHelp": "You can use lowercase letters, numbers, full stops, dashes, and underscores.",
   "signup_user_completed.usernameLength": "Usernames have to begin with a lowercase letter and be {min}-{max} characters long. You can use lowercase letters, numbers, full stops, dashes, and underscores.",

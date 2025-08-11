@@ -68,27 +68,23 @@
     }
 
     .header-back-button {
+        display: none;
         position: absolute;
-        top: unset;
-        bottom: -8px;
+        top: 60px;
         width: auto;
         padding: 0 0 0 40px;
         background: none;
+        color: white !important;
 
         a {
             @include mixins.link;
+            color: white;
         }
     }
 
     &.has-custom-site-name {
         .header-logo-link ~ .header-logo-link {
             margin-top: 12px;
-        }
-    }
-
-    &.has-free-banner.has-custom-site-name {
-        .header-back-button {
-            bottom: -20px;
         }
     }
 }
@@ -104,7 +100,7 @@
         }
 
         .header-back-button {
-            padding: 0 0 0 24px;
+            padding: 12px 24px;
         }
     }
 }
