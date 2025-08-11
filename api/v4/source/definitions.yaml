@@ -215,7 +215,7 @@ components:
         total_msg_count:
           type: integer
         extra_update_at:
-          description: Deprecated in Mattermost 5.0 release
+          description: Deprecated in Daakia 5.0 release
           type: integer
           format: int64
         creator_id:
@@ -2742,12 +2742,12 @@ components:
         min_server_version:
           type: string
           description: |
-            The minimum Mattermost server version required for the plugin.
+            The minimum Daakia server version required for the plugin.
 
             Available as server version 5.6.
         backend:
           type: object
-          description: Deprecated in Mattermost 5.2 release.
+          description: Deprecated in Daakia 5.2 release.
           properties:
             executable:
               type: string
@@ -3653,13 +3653,13 @@ components:
           description: Optional override for the action button text (defaults to OK)
           type: string
         description:
-          description: "Notice content. Use {{Mattermost}} instead of plain text to support white-labeling. Text supports Markdown."
+          description: "Notice content. Use {{Daakia}} instead of plain text to support white-labeling. Text supports Markdown."
           type: string
         image:
           description: URL of image to display
           type: string
         title:
-          description: "Notice title. Use {{Mattermost}} instead of plain text to support white-labeling. Text supports Markdown."
+          description: "Notice title. Use {{Daakia}} instead of plain text to support white-labeling. Text supports Markdown."
           type: string
     SharedChannel:
       type: object
@@ -4275,7 +4275,7 @@ components:
           type: string
           description: background_color is the HEX color code for the banner's backgroubd
 externalDocs:
-  description: Find out more about Mattermost
-  url: 'https://about.mattermost.com'
+  description: Find out more about Daakia
+  url: 'https://daakia.co.in/about-us'
 security:
   - bearerAuth: []
