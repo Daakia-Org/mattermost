@@ -208,20 +208,22 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
                         icon={<ViewGridPlusOutlineIcon size={18}/>}
                     />
                 </TeamPermissionGate>
-                <Menu.ItemExternalLink
+                {/* Download Apps - Commented out for Daakia */}
+                {/* <Menu.ItemExternalLink
                     id='nativeAppLink'
                     show={appDownloadLink && !UserAgent.isMobileApp()}
                     url={makeUrlSafe(appDownloadLink)}
                     text={formatMessage({id: 'navbar_dropdown.nativeApps', defaultMessage: 'Download Apps'})}
                     icon={<DownloadOutlineIcon size={18}/>}
-                />
-                <Menu.ItemToggleModalRedux
+                /> */}
+                {/* About Daakia - Hidden for now */}
+                {/* <Menu.ItemToggleModalRedux
                     id='about'
                     modalId={ModalIdentifiers.ABOUT}
                     dialogType={AboutBuildModal}
-                    text={formatMessage({id: 'navbar_dropdown.about', defaultMessage: 'About {appTitle}'}, {appTitle: siteName})}
+                    text={formatMessage({id: 'navbar_dropdown.about', defaultMessage: 'About Daakia'})}
                     icon={<InformationOutlineIcon size={18}/>}
-                />
+                /> */}
             </div>
         </Menu.Group>
     );

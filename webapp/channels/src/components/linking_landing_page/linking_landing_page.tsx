@@ -10,7 +10,7 @@ import ExternalLink from 'components/external_link';
 
 import desktopImg from 'images/deep-linking/deeplinking-desktop-img.png';
 import mobileImg from 'images/deep-linking/deeplinking-mobile-img.png';
-import MattermostLogoSvg from 'images/logo.svg';
+import DaakiaLogo from 'components/common/svg_images_components/logo_dark_blue_svg';
 import {LandingPreferenceTypes} from 'utils/constants';
 import * as UserAgent from 'utils/user_agent';
 import * as Utils from 'utils/utils';
@@ -323,14 +323,14 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         let viewApp = (
             <FormattedMessage
                 id='get_app.ifNothingPrompts'
-                defaultMessage='Your collaborative workspace awaits. Get started with seamless team communication and productivity tools.'
+                defaultMessage='YYour workspace is ready—connect, collaborate, and get things done seamlessly'
             />
         );
         if (isMobile) {
             viewApp = (
                 <FormattedMessage
                     id='get_app.ifNothingPromptsMobile'
-                    defaultMessage='Your collaborative workspace awaits. Get started with seamless team communication and productivity tools.'
+                    defaultMessage='YYour workspace is ready—connect, collaborate, and get things done seamlessly'
                 />
             );
         }
@@ -342,9 +342,9 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                     tagName='h1'
                     defaultMessage='Welcome to Daakia'
                 />
-                <div className='get-app__alternative'>
+                {/* <div className='get-app__alternative'>
                     {viewApp}
-                </div>
+                </div> */}
             </div>
         );
     };
@@ -401,9 +401,10 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
     renderHeader = () => {
         let header = (
             <div className='get-app__header'>
-                <img
-                    src={MattermostLogoSvg}
+                <DaakiaLogo
                     className='get-app__logo'
+                    width={120}
+                    height={40}
                 />
             </div>
         );

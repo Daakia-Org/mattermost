@@ -171,7 +171,7 @@ const Completed = (props: Props): JSX.Element => {
                     <span className='completed-subtitle'>
                         <FormattedMessage
                             id={'onboardingTask.checklist.completed_subtitle'}
-                            defaultMessage='We hope Mattermost is more familiar now.'
+                            defaultMessage='We hope Daakia is more familiar now.'
                         />
                     </span>
 
@@ -213,7 +213,7 @@ const Completed = (props: Props): JSX.Element => {
                             />
                         </button>
                     )}
-                    <div className='download-apps'>
+                    {/* <div className='download-apps'>
                         <span>
                             <FormattedMessage
                                 id='onboardingTask.checklist.downloads'
@@ -230,7 +230,7 @@ const Completed = (props: Props): JSX.Element => {
                                 }}
                             />
                         </span>
-                    </div>
+                    </div> */}
                     {showStartTrialBtn && <div className='disclaimer'>
                         <span>
                             <FormattedMessage
