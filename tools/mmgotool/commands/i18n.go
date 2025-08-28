@@ -37,7 +37,7 @@ type Item struct {
 
 var I18nCmd = &cobra.Command{
 	Use:   "i18n",
-	Short: "Management of Mattermost translations",
+	Short: "Management of Daakia translations",
 }
 
 var ExtractCmd = &cobra.Command{

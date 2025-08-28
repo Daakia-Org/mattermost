@@ -360,7 +360,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                 id: 'signup.title',
                 defaultMessage: 'Create Account | {siteName}',
             },
-            {siteName: SiteName || 'Mattermost'},
+            {siteName: SiteName || 'Daakia'},
         );
     }, [formatMessage, SiteName]);
 
@@ -422,7 +422,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
             <p className='signup-body-message-subtitle'>
                 {formatMessage({
                     id: 'signup_user_completed.subtitle',
-                    defaultMessage: 'Create your Mattermost account to start collaborating with your team',
+                    defaultMessage: 'Create your Daakia account to start collaborating with your team',
                 })}
             </p>
         );
@@ -785,6 +785,12 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                         },
                     )}
                 >
+                    <button
+                        className='header-back-button'
+                        onClick={handleHeaderBackButtonOnClick}
+                    >
+                        ← Back
+                    </button>
                     {enableCustomBrand && !brandImageError ? (
                         <img
                             className={classNames('signup-body-custom-branding-image')}

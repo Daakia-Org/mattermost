@@ -7,14 +7,14 @@
     margin-left: auto;
 
     &__message {
-        color: var(--center-channel-color-rgb);
+        color: #FFF !important;
         font-size: 12px;
         line-height: 16px;
     }
 
     &__link {
         padding-left: 4px;
-
+        color: #FFF !important;
         @include mixins.link;
     }
 }
@@ -22,6 +22,7 @@
 @media screen and (max-width: 699px) {
     .alternate-link {
         &__message {
+            color: #FFF !important;
             display: none;
         }
     }

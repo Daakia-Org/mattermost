@@ -221,3 +221,23 @@
         cursor: pointer;
     }
 }
+
+@media screen and (max-width: 1199px) {
+    .Input_container {
+        .Input___customMessage {
+            color: white;
+        }
+
+        .Input___info {
+            color: white;
+        }
+
+        .Input___error,
+        .Input___customMessage,
+        .Input___info {
+            i {
+                color: white;
+            }
+        }
+    }
+}

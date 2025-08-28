@@ -64,7 +64,7 @@
         "ExperimentalEnableHardenedMode": false
     },
     "TeamSettings": {
-        "SiteName": "Mattermost",
+        "SiteName": "Daakia",
         "MaxUsersPerTeam": 50,
         "EnableUserCreation": true,
         "EnableOpenServer": false,

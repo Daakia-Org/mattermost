@@ -10,7 +10,7 @@ import ExternalLink from 'components/external_link';
 
 import desktopImg from 'images/deep-linking/deeplinking-desktop-img.png';
 import mobileImg from 'images/deep-linking/deeplinking-mobile-img.png';
-import MattermostLogoSvg from 'images/logo.svg';
+import DaakiaLogo from 'components/common/svg_images_components/logo_dark_blue_svg';
 import {LandingPreferenceTypes} from 'utils/constants';
 import * as UserAgent from 'utils/user_agent';
 import * as Utils from 'utils/utils';
@@ -45,7 +45,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
             rememberChecked: false,
             redirectPage: false,
             location,
-            nativeLocation: location.replace(/^(https|http)/, 'mattermost'),
+            nativeLocation: location.replace(/^(https|http)/, 'daakia'),
             brandImageError: false,
             navigating: false,
         };
@@ -236,7 +236,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
     };
 
     renderDownloadLinkSection = () => {
-        const downloadLink = this.getDownloadLink();
+        // const downloadLink = this.getDownloadLink();
 
         if (this.state.redirectPage) {
             return (
@@ -257,23 +257,29 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                     />
                 </div>
             );
-        } else if (downloadLink) {
-            return (
-                <div className='get-app__download-link'>
-                    {this.renderDownloadLinkText()}
-                    {'\u00A0'}
-                    <br/>
-                    <a href={downloadLink}>
-                        <FormattedMessage
-                            id='get_app.downloadTheAppNow'
-                            defaultMessage='Download the app now.'
-                        />
-                    </a>
-                </div>
-            );
         }
+        // Download options removed - Coming Soon
+        // else if (downloadLink) {
+        //     return (
+        //         <div className='get-app__download-link'>
+        //             {this.renderDownloadLinkText()}
+        //             {'\u00A0'}
+        //             <br/>
+        //             <a href={downloadLink}>
+        //                 <FormattedMessage
+        //                     id='get_app.downloadTheAppNow'
+        //                     defaultMessage='Download the app now.'
+        //                 />
+        //             </a>
+        //         </div>
+        //     );
+        // }
 
-        return null;
+        return (
+            <div className='get-app__download-link'>
+                <span>Desktop App - Coming Soon</span>
+            </div>
+        );
     };
 
     renderDialogHeader = () => {
@@ -283,7 +289,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         let openingLink = (
             <FormattedMessage
                 id='get_app.openingLink'
-                defaultMessage='Opening link in Mattermost...'
+                defaultMessage='Opening link in Daakia...'
             />
         );
         if (this.props.enableCustomBrand) {
@@ -292,7 +298,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                     id='get_app.openingLinkWhiteLabel'
                     defaultMessage='Opening link in {appName}...'
                     values={{
-                        appName: this.props.siteName || 'Mattermost',
+                        appName: this.props.siteName || 'Daakia',
                     }}
                 />
             );
@@ -308,15 +314,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                             defaultMessage='You will be redirected in a few moments.'
                         />
                         <br/>
-                        {this.renderDownloadLinkText()}
-                        {'\u00A0'}
-                        <br className='mobile-only'/>
-                        <a href={downloadLink}>
-                            <FormattedMessage
-                                id='get_app.downloadTheAppNow'
-                                defaultMessage='Download the app now.'
-                            />
-                        </a>
+                        <span>Desktop App - Coming Soon</span>
                     </div>
                 </h1>
             );
@@ -325,20 +323,14 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         let viewApp = (
             <FormattedMessage
                 id='get_app.ifNothingPrompts'
-                defaultMessage='You can view {siteName} in the desktop app or continue in your web browser.'
-                values={{
-                    siteName: this.props.enableCustomBrand ? '' : ' Mattermost',
-                }}
+                defaultMessage='YYour workspace is ready—connect, collaborate, and get things done seamlessly'
             />
         );
         if (isMobile) {
             viewApp = (
                 <FormattedMessage
                     id='get_app.ifNothingPromptsMobile'
-                    defaultMessage='You can view {siteName} in the mobile app or continue in your web browser.'
-                    values={{
-                        siteName: this.props.enableCustomBrand ? '' : ' Mattermost',
-                    }}
+                    defaultMessage='YYour workspace is ready—connect, collaborate, and get things done seamlessly'
                 />
             );
         }
@@ -348,11 +340,11 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                 <FormattedMessage
                     id='get_app.launching'
                     tagName='h1'
-                    defaultMessage='Where would you like to view this?'
+                    defaultMessage='Welcome to Daakia'
                 />
-                <div className='get-app__alternative'>
+                {/* <div className='get-app__alternative'>
                     {viewApp}
-                </div>
+                </div> */}
             </div>
         );
     };
@@ -371,7 +363,6 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
             <div className='get-app__dialog-body'>
                 {this.renderDialogHeader()}
                 <div className='get-app__buttons'>
-                    {this.renderGoNativeAppMessage()}
                     <a
                         href={this.state.location}
                         onMouseDown={() => {
@@ -381,7 +372,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                             this.setPreference(LandingPreferenceTypes.BROWSER, true);
                             this.setState({navigating: true});
                         }}
-                        className='btn btn-tertiary btn-lg'
+                        className='btn btn-primary btn-lg'
                     >
                         <FormattedMessage
                             id='get_app.continueToBrowser'
@@ -401,7 +392,8 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                         defaultMessage='Remember my preference'
                     />
                 </label>
-                {this.renderDownloadLinkSection()}
+                {/* Download section commented out - Coming Soon */}
+                {/* {this.renderDownloadLinkSection()} */}
             </div>
         );
     };
@@ -409,9 +401,10 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
     renderHeader = () => {
         let header = (
             <div className='get-app__header'>
-                <img
-                    src={MattermostLogoSvg}
+                <DaakiaLogo
                     className='get-app__logo'
+                    width={120}
+                    height={40}
                 />
             </div>
         );

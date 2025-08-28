@@ -83,7 +83,7 @@ describe('components/UnreadsStatusHandler', () => {
             currentChannel: {} as Props['currentChannel'],
             currentTeammate: {} as Props['currentTeammate']});
         instance.updateTitle();
-        expect(document.title).toBe('Mattermost - Join a team');
+        expect(document.title).toBe('Daakia - Join a team');
 
         wrapper.setProps({
             inDrafts: false,

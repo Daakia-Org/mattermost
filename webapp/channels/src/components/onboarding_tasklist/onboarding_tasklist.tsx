@@ -281,10 +281,7 @@ const OnBoardingTaskList = (): JSX.Element | null => {
                     ) : (
                         <>
                             <h1>
-                                <FormattedMessage
-                                    id='next_steps_view.welcomeToMattermost'
-                                    defaultMessage='Welcome to Mattermost'
-                                />
+                                Welcome to Daakia
                             </h1>
                             <p>
                                 <FormattedMessage

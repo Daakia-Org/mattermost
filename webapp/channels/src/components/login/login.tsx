@@ -288,22 +288,8 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
     }, []);
 
     const configureTitle = useCallback(() => {
-        document.title = sessionExpired ? (
-            formatMessage(
-                {
-                    id: 'login.session_expired.title',
-                    defaultMessage: '* Session Expired - {siteName}',
-                },
-                {siteName},
-            )
-        ) : formatMessage(
-            {
-                id: 'login.pageTitle',
-                defaultMessage: 'Log in - {siteName}',
-            },
-            {siteName},
-        );
-    }, [sessionExpired, siteName]);
+        document.title = sessionExpired ? '* Session Expired - Daakia' : 'Log in - Daakia';
+    }, [sessionExpired]);
 
     const showSessionExpiredNotificationIfNeeded = useCallback(() => {
         if (sessionExpired && !closeSessionExpiredNotification!.current) {

@@ -203,10 +203,10 @@ var config = {
         // Generate manifest.json, honouring any configured publicPath. This also handles injecting
         // <link rel="apple-touch-icon" ... /> and <meta name="apple-*" ... /> tags into root.html.
         new WebpackPwaManifest({
-            name: 'Mattermost',
-            short_name: 'Mattermost',
+            name: 'Daakia',
+            short_name: 'Daakia',
             start_url: '..',
-            description: 'Mattermost is an open source, self-hosted Slack-alternative',
+            description: 'Daakia is an open source, self-hosted Slack-alternative',
             background_color: '#ffffff',
             inject: true,
             ios: true,
@@ -352,7 +352,7 @@ async function initializeModuleFederation() {
     const {remotes} = await getRemoteContainers();
 
     const moduleFederationPluginOptions = {
-        name: 'mattermost_webapp',
+        name: 'daakia_webapp',
         remotes,
         shared: [
 
@@ -362,8 +362,8 @@ async function initializeModuleFederation() {
             // Other containers will use these shared modules if their required versions match. If they don't match, the
             // version packaged with the container will be used.
             makeSharedModules([
-                '@mattermost/client',
-                '@mattermost/types',
+                '@daakia/client',
+                '@daakia/types',
                 'luxon',
             ], false),
 

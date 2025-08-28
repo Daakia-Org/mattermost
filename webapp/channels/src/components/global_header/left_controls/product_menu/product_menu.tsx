@@ -155,11 +155,12 @@ const ProductMenu = (): JSX.Element => {
                         onClick={handleClick}
                         handleVisitConsoleClick={handleVisitConsoleClick}
                     />
-                    <Menu.Group>
+                    {/* Free Edition badge removed for Daakia */}
+                    {/* <Menu.Group>
                         <Menu.StartTrial
                             id='startTrial'
                         />
-                    </Menu.Group>
+                    </Menu.Group> */}
                 </Menu>
             </MenuWrapper>
         </div>
