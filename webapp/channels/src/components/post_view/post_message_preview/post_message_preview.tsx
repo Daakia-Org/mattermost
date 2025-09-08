@@ -18,7 +18,7 @@ import PostMessageView from 'components/post_view/post_message_view';
 import Timestamp from 'components/timestamp';
 import UserProfileComponent from 'components/user_profile';
 
-import PreviewPostAvatar from './avatar/avatar';
+import PreviewPostAvatar from './avatar/avatar.tsx';
 
 import PostAttachmentContainer from '../post_attachment_container/post_attachment_container';
 
