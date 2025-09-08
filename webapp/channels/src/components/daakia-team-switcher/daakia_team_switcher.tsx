@@ -69,11 +69,70 @@ const DaakiaTeamSwitcher: React.FC = () => {
         dispatch(updateTeamsOrderForUser(newTeamsOrder.map((team) => team.id)));
     }, [sortedTeams, dispatch]);
 
+    const switchToPrevOrNextTeam = useCallback((e: KeyboardEvent) => {
+        if (Keyboard.isKeyPressed(e, Constants.KeyCodes.UP) || Keyboard.isKeyPressed(e, Constants.KeyCodes.DOWN)) {
+            e.preventDefault();
+            const delta = Keyboard.isKeyPressed(e, Constants.KeyCodes.DOWN) ? 1 : -1;
+            const pos = sortedTeams.findIndex((team) => team.id === currentTeamId);
+            const newPos = pos + delta;
+
+            let team;
+            if (newPos === -1) {
+                team = sortedTeams[sortedTeams.length - 1];
+            } else if (newPos === sortedTeams.length) {
+                team = sortedTeams[0];
+            } else {
+                team = sortedTeams[newPos];
+            }
+
+            handleTeamClick(team.name);
+            return true;
+        }
+        return false;
+    }, [sortedTeams, currentTeamId, handleTeamClick]);
+
+    const switchToTeamByNumber = useCallback((e: KeyboardEvent) => {
+        const digits = [
+            Constants.KeyCodes.ONE,
+            Constants.KeyCodes.TWO,
+            Constants.KeyCodes.THREE,
+            Constants.KeyCodes.FOUR,
+            Constants.KeyCodes.FIVE,
+            Constants.KeyCodes.SIX,
+            Constants.KeyCodes.SEVEN,
+            Constants.KeyCodes.EIGHT,
+            Constants.KeyCodes.NINE,
+            Constants.KeyCodes.ZERO,
+        ];
+
+        for (const idx in digits) {
+            if (Keyboard.isKeyPressed(e, digits[idx]) && parseInt(idx, 10) < sortedTeams.length) {
+                e.preventDefault();
+
+                if (sortedTeams[idx].id === currentTeamId) {
+                    return false;
+                }
+                const team = sortedTeams[idx];
+                handleTeamClick(team.name);
+                return true;
+            }
+        }
+        return false;
+    }, [sortedTeams, currentTeamId, handleTeamClick]);
+
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if ((e.ctrlKey || e.metaKey) && e.altKey) {
+            if (switchToPrevOrNextTeam(e)) {
+                return;
+            }
+
+            if (switchToTeamByNumber(e)) {
+                return;
+            }
+
             setShowOrder(true);
         }
-    }, []);
+    }, [switchToPrevOrNextTeam, switchToTeamByNumber]);
 
     const handleKeyUp = useCallback((e: KeyboardEvent) => {
         if (!((e.ctrlKey || e.metaKey) && e.altKey)) {

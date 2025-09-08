@@ -215,84 +215,102 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
             return null;
         }
 
-        const teams = sortedTeams.map((team: Team, index: number) => {
-            return (
-                <TeamButton
-                    key={'switch_team_' + team.name}
-                    url={`/${team.name}`}
-                    tip={team.display_name}
-                    active={team.id === this.props.currentTeamId}
-                    displayName={team.display_name}
-                    order={index + 1}
-                    showOrder={this.state.showOrder}
-                    unread={this.props.unreadTeamsSet.has(team.id)}
-                    mentions={this.props.mentionsInTeamMap.has(team.id) ? this.props.mentionsInTeamMap.get(team.id) : 0}
-                    hasUrgent={this.props.teamHasUrgentMap.has(team.id) ? this.props.teamHasUrgentMap.get(team.id) : false}
-                    teamIconUrl={Utils.imageURLForTeam(team)}
-                    switchTeam={(url: string) => this.props.actions.switchTeam(url, currentProduct ? team : undefined)}
-                    isDraggable={true}
-                    teamId={team.id}
-                    teamIndex={index}
-                    isInProduct={Boolean(currentProduct)}
-                />
-            );
-        });
+        // const teams = sortedTeams.map((team: Team, index: number) => {
+        //     return (
+        //         <TeamButton
+        //             key={'switch_team_' + team.name}
+        //             url={`/${team.name}`}
+        //             tip={team.display_name}
+        //             active={team.id === this.props.currentTeamId}
+        //             displayName={team.display_name}
+        //             order={index + 1}
+        //             showOrder={this.state.showOrder}
+        //             unread={this.props.unreadTeamsSet.has(team.id)}
+        //             mentions={this.props.mentionsInTeamMap.has(team.id) ? this.props.mentionsInTeamMap.get(team.id) : 0}
+        //             hasUrgent={this.props.teamHasUrgentMap.has(team.id) ? this.props.teamHasUrgentMap.get(team.id) : false}
+        //             teamIconUrl={Utils.imageURLForTeam(team)}
+        //             switchTeam={(url: string) => this.props.actions.switchTeam(url, currentProduct ? team : undefined)}
+        //             isDraggable={true}
+        //             teamId={team.id}
+        //             teamIndex={index}
+        //             isInProduct={Boolean(currentProduct)}
+        //         />
+        //     );
+        // });
+        const teams: any[] = [];
 
-        const joinableTeams = [];
+        // const joinableTeams = [];
 
-        const plusIcon = (
-            <i
-                className='icon icon-plus'
-                role={'img'}
-                aria-label={intl.formatMessage({id: 'sidebar.team_menu.button.plusIcon', defaultMessage: 'Plus Icon'})}
-            />
-        );
+        // const plusIcon = (
+        //     <i
+        //         className='icon icon-plus'
+        //         role={'img'}
+        //         aria-label={intl.formatMessage({id: 'sidebar.team_menu.button.plusIcon', defaultMessage: 'Plus Icon'})}
+        //     />
+        // );
 
-        if (this.props.moreTeamsToJoin && !this.props.experimentalPrimaryTeam) {
-            joinableTeams.push(
-                <TeamButton
-                    btnClass='team-btn__add'
-                    key='more_teams'
-                    url='/select_team'
-                    tip={
-                        <FormattedMessage
-                            id='team_sidebar.join'
-                            defaultMessage='Other teams you can join'
-                        />
-                    }
-                    content={plusIcon}
-                    switchTeam={this.props.actions.switchTeam}
-                    displayName={intl.formatMessage({
-                        id: 'team_sidebar.join',
-                        defaultMessage: 'Other teams you can join',
-                    })}
-                />,
-            );
-        } else {
-            joinableTeams.push(
-                <SystemPermissionGate
-                    permissions={[Permissions.CREATE_TEAM]}
-                    key='more_teams'
-                >
-                    <TeamButton
-                        btnClass='team-btn__add'
-                        url='/create_team'
-                        tip={
-                            <FormattedMessage
-                                id='navbar_dropdown.create'
-                                defaultMessage='Create a Team'
-                            />
-                        }
-                        content={plusIcon}
-                        switchTeam={this.props.actions.switchTeam}
-                        displayName={intl.formatMessage({
-                            id: 'navbar_dropdown.create',
-                            defaultMessage: 'Create a Team',
-                        })}
-                    />
-                </SystemPermissionGate>,
-            );
-        }
+        // if (this.props.moreTeamsToJoin && !this.props.experimentalPrimaryTeam) {
+        //     joinableTeams.push(
+        //         <TeamButton
+        //             btnClass='team-btn__add'
+        //             key='more_teams'
+        //             url='/select_team'
+        //             tip={
+        //                 <FormattedMessage
+        //                     id='team_sidebar.join'
+        //                     defaultMessage='Other teams you can join'
+        //                 />
+        //             }
+        //             content={plusIcon}
+        //             switchTeam={this.props.actions.switchTeam}
+        //             displayName={intl.formatMessage({
+        //                 id: 'team_sidebar.join',
+        //                 defaultMessage: 'Other teams you can join',
+        //             })}
+        //         />,
+        //     );
+        // } else {
+        //     joinableTeams.push(
+        //         <SystemPermissionGate
+        //             permissions={[Permissions.CREATE_TEAM]}
+        //             key='more_teams'
+        //         >
+        //             <TeamButton
+        //                 btnClass='team-btn__add'
+        //                 url='/create_team'
+        //                 tip={
+        //                     <FormattedMessage
+        //                         id='navbar_dropdown.create'
+        //                         defaultMessage='Create a Team'
+        //                     />
+        //                 }
+        //                 content={plusIcon}
+        //                 switchTeam={this.props.actions.switchTeam}
+        //                 displayName={intl.formatMessage({
+        //                     id: 'navbar_dropdown.create',
+        //                     defaultMessage: 'Create a Team',
+        //                 })}
+        //             />
+        //         </SystemPermissionGate>,
+        //     );
+        // }
+        const joinableTeams: any[] = [];
+
+        // New sidebar buttons
+        const sidebarButtons = [
+            {
+                id: 'chats',
+                icon: 'icon-message-text-outline',
+                tooltip: 'Chats',
+                active: true, // Default active
+            },
+            {
+                id: 'other',
+                icon: 'icon-apps',
+                tooltip: 'Other',
+                active: false,
+            },
+        ];
 
         // Disable team sidebar pluggables in products until proper support can be provided.
         const isNonChannelsProduct = !currentProduct;
@@ -339,6 +357,24 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
                                             {...provided.droppableProps}
                                         >
                                             {teams}
+                                            {/* New sidebar buttons */}
+                                            {sidebarButtons.map((button) => (
+                                                <div
+                                                    key={button.id}
+                                                    className='draggable-team-container inline-block'
+                                                    style={{marginBottom: '12px'}}
+                                                >
+                                                    <div className={`team-container ${button.active ? 'active' : ''}`}>
+                                                        <div className='team-btn'>
+                                                            <div className={`TeamIcon TeamIcon__sm ${button.active ? 'active' : ''}`}>
+                                                                <div className='TeamIcon__content'>
+                                                                    <i className={`icon ${button.icon}`} role='img' aria-label={`${button.tooltip} Icon`}/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
                                             {provided.placeholder}
                                         </div>
                                     );
