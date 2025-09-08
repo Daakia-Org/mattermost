@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
@@ -13,8 +13,9 @@ import {get} from 'mattermost-redux/selectors/entities/preferences';
 
 import {updateTeamsOrderForUser} from 'actions/team_actions';
 import {getCurrentLocale} from 'selectors/i18n';
-import {Preferences} from 'utils/constants';
+import {Preferences, Constants} from 'utils/constants';
 import {filterAndSortTeamsByDisplayName} from 'utils/team_utils';
+import * as Keyboard from 'utils/keyboard';
 
 import TeamIcon from 'components/widgets/team_icon/team_icon';
 import WithTooltip from 'components/with_tooltip';
@@ -31,6 +32,7 @@ const DaakiaTeamSwitcher: React.FC = () => {
     const userTeamsOrderPreference = useSelector((state) => get(state, Preferences.TEAMS_ORDER, '', ''));
     const history = useHistory();
     const dispatch = useDispatch();
+    const [showOrder, setShowOrder] = useState(false);
     
     const sortedTeams = filterAndSortTeamsByDisplayName(myTeams, locale, userTeamsOrderPreference);
 
@@ -66,6 +68,27 @@ const DaakiaTeamSwitcher: React.FC = () => {
         
         dispatch(updateTeamsOrderForUser(newTeamsOrder.map((team) => team.id)));
     }, [sortedTeams, dispatch]);
+
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if ((e.ctrlKey || e.metaKey) && e.altKey) {
+            setShowOrder(true);
+        }
+    }, []);
+
+    const handleKeyUp = useCallback((e: KeyboardEvent) => {
+        if (!((e.ctrlKey || e.metaKey) && e.altKey)) {
+            setShowOrder(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        };
+    }, [handleKeyDown, handleKeyUp]);
 
 
 
@@ -124,6 +147,11 @@ const DaakiaTeamSwitcher: React.FC = () => {
                                                                 size='xs'
                                                             />
                                                         </div>
+                                                        {showOrder && order < 10 && (
+                                                            <div className='order-indicator'>
+                                                                {order}
+                                                            </div>
+                                                        )}
                                                     </div>
                                                     {isUnread && mentions === 0 && (
                                                         <span className='unread-badge'/>
