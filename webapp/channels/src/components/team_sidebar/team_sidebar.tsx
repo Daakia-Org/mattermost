@@ -166,6 +166,20 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
         document.removeEventListener('keyup', this.handleKeyUp);
     }
 
+    handleChatClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const teams = filterAndSortTeamsByDisplayName(this.props.myTeams, this.props.locale, this.props.userTeamsOrderPreference);
+        
+        if (teams.length > 0) {
+            // Go to last team or first available team
+            const lastTeam = teams.find(team => team.id === this.props.currentTeamId) || teams[0];
+            this.props.actions.switchTeam(`/${lastTeam.name}`);
+        } else {
+            // No teams, go to team selection
+            this.props.actions.switchTeam('/select_team');
+        }
+    };
+
     onDragEnd = (result: DropResult) => {
         const {
             updateTeamsOrderForUser,
@@ -237,7 +251,42 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
         //         />
         //     );
         // });
-        const teams: any[] = [];
+        // Chat button only
+        const sidebarButtons = [
+            {
+                id: 'chats',
+                icon: 'icon-message-text-outline',
+                tooltip: 'Chats',
+                active: true,
+            },
+        ];
+
+        const teams = sidebarButtons.map((button) => (
+            <div
+                key={button.id}
+                className='draggable-team-container inline-block'
+                style={{marginBottom: '12px'}}
+            >
+                <div className={`team-container ${button.active ? 'active' : ''}`}>
+                    <a
+                        href='#'
+                        className='team-btn'
+                        title={button.tooltip}
+                        onClick={button.id === 'chats' ? this.handleChatClick : undefined}
+                    >
+                        <div className={`TeamIcon TeamIcon__sm ${button.active ? 'active' : ''}`}>
+                            <div className='TeamIcon__content'>
+                                <i
+                                    className={`icon ${button.icon}`}
+                                    role='img'
+                                    aria-label={`${button.tooltip} Icon`}
+                                />
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        ));
 
         // const joinableTeams = [];
 
@@ -296,22 +345,6 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
         // }
         const joinableTeams: any[] = [];
 
-        // New sidebar buttons
-        const sidebarButtons = [
-            {
-                id: 'chats',
-                icon: 'icon-message-text-outline',
-                tooltip: 'Chats',
-                active: true, // Default active
-            },
-            {
-                id: 'other',
-                icon: 'icon-apps',
-                tooltip: 'Other',
-                active: false,
-            },
-        ];
-
         // Disable team sidebar pluggables in products until proper support can be provided.
         const isNonChannelsProduct = !currentProduct;
         if (isNonChannelsProduct) {
@@ -357,24 +390,6 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
                                             {...provided.droppableProps}
                                         >
                                             {teams}
-                                            {/* New sidebar buttons */}
-                                            {sidebarButtons.map((button) => (
-                                                <div
-                                                    key={button.id}
-                                                    className='draggable-team-container inline-block'
-                                                    style={{marginBottom: '12px'}}
-                                                >
-                                                    <div className={`team-container ${button.active ? 'active' : ''}`}>
-                                                        <div className='team-btn'>
-                                                            <div className={`TeamIcon TeamIcon__sm ${button.active ? 'active' : ''}`}>
-                                                                <div className='TeamIcon__content'>
-                                                                    <i className={`icon ${button.icon}`} role='img' aria-label={`${button.tooltip} Icon`}/>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
                                             {provided.placeholder}
                                         </div>
                                     );

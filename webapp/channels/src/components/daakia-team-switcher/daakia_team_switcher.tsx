@@ -203,7 +203,7 @@ const DaakiaTeamSwitcher: React.FC = () => {
                                                                 withHover={true}
                                                                 content={team.display_name}
                                                                 url={Utils.imageURLForTeam(team)}
-                                                                size='xs'
+                                                                size='xsm'
                                                             />
                                                         </div>
                                                         {showOrder && order < 10 && (
