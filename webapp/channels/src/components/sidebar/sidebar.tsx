@@ -7,6 +7,7 @@ import React, {lazy} from 'react';
 import {trackEvent} from 'actions/telemetry_actions';
 
 import {makeAsyncComponent} from 'components/async_load';
+import DaakiaTeamSwitcher from 'components/daakia-team-switcher';
 import DataPrefetch from 'components/data_prefetch';
 import ResizableLhs from 'components/resizable_sidebar/resizable_lhs';
 import SidebarHeader from 'components/sidebar/sidebar_header';
@@ -239,6 +240,7 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                     dragging: this.state.isDragging,
                 })}
             >
+                <DaakiaTeamSwitcher/>
                 {this.props.isMobileView ? <MobileSidebarHeader/> : (
                     <SidebarHeader
                         showNewChannelModal={this.showNewChannelModal}
