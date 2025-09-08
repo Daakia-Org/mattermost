@@ -37,33 +37,6 @@ type State = {
     teamsOrder: Team[];
 }
 
-export function renderView(props: Props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--view'
-        />
-    );
-}
-
-export function renderThumbHorizontal(props: Props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--horizontal'
-        />
-    );
-}
-
-export function renderThumbVertical(props: Props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--vertical'
-        />
-    );
-}
-
 export class TeamSidebar extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -366,17 +339,10 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
                 role='navigation'
                 aria-labelledby='teamSidebarWrapper'
             >
-                <div
-                    className='team-wrapper'
-                    id='teamSidebarWrapper'
-                >
-                    <Scrollbars
-                        autoHide={true}
-                        autoHideTimeout={500}
-                        autoHideDuration={500}
-                        renderThumbHorizontal={renderThumbHorizontal}
-                        renderThumbVertical={renderThumbVertical}
-                        renderView={renderView}
+                <Scrollbars>
+                    <div
+                        className='team-wrapper'
+                        id='teamSidebarWrapper'
                     >
                         <DragDropContext
                             onDragEnd={this.onDragEnd}
@@ -399,8 +365,8 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
                             </Droppable>
                         </DragDropContext>
                         {joinableTeams}
-                    </Scrollbars>
-                </div>
+                    </div>
+                </Scrollbars>
                 {plugins}
             </div>
         );
