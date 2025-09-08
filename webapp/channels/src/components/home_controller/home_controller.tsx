@@ -3,8 +3,10 @@
 
 import React, {useEffect} from 'react';
 
-import {isInternetExplorer, isEdge} from 'utils/user_agent';
 import DaakiaHomePage from 'components/daakia_home_page';
+
+import {isInternetExplorer, isEdge} from 'utils/user_agent';
+
 
 const BODY_CLASS_FOR_HOME = ['app__body', 'channel-view'];
 

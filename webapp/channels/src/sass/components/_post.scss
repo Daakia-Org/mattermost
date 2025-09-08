@@ -1472,9 +1472,11 @@
         flex-wrap: wrap;
         align-items: center;
         padding: 4px 0 0;
+        margin-top: 4px;
 
         .Reaction__add {
             display: inline-block;
+            margin-left: 4px;
         }
     }
 
@@ -1866,6 +1868,7 @@
     direction: rtl;
     padding: 8px 1.5em 0 0.5em;
     
+    
     .post__content {
         padding: 0 5px 0 8px;
         direction: rtl;
@@ -1910,6 +1913,7 @@
     .post-reaction-list {
         direction: ltr;
         justify-content: flex-end;
+        margin-left: 8px;
     }
 
     .post__body__actions {
@@ -1958,8 +1962,9 @@
     }
 
     .Reaction__add {
-        left: 0;
-        right: auto;
+        left: auto;
+        right: 0;
+        margin-left: 8px;
     }
 
     // Show custom status for current user posts
