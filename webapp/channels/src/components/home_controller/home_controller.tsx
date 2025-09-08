@@ -1,13 +1,13 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+/* eslint-disable */
 import React, {useEffect} from 'react';
 
 import DaakiaHomePage from 'components/daakia_home_page';
-import Sidebar from 'components/sidebar';
+import HomeSidebar from 'components/home_sidebar';
 
 import {isInternetExplorer, isEdge} from 'utils/user_agent';
-
 
 const BODY_CLASS_FOR_HOME = ['app__body', 'channel-view'];
 
@@ -41,7 +41,7 @@ const HomeController = () => {
 
     return (
         <>
-            <Sidebar />
+            <HomeSidebar />
             <div style={{gridArea: 'center'}}>
                 <DaakiaHomePage/>
             </div>
