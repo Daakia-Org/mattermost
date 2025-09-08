@@ -4,6 +4,7 @@
 import React, {useEffect} from 'react';
 
 import DaakiaHomePage from 'components/daakia_home_page';
+import Sidebar from 'components/sidebar';
 
 import {isInternetExplorer, isEdge} from 'utils/user_agent';
 
@@ -39,9 +40,12 @@ const HomeController = () => {
     }, []);
 
     return (
-        <div style={{gridArea: 'center'}}>
-            <DaakiaHomePage />
-        </div>
+        <>
+            <Sidebar />
+            <div style={{gridArea: 'center'}}>
+                <DaakiaHomePage/>
+            </div>
+        </>
     );
 };
 
