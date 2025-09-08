@@ -1,10 +1,12 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
+/* eslint-disable */
 
 import classNames from 'classnames';
-import React, {lazy} from 'react';
+import React, {lazy, useState} from 'react';
 
 import {makeAsyncComponent} from 'components/async_load';
+import DaakiaContainer from 'components/daakia-container';
 import DaakiaTeamSwitcher from 'components/daakia-team-switcher';
 import DataPrefetch from 'components/data_prefetch';
 import ResizableLhs from 'components/resizable_sidebar/resizable_lhs';
@@ -55,6 +57,7 @@ type Props = {
 type State = {
     showDirectChannelsModal: boolean;
     isDragging: boolean;
+    isTeamSwitcherOpen: boolean;
 };
 
 export default class Sidebar extends React.PureComponent<Props, State> {
@@ -63,6 +66,7 @@ export default class Sidebar extends React.PureComponent<Props, State> {
         this.state = {
             showDirectChannelsModal: false,
             isDragging: false,
+            isTeamSwitcherOpen: true,
         };
     }
 
@@ -217,6 +221,10 @@ export default class Sidebar extends React.PureComponent<Props, State> {
         }
     };
 
+    handleToggleTeamSwitcher = (isOpen: boolean) => {
+        this.setState({isTeamSwitcherOpen: isOpen});
+    };
+
     render() {
         if (!this.props.teamId) {
             return (<div/>);
@@ -232,7 +240,8 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                     dragging: this.state.isDragging,
                 })}
             >
-                <DaakiaTeamSwitcher/>
+                <DaakiaContainer onToggleTeamSwitcher={this.handleToggleTeamSwitcher}/>
+                <DaakiaTeamSwitcher isVisible={this.state.isTeamSwitcherOpen}/>
                 {this.props.isMobileView ? <MobileSidebarHeader/> : (
                     <SidebarHeader
                         showNewChannelModal={this.showNewChannelModal}

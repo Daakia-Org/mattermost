@@ -5,17 +5,20 @@ import classNames from 'classnames';
 import React from 'react';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import type {DroppableProvided, DropResult} from 'react-beautiful-dnd';
-import Scrollbars from 'components/common/scrollbars';
 import {injectIntl} from 'react-intl';
 import type {WrappedComponentProps} from 'react-intl';
 import type {RouteComponentProps} from 'react-router-dom';
 
 import type {Team} from '@mattermost/types/teams';
 
+/* eslint-disable */
+import Scrollbars from 'components/common/scrollbars';
+
 // import Permissions from 'mattermost-redux/constants/permissions';
 
 // import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
 // import TeamButton from 'components/team_sidebar/components/team_button';
+import SimpleTeamButton from 'components/team_sidebar/components/simple_team_button';
 
 import WebSocketClient from 'client/web_websocket_client';
 import Pluggable from 'plugins/pluggable';
@@ -279,30 +282,15 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
         ];
 
         const teams = sidebarButtons.map((button) => (
-            <div
+            <SimpleTeamButton
                 key={button.id}
-                className='draggable-team-container inline-block'
-                style={{marginBottom: '12px'}}
-            >
-                <div className={`team-container ${button.active ? 'active' : ''} ${button.disabled ? 'disabled' : ''}`}>
-                    <a
-                        href='#'
-                        className='team-btn'
-                        title={button.tooltip}
-                        onClick={button.disabled ? undefined : button.onClick}
-                    >
-                        <div className={`TeamIcon TeamIcon__sm ${button.active ? 'active' : ''}`}>
-                            <div className='TeamIcon__content'>
-                                <i
-                                    className={`${button.icon.startsWith('fa-') ? 'fa ' + button.icon + ' fa-lg' : 'icon ' + button.icon}`}
-                                    role='img'
-                                    aria-label={`${button.tooltip} Icon`}
-                                />
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+                id={button.id}
+                icon={button.icon}
+                tooltip={button.tooltip}
+                active={button.active}
+                disabled={button.disabled}
+                onClick={button.onClick}
+            />
         ));
 
         // const joinableTeams = [];

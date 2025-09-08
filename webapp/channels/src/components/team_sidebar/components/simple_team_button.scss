@@ -1,0 +1,74 @@
+.simple-team-button-container {
+    position: relative;
+    display: inline-block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.simple-team-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    &.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        
+        .simple-team-btn {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    }
+
+    .simple-team-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--sidebar-header-text-color);
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s ease;
+
+        i {
+            color: var(--sidebar-header-text-color);
+            opacity: 0.73;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        &:hover:not(:disabled) {
+            background: rgba(var(--sidebar-text-rgb), 0.1);
+            transform: translateY(-1px);
+
+            i {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+    }
+
+    &.active {
+        .simple-team-btn {
+            background: var(--sidebar-text-active-border);
+            transform: translateY(-1px);
+
+            i {
+                color: var(--sidebar-text);
+                opacity: 1;
+                font-weight: 600;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+}

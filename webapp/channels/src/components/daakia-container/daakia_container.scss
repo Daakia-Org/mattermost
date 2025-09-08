@@ -1,0 +1,71 @@
+.daakia-container {
+    height: 56px;
+    border-bottom: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
+    border-right: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--center-channel-bg);
+    
+    .daakia-section-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        
+        .daakia-section-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background: rgba(var(--button-bg-rgb), 0.08);
+            
+            i {
+                color: var(--button-bg);
+                font-size: 16px;
+            }
+        }
+        
+        .daakia-section-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--center-channel-color);
+            line-height: 1.2;
+        }
+    }
+
+    .daakia-toggle-container {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+
+        .daakia-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: var(--center-channel-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+                color: var(--button-bg);
+                transform: scale(1.1);
+            }
+
+            &:active {
+                transform: scale(0.95);
+            }
+
+            i {
+                font-size: 12px;
+                transition: all 0.2s ease;
+            }
+        }
+    }
+}

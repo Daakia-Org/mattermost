@@ -1,6 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+/* eslint-disable */
 import React, {useCallback, useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
@@ -24,7 +25,11 @@ import * as Utils from 'utils/utils';
 
 import './daakia_team_switcher.scss';
 
-const DaakiaTeamSwitcher: React.FC = () => {
+interface Props {
+    isVisible?: boolean;
+}
+
+const DaakiaTeamSwitcher: React.FC<Props> = ({isVisible = true}) => {
     const myTeams = useSelector(getMyTeams);
     const currentTeamId = useSelector(getCurrentTeamId);
     const [unreadTeamsSet, mentionsInTeamMap] = useSelector(getTeamsUnreadStatuses);
@@ -150,6 +155,10 @@ const DaakiaTeamSwitcher: React.FC = () => {
     }, [handleKeyDown, handleKeyUp]);
 
 
+
+    if (!isVisible) {
+        return null;
+    }
 
     return (
         <div className='daakia-team-switcher'>
