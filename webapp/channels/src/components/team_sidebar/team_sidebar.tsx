@@ -6,16 +6,16 @@ import React from 'react';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import type {DroppableProvided, DropResult} from 'react-beautiful-dnd';
 import Scrollbars from 'react-custom-scrollbars';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import {injectIntl} from 'react-intl';
 import type {WrappedComponentProps} from 'react-intl';
 import type {RouteComponentProps} from 'react-router-dom';
 
 import type {Team} from '@mattermost/types/teams';
 
-import Permissions from 'mattermost-redux/constants/permissions';
+// import Permissions from 'mattermost-redux/constants/permissions';
 
-import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
-import TeamButton from 'components/team_sidebar/components/team_button';
+// import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
+// import TeamButton from 'components/team_sidebar/components/team_button';
 
 import WebSocketClient from 'client/web_websocket_client';
 import Pluggable from 'plugins/pluggable';
@@ -23,7 +23,8 @@ import {Constants} from 'utils/constants';
 import * as Keyboard from 'utils/keyboard';
 import {getCurrentProduct} from 'utils/products';
 import {filterAndSortTeamsByDisplayName} from 'utils/team_utils';
-import * as Utils from 'utils/utils';
+
+// import * as Utils from 'utils/utils';
 
 import type {PropsFromRedux} from './index';
 
@@ -169,10 +170,10 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
     handleChatClick = (e: React.MouseEvent) => {
         e.preventDefault();
         const teams = filterAndSortTeamsByDisplayName(this.props.myTeams, this.props.locale, this.props.userTeamsOrderPreference);
-        
+
         if (teams.length > 0) {
             // Go to last team or first available team
-            const lastTeam = teams.find(team => team.id === this.props.currentTeamId) || teams[0];
+            const lastTeam = teams.find((team) => team.id === this.props.currentTeamId) || teams[0];
             this.props.actions.switchTeam(`/${lastTeam.name}`);
         } else {
             // No teams, go to team selection
@@ -217,12 +218,13 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const {intl} = this.props;
+        // const {intl} = this.props;
         const root: Element | null = document.querySelector('#root');
         root!.classList.add('multi-teams');
 
         const plugins = [];
-        const sortedTeams = filterAndSortTeamsByDisplayName(this.props.myTeams, this.props.locale, this.props.userTeamsOrderPreference);
+
+        // const sortedTeams = filterAndSortTeamsByDisplayName(this.props.myTeams, this.props.locale, this.props.userTeamsOrderPreference);
 
         const currentProduct = getCurrentProduct(this.props.products, this.props.location.pathname);
         if (currentProduct && !currentProduct.showTeamSidebar) {
