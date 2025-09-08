@@ -92,6 +92,16 @@
                 opacity: 0.5;
             }
 
+            &.disabled {
+                opacity: 0.4;
+                cursor: not-allowed;
+                
+                a {
+                    cursor: not-allowed;
+                    pointer-events: none;
+                }
+            }
+
             .team-btn {
                 color: var(--sidebar-header-text-color);
 

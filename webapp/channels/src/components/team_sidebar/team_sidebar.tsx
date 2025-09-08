@@ -226,13 +226,55 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
         //         />
         //     );
         // });
-        // Chat button only
         const sidebarButtons = [
+            {
+                id: 'home',
+                icon: 'fa-home',
+                tooltip: 'Home',
+                active: this.props.location.pathname === '/home',
+                onClick: () => this.props.actions.switchTeam('/home'),
+            },
             {
                 id: 'chats',
                 icon: 'icon-message-text-outline',
-                tooltip: 'Chats',
-                active: true,
+                tooltip: 'Chat',
+                active: this.props.location.pathname !== '/home',
+                onClick: this.handleChatClick,
+            },
+            {
+                id: 'calendar',
+                icon: 'icon-calendar-outline',
+                tooltip: 'Calendar',
+                active: false,
+                disabled: true,
+            },
+            {
+                id: 'meetings',
+                icon: 'icon-video-outline',
+                tooltip: 'Meetings & Events',
+                active: false,
+                disabled: true,
+            },
+            {
+                id: 'tasks',
+                icon: 'fa-tasks',
+                tooltip: 'Task Manager',
+                active: false,
+                disabled: true,
+            },
+            {
+                id: 'files',
+                icon: 'icon-file-text-outline',
+                tooltip: 'Saved Files',
+                active: false,
+                disabled: true,
+            },
+            {
+                id: 'bhashika',
+                icon: 'icon-microphone-outline',
+                tooltip: 'Bhashika',
+                active: false,
+                disabled: true,
             },
         ];
 
@@ -242,17 +284,17 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
                 className='draggable-team-container inline-block'
                 style={{marginBottom: '12px'}}
             >
-                <div className={`team-container ${button.active ? 'active' : ''}`}>
+                <div className={`team-container ${button.active ? 'active' : ''} ${button.disabled ? 'disabled' : ''}`}>
                     <a
                         href='#'
                         className='team-btn'
                         title={button.tooltip}
-                        onClick={button.id === 'chats' ? this.handleChatClick : undefined}
+                        onClick={button.disabled ? undefined : button.onClick}
                     >
                         <div className={`TeamIcon TeamIcon__sm ${button.active ? 'active' : ''}`}>
                             <div className='TeamIcon__content'>
                                 <i
-                                    className={`icon ${button.icon}`}
+                                    className={`${button.icon.startsWith('fa-') ? 'fa ' + button.icon + ' fa-lg' : 'icon ' + button.icon}`}
                                     role='img'
                                     aria-label={`${button.tooltip} Icon`}
                                 />

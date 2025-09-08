@@ -1,0 +1,31 @@
+@import 'utils/variables';
+
+.daakia-welcome-card {
+    background: var(--center-channel-bg);
+    border: 1px solid rgba(var(--center-channel-color-rgb), 0.12);
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: var(--elevation-1);
+
+    &__content {
+        text-align: left;
+    }
+
+    &__title {
+        font-size: 32px;
+        font-weight: $font-weight--semibold;
+        color: var(--center-channel-color);
+        margin: 0 0 16px 0;
+        line-height: 1.2;
+    }
+
+    &__description {
+        font-size: 16px;
+        color: rgba(var(--center-channel-color-rgb), 0.72);
+        margin: 0;
+        line-height: 1.5;
+        max-width: 600px;
+        margin: 0;
+    }
+}
