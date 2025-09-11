@@ -1192,6 +1192,21 @@
         }
     }
 
+    // Modern display mode: flip pinned indicator to right side for current user
+    &.post--modern.current--user {
+        .post-pre-header {
+            flex-direction: row-reverse;
+
+            .post-pre-header__icons-container {
+                margin-left: 0;
+                margin-right: 5px;
+                padding-right: 0;
+                padding-left: 9px;
+                justify-content: flex-start;
+            }
+        }
+    }
+
     .post__content {
         position: relative;
         display: table;

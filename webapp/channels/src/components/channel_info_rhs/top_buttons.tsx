@@ -13,15 +13,14 @@ import Constants from 'utils/constants';
 const ChannelInfoRhsTopButtons = styled.div`
     display: flex;
     color: rgba(var(--center-channel-color-rgb), 0.75);
-    margin-top: 24px;
-    padding: 0 18px;
 `;
 
 const Button = styled.button`
     flex: 1;
+    height: 100%;
     padding: 12px 0 10px 0;
     border: 0;
-    margin: 0 6px;
+    margin: 0;
     background: rgba(var(--center-channel-color-rgb), 0.04);
     border-radius: 4px;
 
@@ -57,13 +56,10 @@ const Button = styled.button`
 `;
 
 const CopyButton = styled(Button)`
-    transition: background-color 0.5s ease;
-
     &:active,
     &.active {
         background: rgba(var(--center-channel-color-rgb), 0.08);
         color: rgba(var(--center-channel-color-rgb), 0.75);
-        transition: none;
     }
 
     &.success {
@@ -113,13 +109,13 @@ export default function TopButtons({
 
     const canCopyLink = [Constants.OPEN_CHANNEL, Constants.PRIVATE_CHANNEL].includes(channelType);
 
-    // Favorite Button State
-    const favoriteIcon = isFavorite ? 'icon-star' : 'icon-star-outline';
-    const favoriteText = isFavorite ? formatMessage({id: 'channel_info_rhs.top_buttons.favorited', defaultMessage: 'Favorited'}) : formatMessage({id: 'channel_info_rhs.top_buttons.favorite', defaultMessage: 'Favorite'});
+    // Commented out Favorite Button State
+    // const favoriteIcon = isFavorite ? 'icon-star' : 'icon-star-outline';
+    // const favoriteText = isFavorite ? formatMessage({id: 'channel_info_rhs.top_buttons.favorited', defaultMessage: 'Favorited'}) : formatMessage({id: 'channel_info_rhs.top_buttons.favorite', defaultMessage: 'Favorite'});
 
-    // Mute Button State
-    const mutedIcon = isMuted ? 'icon-bell-off-outline' : 'icon-bell-outline';
-    const mutedText = isMuted ? formatMessage({id: 'channel_info_rhs.top_buttons.muted', defaultMessage: 'Muted'}) : formatMessage({id: 'channel_info_rhs.top_buttons.mute', defaultMessage: 'Mute'});
+    // Commented out Mute Button State
+    // const mutedIcon = isMuted ? 'icon-bell-off-outline' : 'icon-bell-outline';
+    // const mutedText = isMuted ? formatMessage({id: 'channel_info_rhs.top_buttons.muted', defaultMessage: 'Muted'}) : formatMessage({id: 'channel_info_rhs.top_buttons.mute', defaultMessage: 'Mute'});
 
     // Copy Button State
     const copyIcon = copyLink.copiedRecently ? 'icon-check' : 'icon-link-variant';
@@ -127,7 +123,8 @@ export default function TopButtons({
 
     return (
         <ChannelInfoRhsTopButtons>
-            <WithTooltip
+            {/* Commented out Favorite button */}
+            {/* <WithTooltip
                 title={
                     <FormattedMessage
                         id='channel_info_rhs.top_buttons.favorite.tooltip'
@@ -146,8 +143,9 @@ export default function TopButtons({
                     </div>
                     <span>{favoriteText}</span>
                 </Button>
-            </WithTooltip>
-            <WithTooltip
+            </WithTooltip> */}
+            {/* Commented out Mute button */}
+            {/* <WithTooltip
                 title={
                     <FormattedMessage
                         id='channel_info_rhs.top_buttons.mute.tooltip'
@@ -165,6 +163,52 @@ export default function TopButtons({
                         <i className={'icon ' + mutedIcon}/>
                     </div>
                     <span>{mutedText}</span>
+                </Button>
+            </WithTooltip> */}
+            <WithTooltip
+                title={
+                    <FormattedMessage
+                        id='channel_info_rhs.top_buttons.video_call.tooltip'
+                        defaultMessage='Start a video call'
+                    />
+                }
+            >
+                <Button
+                    onClick={() => {}}
+                    id='channelInfoRHSVideoCallButton'
+                >
+                    <div>
+                        <i className='icon icon-video-outline'/>
+                    </div>
+                    <span>
+                        <FormattedMessage
+                            id='channel_info_rhs.top_buttons.video_call'
+                            defaultMessage='Video Call'
+                        />
+                    </span>
+                </Button>
+            </WithTooltip>
+            <WithTooltip
+                title={
+                    <FormattedMessage
+                        id='channel_info_rhs.top_buttons.meetings.tooltip'
+                        defaultMessage='Schedule a meeting'
+                    />
+                }
+            >
+                <Button
+                    onClick={() => {}}
+                    id='channelInfoRHSMeetingsButton'
+                >
+                    <div>
+                        <i className='icon icon-calendar-outline'/>
+                    </div>
+                    <span>
+                        <FormattedMessage
+                            id='channel_info_rhs.top_buttons.meetings'
+                            defaultMessage='Meetings'
+                        />
+                    </span>
                 </Button>
             </WithTooltip>
             {canAddPeople && (

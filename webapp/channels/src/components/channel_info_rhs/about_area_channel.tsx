@@ -102,9 +102,9 @@ const AboutAreaChannel = ({channel, canEditChannelProperties, actions}: Props) =
                 </ChannelHeader>
             )}
 
-            <ChannelId>
+            {/* <ChannelId>
                 {formatMessage({id: 'channel_info_rhs.about_area_id', defaultMessage: 'ID:'})} {channel.id}
-            </ChannelId>
+            </ChannelId> */}
         </>
     );
 };

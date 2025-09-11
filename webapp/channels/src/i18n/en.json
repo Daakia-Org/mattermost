@@ -3549,7 +3549,7 @@
   "channel_info_rhs.about_area.channel_purpose.line_limiter.less": "less",
   "channel_info_rhs.about_area.channel_purpose.line_limiter.more": "more",
   "channel_info_rhs.edit_link": "Edit",
-  "channel_info_rhs.header.title": "Info",
+  "channel_info_rhs.header.title": "Details",
   "channel_info_rhs.menu.files": "Files",
   "channel_info_rhs.menu.files.filter": "Filter",
   "channel_info_rhs.menu.files.filter.all_file_types": "All file types",
