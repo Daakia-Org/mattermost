@@ -29,9 +29,13 @@ export default function MobileSidebarHeader(props: Props) {
         props.openModal(customStatusInputModalData);
     }
 
+    const isOnHome = window.location.pathname.includes('/home');
+    const homeSection = isOnHome ? window.location.pathname.split('/home/')[1] : null;
+    const sectionName = homeSection ? homeSection.charAt(0).toUpperCase() + homeSection.slice(1) : null;
+
     return (
         <div className='mobileSidebarHeader'>
-            <h1>{props.teamDisplayName}</h1>
+            <h1>{isOnHome && sectionName ? sectionName : props.teamDisplayName}</h1>
             <div className='mobileSidebarHeader__username'>
                 <span>{'@' + props.username}</span>
                 <CustomStatusEmoji

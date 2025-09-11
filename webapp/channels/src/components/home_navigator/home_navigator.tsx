@@ -3,8 +3,12 @@
 
 import React from 'react';
 import {useHistory, useParams, useLocation} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+
+import {close as closeLhs} from 'actions/views/lhs';
 
 export default function HomeNavigator() {
+    const dispatch = useDispatch();
     const history = useHistory();
     const {team} = useParams<{team: string}>();
     const location = useLocation();
@@ -39,6 +43,7 @@ export default function HomeNavigator() {
                                 onClick={(e) => {
                                     e.preventDefault();
                                     history.push(item.path);
+                                    dispatch(closeLhs());
                                 }}
                                 tabIndex={0}
                             >

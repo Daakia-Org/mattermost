@@ -255,9 +255,7 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                     dragging: this.state.isDragging,
                 })}
             >
-                <DaakiaContainer onToggleTeamSwitcher={this.handleToggleTeamSwitcher}/>
-                <DaakiaTeamSwitcher isVisible={this.state.isTeamSwitcherOpen}/>
-                {this.props.isMobileView ? <MobileSidebarHeader/> : (
+                {!this.props.isMobileView && (
                     <SidebarHeader
                         showNewChannelModal={this.showNewChannelModal}
                         showMoreChannelsModal={this.showMoreChannelsModal}
@@ -271,6 +269,8 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                         canCreateCustomGroups={this.props.canCreateCustomGroups}
                     />
                 )}
+                {this.props.isMobileView && <MobileSidebarHeader/>}
+                <DaakiaTeamSwitcher isVisible={this.state.isTeamSwitcherOpen}/>
                 <div
                     id='lhsNavigator'
                     role='application'

@@ -110,13 +110,13 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
             <div>
                 <FormattedMessage
                     id='about.teamEditionLearn'
-                    defaultMessage='Join the Mattermost community at '
+                    defaultMessage='Learn more about Daakia at '
                 />
                 <ExternalLink
                     location='about_build_modal'
-                    href='https://mattermost.com/community/'
+                    href='https://www.daakia.co.in/'
                 >
-                    {'mattermost.com/community/'}
+                    {'www.daakia.co.in'}
                 </ExternalLink>
             </div>
         );
@@ -141,13 +141,13 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
                 <div>
                     <FormattedMessage
                         id='about.enterpriseEditionLearn'
-                        defaultMessage='Learn more about Enterprise Edition at '
+                        defaultMessage='Learn more about Daakia Enterprise at '
                     />
                     <ExternalLink
                         location='about_build_modal'
-                        href='https://mattermost.com/'
+                        href='https://www.daakia.co.in/'
                     >
-                        {'mattermost.com'}
+                        {'www.daakia.co.in'}
                     </ExternalLink>
                 </div>
             );
@@ -175,7 +175,7 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
             <ExternalLink
                 location='about_build_modal'
                 id='tosLink'
-                href={AboutLinks.TERMS_OF_SERVICE}
+                href='https://www.daakia.co.in/end-user-agreement'
             >
                 <FormattedMessage
                     id='about.tos'
@@ -188,7 +188,7 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
             <ExternalLink
                 id='privacyLink'
                 location='about_build_modal'
-                href={AboutLinks.PRIVACY_POLICY}
+                href='https://www.daakia.co.in/privacy-policy'
             >
                 <FormattedMessage
                     id='about.privacy'
@@ -301,7 +301,7 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
                             <p className='about-modal__subtitle pb-2'>
                                 {subTitle}
                             </p>
-                            <div className='form-group less'>
+                            {/* <div className='form-group less'>
                                 <div data-testid='aboutModalVersion'>
                                     <FormattedMessage
                                         id='about.version'
@@ -330,7 +330,7 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
                                     {'\u00a0' + config.SQLDriverName}
                                 </div>
                                 {serverHostname}
-                            </div>
+                            </div> */}
                             {licensee}
                         </div>
                     </div>
@@ -353,7 +353,7 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
                             </div>
                         </div>
                     </div>
-                    <div className='about-modal__notice form-group pt-3'>
+                    {/* <div className='about-modal__notice form-group pt-3'>
                         <p>
                             <FormattedMessage
                                 id='about.notice'
@@ -386,8 +386,8 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
                                 }}
                             />
                         </p>
-                    </div>
-                    <div className='about-modal__hash'>
+                    </div> */}
+                    {/* <div className='about-modal__hash'>
                         <p>
                             <FormattedMessage
                                 id='about.hash'
@@ -411,7 +411,7 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
                             <Nbsp/>
                             {config.BuildDate}
                         </p>
-                    </div>
+                    </div> */}
                 </Modal.Body>
             </Modal>
         );

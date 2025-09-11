@@ -59,6 +59,11 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
 
     render() {
         const {user, channel, isMuted, inGlobalThreads, inDrafts} = this.props;
+        
+        // Check if we're on a home route
+        const isOnHome = window.location.pathname.includes('/home');
+        const homeSection = isOnHome ? window.location.pathname.split('/home/')[1] : null;
+        const homeSectionName = homeSection ? homeSection.charAt(0).toUpperCase() + homeSection.slice(1) : 'Home';
 
         let heading;
         if (inGlobalThreads) {
@@ -75,6 +80,8 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
                     defaultMessage='Drafts'
                 />
             );
+        } else if (isOnHome) {
+            heading = <span>{homeSectionName}</span>;
         } else if (channel) {
             heading = (
                 <>
