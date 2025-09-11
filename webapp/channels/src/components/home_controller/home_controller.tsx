@@ -1,9 +1,15 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {useSelector} from 'react-redux';
+import {Route, Switch, useParams, useLocation} from 'react-router-dom';
 
+import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
+
+import HomeRedirect from 'components/home_redirect';
+
+import {setLastVisitedHomePage} from 'utils/home_storage';
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 
 const Dashboard = () => <div className='app__content'><h1>{'Dashboard'}</h1></div>;
@@ -11,6 +17,21 @@ const Analytics = () => <div className='app__content'><h1>{'Analytics'}</h1></di
 const Reports = () => <div className='app__content'><h1>{'Reports'}</h1></div>;
 
 export default function HomeController() {
+    const {team} = useParams<{team: string}>();
+    const location = useLocation();
+    const currentUserId = useSelector(getCurrentUserId);
+
+    useEffect(() => {
+        if (team && currentUserId) {
+            const pathParts = location.pathname.split('/');
+            const homePageIndex = pathParts.indexOf('home');
+            if (homePageIndex !== -1 && pathParts[homePageIndex + 1]) {
+                const currentPage = pathParts[homePageIndex + 1];
+                setLastVisitedHomePage(currentUserId, team, currentPage);
+            }
+        }
+    }, [location.pathname, team, currentUserId]);
+
     return (
         <Switch>
             <Route
@@ -25,7 +46,11 @@ export default function HomeController() {
                 path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/reports`}
                 component={Reports}
             />
-            <Redirect to={window.location.pathname.replace('/home', '/home/dashboard')}/>
+            <Route
+                exact={true}
+                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home`}
+                component={HomeRedirect}
+            />
         </Switch>
     );
 }

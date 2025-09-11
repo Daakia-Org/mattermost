@@ -11,6 +11,8 @@ import type {RouteComponentProps} from 'react-router-dom';
 
 import type {Team} from '@mattermost/types/teams';
 
+import {getLastVisitedHomePage} from 'utils/home_storage';
+
 /* eslint-disable */
 import Scrollbars from 'components/common/scrollbars';
 
@@ -236,7 +238,12 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
         const handleHomeClick = (e: React.MouseEvent) => {
             e.preventDefault();
             if (currentTeam) {
-                this.props.actions.switchTeam(`/${currentTeam.name}/home`);
+                const lastVisitedPage = getLastVisitedHomePage(this.props.currentUserId, currentTeam.name);
+                if (lastVisitedPage) {
+                    this.props.actions.switchTeam(`/${currentTeam.name}/home/${lastVisitedPage}`);
+                } else {
+                    this.props.actions.switchTeam(`/${currentTeam.name}/home/dashboard`);
+                }
             }
         };
         

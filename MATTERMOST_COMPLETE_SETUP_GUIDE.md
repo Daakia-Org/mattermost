@@ -1,7 +1,7 @@
 # Mattermost Complete Setup & Build Guide
 
 ## 🎯 Overview
-This guide covers the complete process of setting up, building, and customizing Mattermost from source code.
+This guide covers the complete process of setting up, building, and customizing Mattermost from source code, including custom navigation and home section implementation.
 
 ## 📋 Prerequisites
 - macOS (Apple Silicon or Intel)
@@ -99,36 +99,112 @@ make package
 ```
 **Output Location:** `server/dist/mattermost-*.tar.gz`
 
+## 🏠 Custom Home Section Architecture
+
+### **What is the Home Section?**
+The Home section is a custom navigation area that replaces standard Mattermost team switching with organized workspace sections:
+
+- **Home**: Dashboard, Analytics, Reports, Teams, Settings
+- **Organization**: Standard Mattermost channels and messaging
+- **Calendar**: (Planned) Calendar integration
+- **Meetings**: (Planned) Video conferencing
+- **Tasks**: (Planned) Task management
+- **Files**: (Planned) File management
+- **Bhashika**: (Planned) Voice features
+
+### **Why Home Section Was Created**
+1. **Better Organization**: Separate workspace functions from communication
+2. **User Experience**: Intuitive navigation similar to modern apps
+3. **Scalability**: Easy to add new features without cluttering
+4. **Memory**: Remembers last visited page like Mattermost channels
+
+### **How Home Navigation Works**
+
+**Smart Memory System:**
+```typescript
+// Same pattern as Mattermost channels
+getLastVisitedHomePage(userId, teamName)  // Get last page
+setLastVisitedHomePage(userId, teamName, page)  // Store page
+```
+
+**Navigation Flow:**
+1. Click **Home** → Checks localStorage → Redirects to last visited page
+2. Click **Organization** → Uses Mattermost's system → Redirects to last channel
+3. Navigate within Home → Automatically updates localStorage
+
+**Key Files:**
+- `utils/home_storage.ts` - Memory management
+- `components/home_controller/` - Route handling
+- `components/home_redirect/` - Smart redirects
+- `components/team_sidebar/` - Custom navigation
+
+### **Current Home Routes (Active)**
+```
+/{team}/home/dashboard    ✅ Dashboard page
+/{team}/home/analytics    ✅ Analytics page  
+/{team}/home/reports      ✅ Reports page
+/{team}/home              ✅ Smart redirect to last visited
+```
+
+### **Planned Home Routes (Disabled)**
+```
+/{team}/home/teams        🚧 Team management
+/{team}/home/settings     🚧 Workspace settings
+/{team}/calendar          🚧 Calendar integration
+/{team}/meetings          🚧 Video meetings
+/{team}/tasks             🚧 Task manager
+/{team}/files             🚧 File management
+/{team}/bhashika          🚧 Voice features
+```
+
+### **Step 9: Enable Additional Home Routes**
+To activate planned features:
+
+1. **Add route to HomeController:**
+```typescript
+<Route
+    path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/teams`}
+    component={TeamsManager}
+/>
+```
+
+2. **Create component:**
+```bash
+mkdir webapp/channels/src/components/teams_manager
+# Create component files
+```
+
+3. **Update navigation:**
+```typescript
+// In team_sidebar.tsx - remove disabled: true
+{
+    id: 'teams',
+    icon: 'icon-account-multiple',
+    tooltip: 'Teams',
+    active: false,
+    disabled: false,  // Enable this
+}
+```
+
 ## 🔧 Customization: Replace Mattermost Logo with Daakia
 
-### **Step 9: Find Logo Files**
-The Mattermost logo appears in several places:
+### **Step 10: Find Logo Files**
 ```bash
-# Main logo files
 find . -name "*.png" -o -name "*.svg" | grep -i logo
 find . -name "*.png" -o -name "*.svg" | grep -i mattermost
 ```
 
-### **Step 10: Replace Logos**
+### **Step 11: Replace Logos**
 1. **Prepare your Daakia logo** (PNG/SVG format)
 2. **Replace files** in these locations:
    - `webapp/channels/src/images/` - Main app logos
    - `webapp/channels/src/components/` - Component logos
    - `server/templates/` - Email templates
-   - `server/fonts/` - Brand fonts
 
-### **Step 11: Rebuild After Logo Changes**
+### **Step 12: Rebuild After Changes**
 ```bash
-# Rebuild webapp
-cd webapp/channels
-npm run build
-
-# Rebuild server
-cd ../../server
-make build
-
-# Create new package
-make package
+cd webapp/channels && npm run build
+cd ../../server && make build && make package
 ```
 
 ## 📁 File Locations
@@ -142,6 +218,12 @@ make package
 - **Main App**: `webapp/channels/src/images/`
 - **Email Templates**: `server/templates/`
 - **Favicon**: `webapp/channels/src/images/favicon/`
+
+### **Home System Files:**
+- **Storage**: `webapp/channels/src/utils/home_storage.ts`
+- **Controller**: `webapp/channels/src/components/home_controller/`
+- **Redirect**: `webapp/channels/src/components/home_redirect/`
+- **Navigation**: `webapp/channels/src/components/team_sidebar/`
 
 ## 🚨 Troubleshooting
 
@@ -175,14 +257,38 @@ cd ../webapp/channels && npm run build:watch
 ✅ **Server compiled** for target platforms  
 ✅ **Tar package created** in server/dist/  
 ✅ **Custom logos** replaced throughout  
+✅ **Home navigation** working with memory  
+✅ **Smart redirects** functioning properly  
 
 ## 🔄 Development Workflow
 
+### **For Home Section Changes:**
+1. **Add new routes** in `home_controller.tsx`
+2. **Create components** for new features
+3. **Update navigation** in `team_sidebar.tsx`
+4. **Test memory system** works correctly
+5. **Rebuild webapp** and test
+
+### **For General Changes:**
 1. **Make changes** to code/logos
 2. **Rebuild webapp** if frontend changes
 3. **Rebuild server** if backend changes
 4. **Test changes** in browser
 5. **Create package** when ready to deploy
+
+## 🧠 Home Memory System Details
+
+**How It Works:**
+- Uses localStorage with keys: `home_last_visited_{userId}_{teamName}`
+- Automatically tracks navigation within home sections
+- Falls back to dashboard if no history exists
+- Scoped per user and team (no conflicts)
+
+**Same Pattern as Mattermost:**
+- Organization button uses Mattermost's channel memory
+- Home button uses identical localStorage pattern
+- Both remember last visited location
+- Both have smart fallbacks
 
 ---
 
