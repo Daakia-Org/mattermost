@@ -230,21 +230,29 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
         //     );
         // });
         const currentTeam = this.props.myTeams.find(team => team.id === this.props.currentTeamId);
-        const teamHomePath = currentTeam ? `/${currentTeam.name}/home` : '/home';
+        const isHomeActive = this.props.location.pathname.includes('/home');
+        const isOrganizationActive = !isHomeActive;
+        
+        const handleHomeClick = (e: React.MouseEvent) => {
+            e.preventDefault();
+            if (currentTeam) {
+                this.props.actions.switchTeam(`/${currentTeam.name}/home`);
+            }
+        };
         
         const sidebarButtons = [
             {
                 id: 'home',
                 icon: 'fa-home',
                 tooltip: 'Home',
-                active: this.props.location.pathname.endsWith('/home'),
-                onClick: () => this.props.actions.switchTeam(teamHomePath),
+                active: isHomeActive,
+                onClick: handleHomeClick,
             },
             {
                 id: 'chats',
                 icon: 'icon-message-text-outline',
                 tooltip: 'Organization',
-                active: !this.props.location.pathname.endsWith('/home'),
+                active: isOrganizationActive,
                 onClick: this.handleChatClick,
             },
             {

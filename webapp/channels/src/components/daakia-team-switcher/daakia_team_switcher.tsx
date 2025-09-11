@@ -42,9 +42,11 @@ const DaakiaTeamSwitcher: React.FC<Props> = ({isVisible = true}) => {
     const sortedTeams = filterAndSortTeamsByDisplayName(myTeams, locale, userTeamsOrderPreference);
 
     const handleTeamClick = useCallback((teamName: string) => {
-        // If currently on a home route, go to the new team's home
-        if (window.location.pathname.endsWith('/home')) {
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('/home')) {
             history.push(`/${teamName}/home`);
+        } else if (currentPath.includes('/threads')) {
+            history.push(`/${teamName}/threads`);
         } else {
             history.push(`/${teamName}`);
         }

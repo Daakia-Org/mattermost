@@ -1,6 +1,6 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import DaakiaHomePage from './daakia_home_page';
+import HomeNavigator from './home_navigator';
 
-export default DaakiaHomePage;
+export default HomeNavigator;

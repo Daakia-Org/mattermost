@@ -21,6 +21,7 @@ import type {ModalData} from 'types/actions';
 import type {RhsState} from 'types/store/rhs';
 
 import ChannelNavigator from './channel_navigator';
+import HomeNavigator from 'components/home_navigator';
 import SidebarList from './sidebar_list';
 
 const MobileSidebarHeader = makeAsyncComponent('MobileSidebarHeader', lazy(() => import('./mobile_sidebar_header')));
@@ -263,16 +264,18 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                     className='a11y__region'
                     data-a11y-sort-order='6'
                 >
-                    <ChannelNavigator/>
+                    {window.location.pathname.includes('/home') ? <HomeNavigator/> : <ChannelNavigator/>}
                 </div>
                 <div className='sidebar--left__icons'>
                     <Pluggable pluggableName='LeftSidebarHeader'/>
                 </div>
-                <SidebarList
-                    handleOpenMoreDirectChannelsModal={this.handleOpenMoreDirectChannelsModal}
-                    onDragStart={this.onDragStart}
-                    onDragEnd={this.onDragEnd}
-                />
+                {!window.location.pathname.includes('/home') && (
+                    <SidebarList
+                        handleOpenMoreDirectChannelsModal={this.handleOpenMoreDirectChannelsModal}
+                        onDragStart={this.onDragStart}
+                        onDragEnd={this.onDragEnd}
+                    />
+                )}
                 <DataPrefetch/>
                 {this.renderModals()}
             </ResizableLhs>

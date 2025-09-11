@@ -32,6 +32,8 @@ function mapStateToProps(state: GlobalState, {location: {pathname}}: Props) {
         inGlobalThreads: matchPath(pathname, {path: '/:team/threads/:threadIdentifier?'}) != null,
         inDrafts: matchPath(pathname, {path: '/:team/drafts'}) != null,
         inScheduledPosts: matchPath(pathname, {path: '/:team/scheduled_posts'}) != null,
+        inHome: matchPath(pathname, {path: '/:team/home/:homeSection?'}) != null,
+        homeSection: (matchPath(pathname, {path: '/:team/home/:homeSection?'})?.params as {homeSection?: string})?.homeSection,
     };
 }
 

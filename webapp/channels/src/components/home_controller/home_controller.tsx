@@ -1,53 +1,31 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useEffect} from 'react';
+import React from 'react';
+import {Route, Switch, Redirect} from 'react-router-dom';
 
-import DaakiaHomePage from 'components/daakia_home_page';
-import Sidebar from 'components/sidebar';
+import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 
-import {isInternetExplorer, isEdge} from 'utils/user_agent';
+const Dashboard = () => <div className='app__content'><h1>{Dashboard}</h1></div>;
+const Analytics = () => <div className='app__content'><h1>{Analytics}</h1></div>;
+const Reports = () => <div className='app__content'><h1>{Reports}</h1></div>;
 
-const BODY_CLASS_FOR_HOME = ['app__body', 'channel-view'];
-
-function getClassnamesForBody(platform: string, isMsBrowser = false) {
-    const bodyClass = [...BODY_CLASS_FOR_HOME];
-
-    if (platform === 'Win32' || platform === 'Win64') {
-        bodyClass.push('os--windows');
-    } else if (platform === 'MacIntel' || platform === 'MacPPC') {
-        bodyClass.push('os--mac');
-    }
-
-    if (isMsBrowser) {
-        bodyClass.push('browser--ie');
-    }
-
-    return bodyClass;
-}
-
-const HomeController = () => {
-    useEffect(() => {
-        const isMsBrowser = isInternetExplorer() || isEdge();
-        const {navigator} = window;
-        const platform = (navigator as any)?.userAgentData?.platform || navigator?.platform || 'unknown';
-        document.body.classList.add(...getClassnamesForBody(platform, isMsBrowser));
-
-        return () => {
-            document.body.classList.remove(...BODY_CLASS_FOR_HOME);
-        };
-    }, []);
-
+export default function HomeController() {
     return (
-        <>
-            <Sidebar/>
-            <div style={{gridArea: 'center'}}>
-                <div>
-                    <DaakiaHomePage/>
-                </div>
-            </div>
-        </>
+        <Switch>
+            <Route
+                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/dashboard`}
+                component={Dashboard}
+            />
+            <Route
+                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/analytics`}
+                component={Analytics}
+            />
+            <Route
+                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/reports`}
+                component={Reports}
+            />
+            <Redirect to={window.location.pathname.replace('/home', '/home/dashboard')}/>
+        </Switch>
     );
-};
-
-export default HomeController;
+}
