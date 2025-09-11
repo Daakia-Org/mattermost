@@ -99,8 +99,10 @@ export interface Props {
 export default function TopButtons({
     channelType,
     channelURL,
-    isFavorite,
-    isMuted,
+
+    // isFavorite,
+
+    // isMuted,
     isInvitingPeople,
     canAddPeople: propsCanAddPeople,
     actions,
