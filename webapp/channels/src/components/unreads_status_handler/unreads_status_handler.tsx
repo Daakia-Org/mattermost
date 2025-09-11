@@ -140,8 +140,9 @@ export class UnreadsStatusHandlerClass extends React.PureComponent<Props> {
                 siteName: currentSiteName,
             });
         } else if (currentTeam && this.props.inHome) {
-            const sectionName = this.props.homeSection || 'Dashboard';
-            document.title = `${mentionTitle}${unreadTitle}${sectionName} - ${currentTeam.display_name} ${currentSiteName}`;
+            const sectionName = this.props.homeSection || 'dashboard';
+            const capitalizedSection = sectionName.charAt(0).toUpperCase() + sectionName.slice(1);
+            document.title = `${mentionTitle}${unreadTitle}${capitalizedSection} - ${currentTeam.display_name} ${currentSiteName}`;
         } else {
             document.title = formatMessage({id: 'sidebar.team_select', defaultMessage: '{siteName} - Join a team'}, {siteName: currentSiteName || 'Daakia'});
         }

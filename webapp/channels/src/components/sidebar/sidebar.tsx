@@ -62,6 +62,9 @@ type State = {
 };
 
 export default class Sidebar extends React.PureComponent<Props, State> {
+    private lastPathname: string = window.location.pathname;
+    private pathCheckInterval?: NodeJS.Timeout;
+
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -78,6 +81,14 @@ export default class Sidebar extends React.PureComponent<Props, State> {
 
         window.addEventListener('click', this.handleClickClearChannelSelection);
         window.addEventListener('keydown', this.handleKeyDownEvent);
+        
+        // Check for pathname changes every 100ms
+        this.pathCheckInterval = setInterval(() => {
+            if (window.location.pathname !== this.lastPathname) {
+                this.lastPathname = window.location.pathname;
+                this.forceUpdate();
+            }
+        }, 100);
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -89,6 +100,9 @@ export default class Sidebar extends React.PureComponent<Props, State> {
     componentWillUnmount() {
         window.removeEventListener('click', this.handleClickClearChannelSelection);
         window.removeEventListener('keydown', this.handleKeyDownEvent);
+        if (this.pathCheckInterval) {
+            clearInterval(this.pathCheckInterval);
+        }
     }
 
     handleClickClearChannelSelection = (event: MouseEvent) => {

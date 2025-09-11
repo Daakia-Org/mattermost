@@ -61,7 +61,7 @@ const DaakiaContainer: React.FC<Props> = ({onToggleTeamSwitcher}) => {
 
     // Find the current active section based on pathname
     const getCurrentSection = () => {
-        if (location.pathname === '/home') {
+        if (location.pathname.includes('/home')) {
             return sections.find((section) => section.id === 'home');
         }
 

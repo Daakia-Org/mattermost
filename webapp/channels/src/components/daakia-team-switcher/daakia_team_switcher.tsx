@@ -44,7 +44,8 @@ const DaakiaTeamSwitcher: React.FC<Props> = ({isVisible = true}) => {
     const handleTeamClick = useCallback((teamName: string) => {
         const currentPath = window.location.pathname;
         if (currentPath.includes('/home')) {
-            history.push(`/${teamName}/home`);
+            const homeSection = currentPath.split('/home/')[1] || 'dashboard';
+            history.push(`/${teamName}/home/${homeSection}`);
         } else if (currentPath.includes('/threads')) {
             history.push(`/${teamName}/threads`);
         } else {

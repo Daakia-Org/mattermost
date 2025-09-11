@@ -2,43 +2,54 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory, useParams, useLocation} from 'react-router-dom';
 
 export default function HomeNavigator() {
     const history = useHistory();
     const {team} = useParams<{team: string}>();
-    const currentPath = window.location.pathname;
+    const location = useLocation();
+    const currentPath = location.pathname;
 
     const homeItems = [
-        {id: 'dashboard', name: 'Dashboard', path: `/${team}/home/dashboard`},
-        {id: 'analytics', name: 'Analytics', path: `/${team}/home/analytics`},
-        {id: 'reports', name: 'Reports', path: `/${team}/home/reports`},
+        {id: 'dashboard', name: 'Dashboard', path: `/${team}/home/dashboard`, icon: 'icon-globe'},
+        {id: 'analytics', name: 'Analytics', path: `/${team}/home/analytics`, icon: 'icon-plus'},
+        {id: 'reports', name: 'Reports', path: `/${team}/home/reports`, icon: 'icon-chevron-down'},
     ];
 
     return (
-        <div className='SidebarChannelGroup'>
+        <div className='SidebarChannelGroup a11y__section'>
             <div className='SidebarChannelGroupHeader'>
-                <span className='SidebarChannelGroupHeader_groupButton'>
-                    <span className='SidebarChannelGroupHeader_text'>{'HOME'}</span>
-                </span>
+                <button className='SidebarChannelGroupHeader_groupButton' aria-label='HOME' aria-expanded='true'>
+                    <i className='icon icon-chevron-down'></i>
+                    <div className='SidebarChannelGroupHeader_text'>{'HOME'}</div>
+                </button>
             </div>
             <div className='SidebarChannelGroup_content'>
-                {homeItems.map((item) => (
-                    <div
-                        key={item.id}
-                        className={`SidebarChannel ${currentPath === item.path ? 'active' : ''}`}
-                        onClick={() => history.push(item.path)}
-                        role='button'
-                        tabIndex={0}
-                        onKeyDown={(e) => e.key === 'Enter' && history.push(item.path)}
-                    >
-                        <div className='SidebarChannel_link'>
-                            <span className='SidebarChannelLinkLabel_wrapper'>
-                                <span className='SidebarChannelLinkLabel'>{item.name}</span>
-                            </span>
-                        </div>
-                    </div>
-                ))}
+                <ul className='NavGroupContent'>
+                    {homeItems.map((item) => (
+                        <li
+                            key={item.id}
+                            className={`SidebarChannel expanded ${currentPath === item.path ? 'active' : ''}`}
+                            tabIndex={-1}
+                            role='listitem'
+                        >
+                            <a
+                                className='SidebarLink'
+                                href={item.path}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    history.push(item.path);
+                                }}
+                                tabIndex={0}
+                            >
+                                <i className={`icon ${item.icon}`}></i>
+                                <div className='SidebarChannelLinkLabel_wrapper'>
+                                    <span className='SidebarChannelLinkLabel'>{item.name}</span>
+                                </div>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );

@@ -6,9 +6,9 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 
-const Dashboard = () => <div className='app__content'><h1>{Dashboard}</h1></div>;
-const Analytics = () => <div className='app__content'><h1>{Analytics}</h1></div>;
-const Reports = () => <div className='app__content'><h1>{Reports}</h1></div>;
+const Dashboard = () => <div className='app__content'><h1>{'Dashboard'}</h1></div>;
+const Analytics = () => <div className='app__content'><h1>{'Analytics'}</h1></div>;
+const Reports = () => <div className='app__content'><h1>{'Reports'}</h1></div>;
 
 export default function HomeController() {
     return (

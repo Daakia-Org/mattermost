@@ -4,11 +4,19 @@
 import React, {useRef} from 'react';
 import {useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
     ProductsIcon,
 } from '@mattermost/compass-icons/components';
+
+// Custom Home Icon Component
+const CustomHomeIcon = ({size = 24, color = 'var(--button-bg)'}) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+);
 
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
 
@@ -77,6 +85,7 @@ const ProductMenu = (): JSX.Element => {
     const menuRef = useRef<HTMLDivElement>(null);
     const currentProductID = useCurrentProductId();
     const license = useSelector(getLicense);
+    const history = useHistory();
 
     const handleClick = () => dispatch(setProductMenuSwitcherOpen(!switcherOpen));
 
@@ -146,9 +155,41 @@ const ProductMenu = (): JSX.Element => {
                         destination={'/'}
                         icon={'product-channels'}
                         text={'Channels'}
-                        active={isChannels(currentProductID)}
+                        active={isChannels(currentProductID) && !window.location.pathname.includes('/home')}
                         onClick={handleClick}
                     />
+                    <div
+                        role='menuitem'
+                        onClick={() => {
+                            const teamName = window.location.pathname.split('/')[1];
+                            const destination = teamName ? `/${teamName}/home` : '/home';
+                            history.push(destination);
+                            handleClick();
+                        }}
+                        style={{
+                            height: '40px',
+                            width: '270px',
+                            paddingLeft: '16px',
+                            paddingRight: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            color: 'inherit'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(var(--center-channel-color-rgb), 0.08)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
+                        <CustomHomeIcon size={24} color={'var(--button-bg)'} />
+                        <div style={{marginLeft: '8px', flexGrow: 1, fontWeight: 600, fontSize: '14px', lineHeight: '20px'}}>
+                            Home
+                        </div>
+                        {window.location.pathname.includes('/home') && (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--button-bg)">
+                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                            </svg>
+                        )}
+                    </div>
                     {productItems}
                     <ProductMenuList
                         isMessaging={isChannels(currentProductID)}
