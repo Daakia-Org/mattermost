@@ -83,6 +83,7 @@ export const Preferences = {
     MESSAGE_DISPLAY: 'message_display',
     MESSAGE_DISPLAY_CLEAN: 'clean',
     MESSAGE_DISPLAY_COMPACT: 'compact',
+    MESSAGE_DISPLAY_MODERN: 'modern',
     MESSAGE_DISPLAY_DEFAULT: 'clean',
     COLORIZE_USERNAMES: 'colorize_usernames',
     COLORIZE_USERNAMES_DEFAULT: 'true',

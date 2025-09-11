@@ -431,6 +431,7 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
         }
 
         let thirdMessage;
+        let thirdMessageMore;
         if (thirdOption) {
             thirdMessage = (
                 <FormattedMessage
@@ -438,6 +439,16 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
                     defaultMessage={thirdOption.radionButtonText.label.defaultMessage}
                 />
             );
+            if (thirdOption.radionButtonText.more?.id) {
+                thirdMessageMore = (
+                    <span className='font-weight--normal'>
+                        <FormattedMessage
+                            id={thirdOption.radionButtonText.more.id}
+                            defaultMessage={thirdOption.radionButtonText.more.defaultMessage}
+                        />
+                    </span>
+                );
+            }
         }
 
         const messageTitle = (
@@ -500,6 +511,8 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
                                 onChange={(e) => this.handleOnChange(e, thirdDisplay)}
                             />
                             {thirdMessage}
+                            {moreColon}
+                            {thirdMessageMore}
                         </label>
                         <br/>
                     </div>
@@ -935,6 +948,19 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
                     more: defineMessage({
                         id: 'user.settings.display.colorizeDes',
                         defaultMessage: 'Use colors to distinguish users in compact mode',
+                    }),
+                },
+            },
+            thirdOption: {
+                value: Preferences.MESSAGE_DISPLAY_MODERN,
+                radionButtonText: {
+                    label: defineMessage({
+                        id: 'user.settings.display.messageDisplayModern',
+                        defaultMessage: 'Modern',
+                    }),
+                    more: defineMessage({
+                        id: 'user.settings.display.messageDisplayModernDes',
+                        defaultMessage: 'Polished design with a focus on readability and flow.',
                     }),
                 },
             },

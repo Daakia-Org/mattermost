@@ -1934,6 +1934,9 @@
 }
 
 .post-message--collapsed {
+    /* Ensure the bubble itself doesn't size to full content when collapsed */
+    max-height: 600px;
+    overflow: hidden;
     .post-message__text-container {
         // If this max-height is changed, the MAX_POST_HEIGHT constant in
         // components/post_view/show_more/show_more.tsx must by changed
@@ -1979,6 +1982,8 @@
 }
 
 .post-message--expanded {
+    max-height: none;
+    overflow: visible;
     .post-collapse {
         position: relative;
     }
@@ -1992,6 +1997,155 @@
 
 .post-message__text {
     text-align: left;
+}
+
+.post--modern.current--user {
+    .post__content {
+        direction: rtl;
+    }
+
+    .post__header-body {
+        direction: ltr;
+    }
+
+    .post__header {
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .post__body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end; // bubble and reactions to right edge
+        width: 100%;
+    }
+
+    .post-message {
+        max-width: 70%;
+        width: fit-content;
+        background: var(--center-channel-bg);
+        color: var(--center-channel-color);
+        border: 1px solid rgba(var(--button-bg-rgb), 0.24);
+        padding: 8px 12px;
+        border-radius: 10px;
+        margin: 4px 0;
+        word-wrap: break-word;
+        word-break: break-word;
+        display: inline-block;
+    }
+
+    .post-message__text,
+    .post-message__text > * {
+        text-align: left;
+        direction: ltr;
+        color: inherit;
+    }
+
+    .post__body p {
+        text-align: left;
+        direction: ltr;
+        color: inherit;
+    }
+
+    .post__body-reactions-acks,
+    .post-reaction-list {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 4px;
+    }
+
+    .post-image__columns {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-self: flex-end;
+        margin-left: auto; // push the whole attachments block to the right
+        direction: ltr; // keep internal layout stable
+        text-align: left;
+    }
+
+    /* Single image/file preview block should sit on the right as well */
+    .file-view--single {
+        align-self: flex-end;
+        margin-left: auto;
+        direction: ltr;
+        text-align: left;
+    }
+}
+
+/* Hide bubble when there is no message text (attachments-only) */
+.post--modern .post-message:has(.post-message__text:empty),
+.post--modern .post-message:has(.post-message__text > span:empty) {
+    background: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Flip actions menu to left for current user; others remain right by default */
+.post--modern.current--user .post__header .post-menu {
+    left: 0;
+    right: auto;
+}
+
+/* Hover timestamp/permalink on the opposite side for current user */
+.post--modern.current--user.same--root.same--user:not(.post--compact) {
+    .post__permalink {
+        position: absolute;
+        right: 6px;
+        left: auto;
+    }
+
+    .post__time {
+        text-align: right;
+    }
+}
+
+/* Threaded current-user posts: move inline time to the right side */
+.post--modern.current--user.post--thread.same--user {
+    .post__header--info {
+        .post__time {
+            position: absolute;
+            top: 4px;
+            right: -14px;
+            left: auto;
+            text-align: right;
+            width: 51px;
+            line-height: 20px;
+        }
+    }
+}
+
+/* Other users: neutral bubble on the left with slightly tighter radius */
+.post--modern:not(.current--user) {
+    .post__body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; // bubble and reactions to left edge
+        width: 100%;
+    }
+
+    .post-message {
+        max-width: 70%;
+        width: fit-content;
+        background: rgba(var(--center-channel-color-rgb), 0.04);
+        color: var(--center-channel-color);
+        border: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
+        padding: 8px 12px;
+        border-radius: 8px; /* tighter than current-user */
+        margin: 4px 0;
+        word-wrap: break-word;
+        word-break: break-word;
+        display: inline-block;
+    }
+    .post__body-reactions-acks,
+    .post-reaction-list {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 4px;
+    }
 }
 
 .view-history__text {
@@ -2205,7 +2359,7 @@
     display: none;
 }
 
-.post.current--user {
+.post--modern.current--user {
     &.other--root,
     &.post--root {
         .post__header-set-custom-status {

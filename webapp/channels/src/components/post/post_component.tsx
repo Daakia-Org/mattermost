@@ -56,6 +56,7 @@ export type Props = {
     team?: Team;
     currentUserId: string;
     compactDisplay?: boolean;
+    modernDisplay?: boolean;
     colorizeUsernames?: boolean;
     isFlagged: boolean;
     previewCollapsed?: string;
@@ -292,6 +293,7 @@ function PostComponent(props: Props) {
             'post--root': props.hasReplies && !(post.root_id && post.root_id.length > 0),
             'post--comment': (post.root_id && post.root_id.length > 0 && !props.isCollapsedThreadsEnabled) || (props.location === Locations.RHS_COMMENT),
             'post--compact': props.compactDisplay,
+            'post--modern': props.modernDisplay,
             'post--hovered': hovered,
             'same--user': props.isConsecutivePost && (!props.compactDisplay || props.location === Locations.RHS_COMMENT),
             'cursor--pointer': alt && !props.channelIsArchived,
