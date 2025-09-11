@@ -1,11 +1,10 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-/* eslint-disable */
 import React, {useEffect} from 'react';
 
 import DaakiaHomePage from 'components/daakia_home_page';
-import HomeSidebar from 'components/home_sidebar';
+import Sidebar from 'components/sidebar';
 
 import {isInternetExplorer, isEdge} from 'utils/user_agent';
 
@@ -41,9 +40,11 @@ const HomeController = () => {
 
     return (
         <>
-            <HomeSidebar />
+            <Sidebar/>
             <div style={{gridArea: 'center'}}>
-                <DaakiaHomePage/>
+                <div>
+                    <DaakiaHomePage/>
+                </div>
             </div>
         </>
     );

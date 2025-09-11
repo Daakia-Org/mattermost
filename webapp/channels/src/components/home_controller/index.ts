@@ -1,6 +1,4 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import HomeController from './home_controller';
-
-export default HomeController;
+export {default} from './home_controller';

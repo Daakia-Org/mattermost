@@ -32,6 +32,7 @@ import {isIosSafari} from 'utils/user_agent';
 import type {OwnProps, PropsFromRedux} from './index';
 
 const BackstageController = makeAsyncComponent('BackstageController', lazy(() => import('components/backstage')));
+const HomeController = makeAsyncComponent('HomeController', lazy(() => import('components/home_controller')));
 const Pluggable = makeAsyncPluggableComponent();
 
 const WAKEUP_CHECK_INTERVAL = 30000; // 30 seconds
@@ -229,6 +230,10 @@ function TeamController(props: Props) {
 
     return (
         <Switch>
+            <Route
+                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home`}
+                component={HomeController}
+            />
             <Route
                 path={`/:team(${TEAM_NAME_PATH_PATTERN})/integrations`}
                 component={BackstageController}

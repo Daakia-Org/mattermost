@@ -34,7 +34,7 @@ const DaakiaTeamSwitcher: React.FC<Props> = ({isVisible = true}) => {
     const currentTeamId = useSelector(getCurrentTeamId);
     const [unreadTeamsSet, mentionsInTeamMap] = useSelector(getTeamsUnreadStatuses);
     const locale = useSelector(getCurrentLocale);
-    const userTeamsOrderPreference = useSelector((state) => get(state, Preferences.TEAMS_ORDER, '', ''));
+    const userTeamsOrderPreference = useSelector((state: any) => get(state, Preferences.TEAMS_ORDER, '', ''));
     const history = useHistory();
     const dispatch = useDispatch();
     const [showOrder, setShowOrder] = useState(false);
@@ -42,7 +42,12 @@ const DaakiaTeamSwitcher: React.FC<Props> = ({isVisible = true}) => {
     const sortedTeams = filterAndSortTeamsByDisplayName(myTeams, locale, userTeamsOrderPreference);
 
     const handleTeamClick = useCallback((teamName: string) => {
-        history.push(`/${teamName}`);
+        // If currently on a home route, go to the new team's home
+        if (window.location.pathname.endsWith('/home')) {
+            history.push(`/${teamName}/home`);
+        } else {
+            history.push(`/${teamName}`);
+        }
     }, [history]);
 
     const onDragEnd = useCallback((result: DropResult) => {
