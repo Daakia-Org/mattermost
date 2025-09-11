@@ -23,7 +23,7 @@ const DaakiaContainer: React.FC<Props> = ({onToggleTeamSwitcher}) => {
         },
         {
             id: 'chats',
-            name: 'Chats',
+            name: 'Organization',
             icon: 'icon-message-text-outline',
             path: '/chats',
         },

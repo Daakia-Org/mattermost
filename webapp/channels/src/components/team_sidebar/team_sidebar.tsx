@@ -240,7 +240,7 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
             {
                 id: 'chats',
                 icon: 'icon-message-text-outline',
-                tooltip: 'Chat',
+                tooltip: 'Organization',
                 active: this.props.location.pathname !== '/home',
                 onClick: this.handleChatClick,
             },
