@@ -203,7 +203,7 @@ const SearchResults: React.FC<Props> = (props: Props): JSX.Element => {
 
         titleDescriptor = defineMessage({
             id: 'search_header.channelFiles',
-            defaultMessage: 'Files',
+            defaultMessage: 'Media',
         });
     } else if (isCard) {
         titleDescriptor = defineMessage({
@@ -352,7 +352,7 @@ const SearchResults: React.FC<Props> = (props: Props): JSX.Element => {
                 <h2 id='rhsPanelTitle'>
                     {formattedTitle}
                 </h2>
-                {props.channelDisplayName && <div className='sidebar--right__title__channel'>{props.channelDisplayName}</div>}
+                {/* {props.channelDisplayName && <div className='sidebar--right__title__channel'>{props.channelDisplayName}</div>} */}
             </SearchResultsHeader>
             {isMessagesSearch &&
                 <MessageOrFileSelector
