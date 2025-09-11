@@ -1,0 +1,11 @@
+.daakia-dashboard {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+}

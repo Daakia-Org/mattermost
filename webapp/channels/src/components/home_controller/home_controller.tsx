@@ -9,12 +9,12 @@ import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 import {closeRightHandSide} from 'actions/views/rhs';
 
+import DaakiaDashboard from 'components/daakia_dashboard';
 import HomeRedirect from 'components/home_redirect';
 
 import {setLastVisitedHomePage} from 'utils/home_storage';
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 
-const Dashboard = () => <div className='app__content'><h1>{'Dashboard'}</h1></div>;
 const Analytics = () => <div className='app__content'><h1>{'Analytics'}</h1></div>;
 const Reports = () => <div className='app__content'><h1>{'Reports'}</h1></div>;
 
@@ -41,7 +41,7 @@ export default function HomeController() {
         <Switch>
             <Route
                 path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/dashboard`}
-                component={Dashboard}
+                component={DaakiaDashboard}
             />
             <Route
                 path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/analytics`}
