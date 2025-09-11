@@ -68,6 +68,16 @@ const UserPosition = styled.div`
     }
 `;
 
+const UserEmail = styled.div`
+    line-height: 20px;
+    color: rgba(var(--center-channel-color-rgb), 0.75);
+    font-size: 12px;
+
+    p {
+        margin-bottom: 0;
+    }
+`;
+
 const ChannelId = styled.div`
     margin-bottom: 12px;
     font-size: 11px;
@@ -110,6 +120,11 @@ const AboutAreaDM = ({channel, dmUser, actions}: Props) => {
                     <UserPosition>
                         <Markdown message={dmUser.user.is_bot ? dmUser.user.bot_description : dmUser.user.position}/>
                     </UserPosition>
+                    {dmUser.user.email && (
+                        <UserEmail>
+                            <p>{dmUser.user.email}</p>
+                        </UserEmail>
+                    )}
                 </UserInfo>
             </UserInfoContainer>
 

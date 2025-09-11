@@ -13,6 +13,8 @@ import Constants from 'utils/constants';
 const ChannelInfoRhsTopButtons = styled.div`
     display: flex;
     color: rgba(var(--center-channel-color-rgb), 0.75);
+    border-top: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
+    border-bottom: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
 `;
 
 const Button = styled.button`
@@ -20,9 +22,14 @@ const Button = styled.button`
     height: 100%;
     padding: 12px 0 10px 0;
     border: 0;
+    border-left: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
     margin: 0;
     background: rgba(var(--center-channel-color-rgb), 0.04);
-    border-radius: 4px;
+    border-radius: 0;
+
+    &:first-child {
+        border-left: none;
+    }
 
     &:hover {
         background: rgba(var(--center-channel-color-rgb), 0.08);

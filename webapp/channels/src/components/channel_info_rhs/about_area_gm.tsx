@@ -55,12 +55,23 @@ const ChannelHeader = styled.div`
     margin-bottom: 12px;
 `;
 
-const ChannelId = styled.div`
-    margin-bottom: 12px;
-    font-size: 11px;
-    line-height: 16px;
-    letter-spacing: 0.02em;
+// const ChannelId = styled.div`
+//     margin-bottom: 12px;
+//     font-size: 11px;
+//     line-height: 16px;
+//     letter-spacing: 0.02em;
+//     color: rgba(var(--center-channel-color-rgb), 0.75);
+// `;
+
+const UserEmails = styled.div`
+    margin-top: 8px;
     color: rgba(var(--center-channel-color-rgb), 0.75);
+    font-size: 12px;
+    line-height: 16px;
+
+    p {
+        margin-bottom: 0;
+    }
 `;
 
 interface Props {
@@ -104,6 +115,16 @@ const AboutAreaGM = ({channel, gmUsers, actions}: Props) => {
                         </React.Fragment>
                     ))}
                 </Usernames>
+                {gmUsers.some((user) => user.email) && (
+                    <UserEmails>
+                        {gmUsers.filter((user) => user.email).map((user, i, filteredUsers) => (
+                            <React.Fragment key={user.id}>
+                                <span>{user.email}</span>
+                                {(i + 1 !== filteredUsers.length) && (<span>{', '}</span>)}
+                            </React.Fragment>
+                        ))}
+                    </UserEmails>
+                )}
             </UsersArea>
 
             <ChannelHeader>
