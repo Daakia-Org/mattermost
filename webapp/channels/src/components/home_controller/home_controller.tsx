@@ -8,6 +8,7 @@ import {Route, Switch, useParams, useLocation} from 'react-router-dom';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 import {closeRightHandSide} from 'actions/views/rhs';
+
 import HomeRedirect from 'components/home_redirect';
 
 import {setLastVisitedHomePage} from 'utils/home_storage';
@@ -25,7 +26,7 @@ export default function HomeController() {
 
     useEffect(() => {
         dispatch(closeRightHandSide());
-        
+
         if (team && currentUserId) {
             const pathParts = location.pathname.split('/');
             const homePageIndex = pathParts.indexOf('home');
