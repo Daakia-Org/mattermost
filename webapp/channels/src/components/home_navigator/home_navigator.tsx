@@ -2,8 +2,8 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {useHistory, useParams, useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
+import {useHistory, useParams, useLocation} from 'react-router-dom';
 
 import {close as closeLhs} from 'actions/views/lhs';
 
@@ -23,8 +23,12 @@ export default function HomeNavigator() {
     return (
         <div className='SidebarChannelGroup a11y__section'>
             <div className='SidebarChannelGroupHeader'>
-                <button className='SidebarChannelGroupHeader_groupButton' aria-label='HOME' aria-expanded='true'>
-                    <i className='icon icon-chevron-down'></i>
+                <button
+                    className='SidebarChannelGroupHeader_groupButton'
+                    aria-label='HOME'
+                    aria-expanded='true'
+                >
+                    <i className='icon icon-chevron-down'/>
                     <div className='SidebarChannelGroupHeader_text'>{'HOME'}</div>
                 </button>
             </div>
@@ -35,7 +39,6 @@ export default function HomeNavigator() {
                             key={item.id}
                             className={`SidebarChannel expanded ${currentPath === item.path ? 'active' : ''}`}
                             tabIndex={-1}
-                            role='listitem'
                         >
                             <a
                                 className='SidebarLink'
@@ -47,7 +50,7 @@ export default function HomeNavigator() {
                                 }}
                                 tabIndex={0}
                             >
-                                <i className={`icon ${item.icon}`}></i>
+                                <i className={`icon ${item.icon}`}/>
                                 <div className='SidebarChannelLinkLabel_wrapper'>
                                     <span className='SidebarChannelLinkLabel'>{item.name}</span>
                                 </div>
