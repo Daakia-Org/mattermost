@@ -7,7 +7,7 @@ import {Route, Switch, useParams, useLocation} from 'react-router-dom';
 
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
-import {closeRightHandSide} from 'actions/views/rhs';
+// import {closeRightHandSide} from 'actions/views/rhs';
 
 import DaakiaDashboard from 'components/daakia_dashboard';
 import HomeRedirect from 'components/home_redirect';
@@ -25,7 +25,7 @@ export default function HomeController() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(closeRightHandSide());
+        // dispatch(closeRightHandSide());
 
         if (team && currentUserId) {
             const pathParts = location.pathname.split('/');

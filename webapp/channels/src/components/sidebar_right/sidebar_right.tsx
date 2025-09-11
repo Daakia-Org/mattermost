@@ -274,6 +274,9 @@ export default class SidebarRight extends React.PureComponent<Props, State> {
             return null;
         }
 
+        // Check if we're on home route
+        const isHomeRoute = window.location.pathname.includes('/home');
+
         const teamNeeded = true;
         let selectedChannelNeeded;
         let currentChannelNeeded;
@@ -294,7 +297,7 @@ export default class SidebarRight extends React.PureComponent<Props, State> {
             content = <RhsCard previousRhsState={previousRhsState}/>;
         } else if (isPluginView) {
             content = <RhsPlugin/>;
-        } else if (isChannelInfo) {
+        } else if (isChannelInfo && !isHomeRoute) {
             currentChannelNeeded = true;
             content = <ChannelInfoRhs/>;
         } else if (isChannelMembers) {
@@ -336,21 +339,33 @@ export default class SidebarRight extends React.PureComponent<Props, State> {
                         className='sidebar-right-container'
                         ref={this.sidebarRight}
                     >
-                        {isRHSLoading ? (
-                            <div className='sidebar-right__body'>
-                                {/* Sometimes the channel/team is not loaded yet, so we need to wait for it */}
-                                <LoadingScreen centered={true}/>
-                            </div>
-                        ) : (
-                            <Search
-                                isSideBarRight={true}
-                                isSideBarRightOpen={true}
-                                getFocus={this.getSearchBarFocus}
-                                channelDisplayName={channelDisplayName}
-                            >
-                                {content}
-                            </Search>
-                        )}
+                        {(() => {
+                            if (isRHSLoading) {
+                                return (
+                                    <div className='sidebar-right__body'>
+                                        <LoadingScreen centered={true}/>
+                                    </div>
+                                );
+                            }
+                            if (isHomeRoute && (isChannelInfo || !searchVisible)) {
+                                return (
+                                    <div className='sidebar-right__body'>
+                                        <h2>{'HOME SIDEBAR'}</h2>
+                                        <p>{'This is home route sidebar'}</p>
+                                    </div>
+                                );
+                            }
+                            return (
+                                <Search
+                                    isSideBarRight={true}
+                                    isSideBarRightOpen={true}
+                                    getFocus={this.getSearchBarFocus}
+                                    channelDisplayName={channelDisplayName}
+                                >
+                                    {content}
+                                </Search>
+                            );
+                        })()}
                     </div>
                 </ResizableRhs>
             </>
