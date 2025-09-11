@@ -2,11 +2,12 @@
 // See LICENSE.txt for license information.
 
 import React, {useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {Route, Switch, useParams, useLocation} from 'react-router-dom';
 
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
+import {closeRightHandSide} from 'actions/views/rhs';
 import HomeRedirect from 'components/home_redirect';
 
 import {setLastVisitedHomePage} from 'utils/home_storage';
@@ -20,8 +21,11 @@ export default function HomeController() {
     const {team} = useParams<{team: string}>();
     const location = useLocation();
     const currentUserId = useSelector(getCurrentUserId);
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(closeRightHandSide());
+        
         if (team && currentUserId) {
             const pathParts = location.pathname.split('/');
             const homePageIndex = pathParts.indexOf('home');
@@ -30,7 +34,7 @@ export default function HomeController() {
                 setLastVisitedHomePage(currentUserId, team, currentPage);
             }
         }
-    }, [location.pathname, team, currentUserId]);
+    }, [location.pathname, team, currentUserId, dispatch]);
 
     return (
         <Switch>
