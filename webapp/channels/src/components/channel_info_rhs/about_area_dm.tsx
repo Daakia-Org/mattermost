@@ -78,13 +78,13 @@ const UserEmail = styled.div`
     }
 `;
 
-const ChannelId = styled.div`
-    margin-bottom: 12px;
-    font-size: 11px;
-    line-height: 16px;
-    letter-spacing: 0.02em;
-    color: rgba(var(--center-channel-color-rgb), 0.75);
-`;
+// const ChannelId = styled.div`
+//     margin-bottom: 12px;
+//     font-size: 11px;
+//     line-height: 16px;
+//     letter-spacing: 0.02em;
+//     color: rgba(var(--center-channel-color-rgb), 0.75);
+// `;
 
 interface Props {
     channel: Channel;

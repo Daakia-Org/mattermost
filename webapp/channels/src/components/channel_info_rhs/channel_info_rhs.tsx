@@ -2,6 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React, {memo, useState} from 'react';
+import {useIntl} from 'react-intl';
 import styled from 'styled-components';
 
 import type {Channel, ChannelStats} from '@mattermost/types/channels';
@@ -28,6 +29,17 @@ const Divider = styled.div`
     width: 88%;
     border: 1px solid rgba(var(--center-channel-color-rgb), 0.04);
     margin: 0 auto;
+`;
+
+const DescriptionHeading = styled.div`
+    color: rgba(var(--center-channel-color-rgb), 0.75);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.24px;
+    padding: 24px 24px 0px 24px;
+    margin-bottom: 0;
 `;
 
 export interface DMUser {
@@ -81,6 +93,7 @@ const ChannelInfoRhs = ({
     canManageProperties,
     actions,
 }: Props) => {
+    const {formatMessage} = useIntl();
     const [activeTab, setActiveTab] = useState('details');
     const currentUserId = currentUser.id;
     const channelURL = getSiteURL() + '/' + currentTeam.name + '/channels/' + channel.name;
@@ -155,6 +168,11 @@ const ChannelInfoRhs = ({
             />
             {activeTab === 'details' && (
                 <>
+                    {(channel.type === 'D' || channel.type === 'G') && (
+                        <DescriptionHeading>
+                            {formatMessage({id: 'channel_info_rhs.about_area.description.heading', defaultMessage: 'Description'})}
+                        </DescriptionHeading>
+                    )}
                     <AboutArea
                         channel={channel}
                         dmUser={dmUser}
@@ -191,7 +209,7 @@ const ChannelInfoRhs = ({
             )}
             {activeTab === 'history' && (
                 <div style={{padding: '24px', textAlign: 'center', color: 'rgba(var(--center-channel-color-rgb), 0.6)'}}>
-                    History content coming soon...
+                    {'History content coming soon...'}
                 </div>
             )}
         </div>
