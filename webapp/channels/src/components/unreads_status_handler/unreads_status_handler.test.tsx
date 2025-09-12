@@ -48,6 +48,7 @@ describe('components/UnreadsStatusHandler', () => {
         inGlobalThreads: false,
         inDrafts: false,
         inScheduledPosts: false,
+        inHome: false,
     };
 
     test('set correctly the title when needed', () => {

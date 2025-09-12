@@ -8,7 +8,6 @@ import type {WrappedComponentProps} from 'react-intl';
 import {Permissions} from 'mattermost-redux/constants';
 
 import {emitUserLoggedOutEvent} from 'actions/global_actions';
-import {trackEvent} from 'actions/telemetry_actions';
 
 import AboutBuildModal from 'components/about_build_modal';
 import AddGroupsToTeamModal from 'components/add_groups_to_team_modal';
@@ -63,6 +62,11 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
 
         const safeAppDownloadLink = makeUrlSafe(this.props.appDownloadLink || '');
         const teamsLimitReached = this.props.isStarterFree && !this.props.isFreeTrial && this.props.usageDeltaTeams >= 0;
+        
+        // Custom Daakia help links
+        const daakiaHelpLink = 'https://www.daakia.co.in/help';
+        const daakiaReportLink = 'https://www.daakia.co.in/support';
+        const daakiaDownloadLink = 'https://www.daakia.co.in/download';
 
         const pluginItems = this.props.pluginMenuItems.map((item) => (
             <Menu.ItemAction
@@ -82,24 +86,7 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
             <Menu
                 ariaLabel={formatMessage({id: 'navbar_dropdown.menuAriaLabel', defaultMessage: 'main menu'})}
             >
-                <Menu.Group>
-                    <SystemPermissionGate
-                        permissions={[Permissions.SYSCONSOLE_WRITE_BILLING]}
-                    >
-                        <Menu.CloudTrial
-                            id='menuCloudTrial'
-                        />
-                    </SystemPermissionGate>
-                </Menu.Group>
-                <Menu.Group>
-                    <SystemPermissionGate
-                        permissions={[Permissions.SYSCONSOLE_WRITE_ABOUT_EDITION_AND_LICENSE]}
-                    >
-                        <Menu.StartTrial
-                            id='startTrial'
-                        />
-                    </SystemPermissionGate>
-                </Menu.Group>
+
                 <Menu.Group>
                     <Menu.ItemAction
                         id='recentMentions'
@@ -107,12 +94,14 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
                         icon={<i className='mentions'>{'@'}</i>}
                         text={formatMessage({id: 'sidebar_right_menu.recentMentions', defaultMessage: 'Recent Mentions'})}
                     />
-                    <Menu.ItemAction
-                        id='flaggedPosts'
-                        onClick={this.onShowFlaggedPostItemClick}
-                        icon={<i className='fa fa-bookmark'/>}
-                        text={formatMessage({id: 'sidebar_right_menu.flagged', defaultMessage: 'Saved messages'})}
-                    />
+                    {!window.location.pathname.includes('/home') && (
+                        <Menu.ItemAction
+                            id='flaggedPosts'
+                            onClick={this.onShowFlaggedPostItemClick}
+                            icon={<i className='fa fa-bookmark'/>}
+                            text={formatMessage({id: 'sidebar_right_menu.flagged', defaultMessage: 'Saved messages'})}
+                        />
+                    )}
                 </Menu.Group>
                 <Menu.Group>
                     <Menu.ItemToggleModalRedux
@@ -164,7 +153,6 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
                                     defaultMessage: 'Add people to the team',
                                 })}
                                 icon={<i className='fa fa-user-plus'/>}
-                                onClick={() => trackEvent('ui', 'click_sidebar_team_dropdown_invite_people')}
                             />
                         </TeamPermissionGate>
                     )}
@@ -256,22 +244,22 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
                 <Menu.Group>
                     <Menu.ItemExternalLink
                         id='helpLink'
-                        show={Boolean(this.props.helpLink)}
-                        url={this.props.helpLink}
+                        show={true}
+                        url={daakiaHelpLink}
                         text={formatMessage({id: 'navbar_dropdown.help', defaultMessage: 'Help'})}
                         icon={<i className='fa fa-question'/>}
                     />
                     <Menu.ItemExternalLink
                         id='reportLink'
-                        show={Boolean(this.props.reportAProblemLink)}
-                        url={this.props.reportAProblemLink}
+                        show={true}
+                        url={daakiaReportLink}
                         text={formatMessage({id: 'navbar_dropdown.report', defaultMessage: 'Report a Problem'})}
                         icon={<i className='fa fa-phone'/>}
                     />
                     <Menu.ItemExternalLink
                         id='nativeAppLink'
-                        show={this.props.appDownloadLink}
-                        url={safeAppDownloadLink}
+                        show={true}
+                        url={daakiaDownloadLink}
                         text={formatMessage({id: 'navbar_dropdown.nativeApps', defaultMessage: 'Download Apps'})}
                         icon={<i className='fa fa-mobile'/>}
                     />
@@ -279,7 +267,7 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
                         id='about'
                         modalId={ModalIdentifiers.ABOUT}
                         dialogType={AboutBuildModal}
-                        text={formatMessage({id: 'navbar_dropdown.about', defaultMessage: 'About {appTitle}'}, {appTitle: this.props.siteName || 'Mattermost'})}
+                        text={formatMessage({id: 'navbar_dropdown.about', defaultMessage: 'About {appTitle}'}, {appTitle: this.props.siteName || 'Daakia'})}
                         icon={<i className='fa fa-info'/>}
                     />
                 </Menu.Group>

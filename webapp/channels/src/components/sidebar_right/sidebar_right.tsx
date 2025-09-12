@@ -8,10 +8,9 @@ import type {Channel} from '@mattermost/types/channels';
 import type {ProductIdentifier} from '@mattermost/types/products';
 import type {Team} from '@mattermost/types/teams';
 
-import {trackEvent} from 'actions/telemetry_actions.jsx';
-
 import ChannelInfoRhs from 'components/channel_info_rhs';
 import ChannelMembersRhs from 'components/channel_members_rhs';
+import DaakiaInfoRhs from 'components/daakia_info_rhs';
 import FileUploadOverlay from 'components/file_upload_overlay';
 import {DropOverlayIdRHS} from 'components/file_upload_overlay/file_upload_overlay';
 import LoadingScreen from 'components/loading_screen';
@@ -201,13 +200,6 @@ export default class SidebarRight extends React.PureComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const wasOpen = prevProps.searchVisible || prevProps.postRightVisible;
-        const isOpen = this.props.searchVisible || this.props.postRightVisible;
-
-        if (!wasOpen && isOpen) {
-            trackEvent('ui', 'ui_rhs_opened');
-        }
-
         this.handleRHSFocus(prevProps);
 
         const {actions, isChannelFiles, isPinnedPosts, rhsChannel, channel} = this.props;
@@ -283,6 +275,9 @@ export default class SidebarRight extends React.PureComponent<Props, State> {
             return null;
         }
 
+        // Check if we're on home route
+        const isHomeRoute = window.location.pathname.includes('/home');
+
         const teamNeeded = true;
         let selectedChannelNeeded;
         let currentChannelNeeded;
@@ -303,7 +298,7 @@ export default class SidebarRight extends React.PureComponent<Props, State> {
             content = <RhsCard previousRhsState={previousRhsState}/>;
         } else if (isPluginView) {
             content = <RhsPlugin/>;
-        } else if (isChannelInfo) {
+        } else if (isChannelInfo && !isHomeRoute) {
             currentChannelNeeded = true;
             content = <ChannelInfoRhs/>;
         } else if (isChannelMembers) {
@@ -345,21 +340,28 @@ export default class SidebarRight extends React.PureComponent<Props, State> {
                         className='sidebar-right-container'
                         ref={this.sidebarRight}
                     >
-                        {isRHSLoading ? (
-                            <div className='sidebar-right__body'>
-                                {/* Sometimes the channel/team is not loaded yet, so we need to wait for it */}
-                                <LoadingScreen centered={true}/>
-                            </div>
-                        ) : (
-                            <Search
-                                isSideBarRight={true}
-                                isSideBarRightOpen={true}
-                                getFocus={this.getSearchBarFocus}
-                                channelDisplayName={channelDisplayName}
-                            >
-                                {content}
-                            </Search>
-                        )}
+                        {(() => {
+                            if (isRHSLoading) {
+                                return (
+                                    <div className='sidebar-right__body'>
+                                        <LoadingScreen centered={true}/>
+                                    </div>
+                                );
+                            }
+                            if (isHomeRoute && (isChannelInfo || !searchVisible)) {
+                                return <DaakiaInfoRhs/>;
+                            }
+                            return (
+                                <Search
+                                    isSideBarRight={true}
+                                    isSideBarRightOpen={true}
+                                    getFocus={this.getSearchBarFocus}
+                                    channelDisplayName={channelDisplayName}
+                                >
+                                    {content}
+                                </Search>
+                            );
+                        })()}
                     </div>
                 </ResizableRhs>
             </>

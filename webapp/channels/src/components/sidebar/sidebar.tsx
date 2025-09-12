@@ -1,12 +1,13 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
+/* eslint-disable */
 
 import classNames from 'classnames';
-import React, {lazy} from 'react';
-
-import {trackEvent} from 'actions/telemetry_actions';
+import React, {lazy, useState} from 'react';
 
 import {makeAsyncComponent} from 'components/async_load';
+import DaakiaContainer from 'components/daakia-container';
+import DaakiaTeamSwitcher from 'components/daakia-team-switcher';
 import DataPrefetch from 'components/data_prefetch';
 import ResizableLhs from 'components/resizable_sidebar/resizable_lhs';
 import SidebarHeader from 'components/sidebar/sidebar_header';
@@ -20,6 +21,7 @@ import type {ModalData} from 'types/actions';
 import type {RhsState} from 'types/store/rhs';
 
 import ChannelNavigator from './channel_navigator';
+import HomeNavigator from 'components/home_navigator';
 import SidebarList from './sidebar_list';
 
 const MobileSidebarHeader = makeAsyncComponent('MobileSidebarHeader', lazy(() => import('./mobile_sidebar_header')));
@@ -56,14 +58,19 @@ type Props = {
 type State = {
     showDirectChannelsModal: boolean;
     isDragging: boolean;
+    isTeamSwitcherOpen: boolean;
 };
 
 export default class Sidebar extends React.PureComponent<Props, State> {
+    private lastPathname: string = window.location.pathname;
+    private pathCheckInterval?: NodeJS.Timeout;
+
     constructor(props: Props) {
         super(props);
         this.state = {
             showDirectChannelsModal: false,
             isDragging: false,
+            isTeamSwitcherOpen: true,
         };
     }
 
@@ -74,6 +81,14 @@ export default class Sidebar extends React.PureComponent<Props, State> {
 
         window.addEventListener('click', this.handleClickClearChannelSelection);
         window.addEventListener('keydown', this.handleKeyDownEvent);
+        
+        // Check for pathname changes every 100ms
+        this.pathCheckInterval = setInterval(() => {
+            if (window.location.pathname !== this.lastPathname) {
+                this.lastPathname = window.location.pathname;
+                this.forceUpdate();
+            }
+        }, 100);
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -85,6 +100,9 @@ export default class Sidebar extends React.PureComponent<Props, State> {
     componentWillUnmount() {
         window.removeEventListener('click', this.handleClickClearChannelSelection);
         window.removeEventListener('keydown', this.handleKeyDownEvent);
+        if (this.pathCheckInterval) {
+            clearInterval(this.pathCheckInterval);
+        }
     }
 
     handleClickClearChannelSelection = (event: MouseEvent) => {
@@ -131,7 +149,6 @@ export default class Sidebar extends React.PureComponent<Props, State> {
 
     showMoreDirectChannelsModal = () => {
         this.setState({showDirectChannelsModal: true});
-        trackEvent('ui', 'ui_channels_more_direct_v2');
     };
 
     hideMoreDirectChannelsModal = () => {
@@ -144,7 +161,6 @@ export default class Sidebar extends React.PureComponent<Props, State> {
             dialogType: EditCategoryModal,
             dialogProps: {},
         });
-        trackEvent('ui', 'ui_sidebar_menu_createCategory');
     };
 
     showMoreChannelsModal = () => {
@@ -152,7 +168,6 @@ export default class Sidebar extends React.PureComponent<Props, State> {
             modalId: ModalIdentifiers.MORE_CHANNELS,
             dialogType: BrowseChannels,
         });
-        trackEvent('ui', 'ui_channels_more_public_v2');
     };
 
     invitePeopleModal = () => {
@@ -161,7 +176,6 @@ export default class Sidebar extends React.PureComponent<Props, State> {
             dialogType: InvitationModal,
             dialogProps: {focusOriginElement: 'browseOrAddChannelMenuButton'},
         });
-        trackEvent('ui', 'ui_channels_dropdown_invite_people');
     };
 
     showNewChannelModal = () => {
@@ -170,7 +184,6 @@ export default class Sidebar extends React.PureComponent<Props, State> {
             dialogType: NewChannelModal,
         });
         this.closeEditRHS();
-        trackEvent('ui', 'ui_channels_create_channel_v2');
     };
 
     showCreateUserGroupModal = () => {
@@ -178,7 +191,6 @@ export default class Sidebar extends React.PureComponent<Props, State> {
             modalId: ModalIdentifiers.USER_GROUPS_CREATE,
             dialogType: CreateUserGroupsModal,
         });
-        trackEvent('ui', 'ui_channels_create_user_group');
     };
 
     handleOpenMoreDirectChannelsModal = (e?: Event) => {
@@ -224,6 +236,10 @@ export default class Sidebar extends React.PureComponent<Props, State> {
         }
     };
 
+    handleToggleTeamSwitcher = (isOpen: boolean) => {
+        this.setState({isTeamSwitcherOpen: isOpen});
+    };
+
     render() {
         if (!this.props.teamId) {
             return (<div/>);
@@ -239,7 +255,7 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                     dragging: this.state.isDragging,
                 })}
             >
-                {this.props.isMobileView ? <MobileSidebarHeader/> : (
+                {!this.props.isMobileView && (
                     <SidebarHeader
                         showNewChannelModal={this.showNewChannelModal}
                         showMoreChannelsModal={this.showMoreChannelsModal}
@@ -253,6 +269,8 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                         canCreateCustomGroups={this.props.canCreateCustomGroups}
                     />
                 )}
+                {this.props.isMobileView && <MobileSidebarHeader/>}
+                <DaakiaTeamSwitcher isVisible={this.state.isTeamSwitcherOpen}/>
                 <div
                     id='lhsNavigator'
                     role='application'
@@ -260,16 +278,18 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                     className='a11y__region'
                     data-a11y-sort-order='6'
                 >
-                    <ChannelNavigator/>
+                    {window.location.pathname.includes('/home') ? <HomeNavigator/> : <ChannelNavigator/>}
                 </div>
                 <div className='sidebar--left__icons'>
                     <Pluggable pluggableName='LeftSidebarHeader'/>
                 </div>
-                <SidebarList
-                    handleOpenMoreDirectChannelsModal={this.handleOpenMoreDirectChannelsModal}
-                    onDragStart={this.onDragStart}
-                    onDragEnd={this.onDragEnd}
-                />
+                {!window.location.pathname.includes('/home') && (
+                    <SidebarList
+                        handleOpenMoreDirectChannelsModal={this.handleOpenMoreDirectChannelsModal}
+                        onDragStart={this.onDragStart}
+                        onDragEnd={this.onDragEnd}
+                    />
+                )}
                 <DataPrefetch/>
                 {this.renderModals()}
             </ResizableLhs>

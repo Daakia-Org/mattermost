@@ -1,6 +1,6 @@
 .sidebarHeaderContainer {
     display: flex;
-    height: 55px;
+    height: 70px;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
@@ -36,6 +36,22 @@
             justify-content: center;
         }
     }
+}
+
+.sidebar-team-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-team-label {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(var(--sidebar-header-text-color-rgb), 0.64);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+    padding-left: 6px;
 }
 
 #sidebarTeamMenu {

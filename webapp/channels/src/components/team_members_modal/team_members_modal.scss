@@ -1,0 +1,24 @@
+#teamMembersModal {
+    .GenericModal__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    @media screen and (max-width: 640px) {
+        .GenericModal__header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .modal-body {
+            display: block;
+        }
+
+        .more-modal__description {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+    }
+}

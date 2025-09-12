@@ -57,7 +57,7 @@ function ADLDAPUpsellBanner() {
             <div className='upsell-confirm-backdrop'/>
             <div className='upsell-confirm-foreground'>
                 <p className='title'>{formatMessage({id: 'adldap_upsell_banner.confirm.title', defaultMessage: 'Your trial has started!'})}</p>
-                <p className='subtitle'>{formatMessage({id: 'adldap_upsell_banner.confirm.license_trial', defaultMessage: 'Welcome to your Mattermost Enterprise trial! It expires on {endDate}. You now have access to high-security Enterprise features, for free.'}, {endDate: moment(currentLicenseEndDate).tz(getBrowserTimezone()).format('MMMM Do YYYY')})}</p>
+                <p className='subtitle'>{formatMessage({id: 'adldap_upsell_banner.confirm.license_trial', defaultMessage: 'Welcome to your Daakia Enterprise trial! It expires on {endDate}. You now have access to high-security Enterprise features, for free.'}, {endDate: moment(currentLicenseEndDate).tz(getBrowserTimezone()).format('MMMM Do YYYY')})}</p>
                 <div className='btns-container'>
                     <button
                         className='confrim-btn learn-more'
@@ -91,7 +91,6 @@ function ADLDAPUpsellBanner() {
     let btn: JSX.Element | null = (
         <StartTrialBtn
             btnClass='ad-ldap-banner-btn'
-            telemetryId={'start_self-hosted_trial_from_adldap_upsell_banner'}
             renderAsButton={true}
             onClick={() => setConfirmed(true)}
         />);

@@ -18,6 +18,7 @@ import {
     getJoinableTeamIds,
     getMyTeams,
 } from 'mattermost-redux/selectors/entities/teams';
+import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 import {switchTeam, updateTeamsOrderForUser} from 'actions/team_actions';
 import {getCurrentLocale} from 'selectors/i18n';
@@ -42,6 +43,7 @@ function mapStateToProps(state: GlobalState) {
 
     return {
         currentTeamId: getCurrentTeamId(state),
+        currentUserId: getCurrentUserId(state),
         myTeams: getMyTeams(state),
         isOpen: getIsLhsOpen(state),
         experimentalPrimaryTeam,
