@@ -8,18 +8,34 @@ import {Route, Switch, useParams, useLocation} from 'react-router-dom';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 import DaakiaDashboard from 'components/daakia_dashboard';
+import DaakiaHomeHeader from 'components/daakia_home_header';
 import HomeRedirect from 'components/home_redirect';
 
 import {setLastVisitedHomePage} from 'utils/home_storage';
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 
-const Analytics = () => <div className='app__content'><h1>{'Analytics'}</h1></div>;
-const Reports = () => <div className='app__content'><h1>{'Reports'}</h1></div>;
+const Analytics = () => <h1>{'Analytics'}</h1>;
+const Reports = () => <h1>{'Reports'}</h1>;
 
 export default function HomeController() {
     const {team} = useParams<{team: string}>();
     const location = useLocation();
     const currentUserId = useSelector(getCurrentUserId);
+
+    // Get current page title based on route
+    const getCurrentTitle = () => {
+        if (location.pathname.includes('/home/dashboard')) {
+            return 'Dashboard';
+        }
+        if (location.pathname.includes('/home/analytics')) {
+            return 'Analytics';
+        }
+        if (location.pathname.includes('/home/reports')) {
+            return 'Reports';
+        }
+        return 'Home';
+    };
+
     useEffect(() => {
         if (team && currentUserId) {
             const pathParts = location.pathname.split('/');
@@ -32,24 +48,27 @@ export default function HomeController() {
     }, [location.pathname, team, currentUserId]);
 
     return (
-        <Switch>
-            <Route
-                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/dashboard`}
-                component={DaakiaDashboard}
-            />
-            <Route
-                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/analytics`}
-                component={Analytics}
-            />
-            <Route
-                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/reports`}
-                component={Reports}
-            />
-            <Route
-                exact={true}
-                path={`/:team(${TEAM_NAME_PATH_PATTERN})/home`}
-                component={HomeRedirect}
-            />
-        </Switch>
+        <div className='app__content'>
+            <DaakiaHomeHeader title={getCurrentTitle()}/>
+            <Switch>
+                <Route
+                    path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/dashboard`}
+                    component={DaakiaDashboard}
+                />
+                <Route
+                    path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/analytics`}
+                    component={Analytics}
+                />
+                <Route
+                    path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/reports`}
+                    component={Reports}
+                />
+                <Route
+                    exact={true}
+                    path={`/:team(${TEAM_NAME_PATH_PATTERN})/home`}
+                    component={HomeRedirect}
+                />
+            </Switch>
+        </div>
     );
 }
