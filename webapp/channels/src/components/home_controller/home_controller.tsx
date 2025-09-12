@@ -14,8 +14,8 @@ import HomeRedirect from 'components/home_redirect';
 import {setLastVisitedHomePage} from 'utils/home_storage';
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 
-const Analytics = () => <h1>{'Analytics'}</h1>;
-const Reports = () => <h1>{'Reports'}</h1>;
+// const Analytics = () => <h1>{'Analytics'}</h1>;
+// const Reports = () => <h1>{'Reports'}</h1>;
 
 export default function HomeController() {
     const {team} = useParams<{team: string}>();
@@ -55,14 +55,14 @@ export default function HomeController() {
                     path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/dashboard`}
                     component={DaakiaDashboard}
                 />
-                <Route
+                {/* <Route
                     path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/analytics`}
                     component={Analytics}
                 />
                 <Route
                     path={`/:team(${TEAM_NAME_PATH_PATTERN})/home/reports`}
                     component={Reports}
-                />
+                /> */}
                 <Route
                     exact={true}
                     path={`/:team(${TEAM_NAME_PATH_PATTERN})/home`}

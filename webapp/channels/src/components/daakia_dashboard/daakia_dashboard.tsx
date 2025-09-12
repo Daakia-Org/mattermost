@@ -30,6 +30,21 @@ const DaakiaDashboard = () => {
                     </div>
                 </div>
             </div>
+            
+            {/* Simple Coming Soon Overlay */}
+            <div className='daakia-dashboard__coming-soon'>
+                <div className='daakia-dashboard__coming-soon-content'>
+                    <div className='daakia-dashboard__coming-soon-icon'>
+                        <i className='icon icon-clock-outline'/>
+                    </div>
+                    <h2 className='daakia-dashboard__coming-soon-title'>
+                        Dashboard - Coming Soon
+                    </h2>
+                    <p className='daakia-dashboard__coming-soon-message'>
+                        Dashboard features are coming soon! We are building an amazing analytics and monitoring experience for you.
+                    </p>
+                </div>
+            </div>
         </div>
     );
 };

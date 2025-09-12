@@ -16,8 +16,9 @@ export default function HomeNavigator() {
 
     const homeItems = [
         {id: 'dashboard', name: 'Dashboard', path: `/${team}/home/dashboard`, icon: 'icon-globe'},
-        {id: 'analytics', name: 'Analytics', path: `/${team}/home/analytics`, icon: 'icon-plus'},
-        {id: 'reports', name: 'Reports', path: `/${team}/home/reports`, icon: 'icon-chevron-down'},
+
+        // {id: 'analytics', name: 'Analytics', path: `/${team}/home/analytics`, icon: 'icon-plus'},
+        // {id: 'reports', name: 'Reports', path: `/${team}/home/reports`, icon: 'icon-chevron-down'},
     ];
 
     return (
