@@ -69,17 +69,24 @@ export default function SidebarTeamMenu(props: Props) {
     const tooltipText = props.currentTeam.description ? props.currentTeam.description : props.currentTeam.display_name;
 
     return (
-        <Menu.Container
-            menuButton={{
-                id: 'sidebarTeamMenuButton',
-                class: 'btn btn-sm btn-quaternary btn-inverted',
-                children: (
-                    <>
-                        <span>{props.currentTeam.display_name}</span>
-                        <i className='icon icon-chevron-down'/>
-                    </>
-                ),
-            }}
+        <div className='sidebar-team-wrapper'>
+            <div className='sidebar-team-label'>
+                <FormattedMessage
+                    id='sidebar.teams'
+                    defaultMessage='Teams'
+                />
+            </div>
+            <Menu.Container
+                menuButton={{
+                    id: 'sidebarTeamMenuButton',
+                    class: 'btn btn-sm btn-quaternary btn-inverted',
+                    children: (
+                        <>
+                            <span>{props.currentTeam.display_name}</span>
+                            <i className='icon icon-chevron-down'/>
+                        </>
+                    ),
+                }}
             menuButtonTooltip={{
                 text: tooltipText,
             }}
@@ -118,6 +125,7 @@ export default function SidebarTeamMenu(props: Props) {
             <LearnAboutTeamsMenuItem/>
             <PluginMenuItems/>
         </Menu.Container>
+        </div>
     );
 }
 

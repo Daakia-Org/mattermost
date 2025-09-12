@@ -141,6 +141,40 @@ const DaakiaInfoRhs = () => {
                     <span>{'Meetings'}</span>
                 </button>
             </div>
+
+            <div className='daakia-info-rhs__notifications'>
+                <div className='daakia-info-rhs__notifications-title'>
+                    {'Recent Notifications'}
+                </div>
+                <div className='daakia-info-rhs__notifications-list'>
+                    <div className='daakia-info-rhs__notification-item'>
+                        <div className='daakia-info-rhs__notification-icon'>
+                            <i className='icon icon-bell-outline'/>
+                        </div>
+                        <div className='daakia-info-rhs__notification-content'>
+                            <div className='daakia-info-rhs__notification-text'>
+                                {'New message in General channel'}
+                            </div>
+                            <div className='daakia-info-rhs__notification-time'>
+                                {'2 minutes ago'}
+                            </div>
+                        </div>
+                    </div>
+                    <div className='daakia-info-rhs__notification-item'>
+                        <div className='daakia-info-rhs__notification-icon'>
+                            <i className='icon icon-account-plus-outline'/>
+                        </div>
+                        <div className='daakia-info-rhs__notification-content'>
+                            <div className='daakia-info-rhs__notification-text'>
+                                {'John joined the team'}
+                            </div>
+                            <div className='daakia-info-rhs__notification-time'>
+                                {'5 minutes ago'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
