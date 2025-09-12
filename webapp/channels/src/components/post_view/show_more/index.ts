@@ -18,6 +18,7 @@ function mapStateToProps(state: GlobalState) {
         isRHSExpanded: getIsRhsExpanded(state),
         isRHSOpen: getIsRhsOpen(state),
         compactDisplay: get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.MESSAGE_DISPLAY, Preferences.MESSAGE_DISPLAY_DEFAULT) === Preferences.MESSAGE_DISPLAY_COMPACT,
+        modernDisplay: get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.MESSAGE_DISPLAY, Preferences.MESSAGE_DISPLAY_DEFAULT) === Preferences.MESSAGE_DISPLAY_MODERN,
     };
 }
 

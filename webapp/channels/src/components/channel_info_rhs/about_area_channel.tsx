@@ -12,13 +12,13 @@ import Markdown from 'components/markdown';
 import EditableArea from './components/editable_area';
 import LineLimiter from './components/linelimiter';
 
-const ChannelId = styled.div`
-    margin-bottom: 12px;
-    font-size: 11px;
-    line-height: 16px;
-    letter-spacing: 0.02em;
-    color: rgba(var(--center-channel-color-rgb), 0.75);
-`;
+// const ChannelId = styled.div`
+//     margin-bottom: 12px;
+//     font-size: 11px;
+//     line-height: 16px;
+//     letter-spacing: 0.02em;
+//     color: rgba(var(--center-channel-color-rgb), 0.75);
+// `;
 
 const ChannelPurpose = styled.div`
     margin-bottom: 12px;
@@ -81,9 +81,7 @@ const AboutAreaChannel = ({channel, canEditChannelProperties, actions}: Props) =
 
             {(channel.header || canEditChannelProperties) && (
                 <ChannelHeader>
-                    <ChannelDescriptionHeading>
-                        {formatMessage({id: 'channel_info_rhs.about_area.channel_header.heading', defaultMessage: 'Channel Header'})}
-                    </ChannelDescriptionHeading>
+
                     <EditableArea
                         content={channel.header && (
                             <LineLimiter
@@ -102,9 +100,9 @@ const AboutAreaChannel = ({channel, canEditChannelProperties, actions}: Props) =
                 </ChannelHeader>
             )}
 
-            <ChannelId>
+            {/* <ChannelId>
                 {formatMessage({id: 'channel_info_rhs.about_area_id', defaultMessage: 'ID:'})} {channel.id}
-            </ChannelId>
+            </ChannelId> */}
         </>
     );
 };

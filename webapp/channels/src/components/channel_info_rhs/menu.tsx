@@ -16,6 +16,7 @@ const MenuContainer = styled.nav`
     flex-direction: column;
     align-items: flex-start;
     padding: 16px 0;
+    overflow: auto;
 
     font-size: 14px;
     line-height: 20px;
@@ -184,12 +185,52 @@ export default function Menu(props: MenuProps) {
             <MenuItem
                 icon={<i className='icon icon-file-text-outline'/>}
                 text={formatMessage({
-                    id: 'channel_info_rhs.menu.files',
-                    defaultMessage: 'Files',
+                    id: 'channel_info_rhs.menu.media',
+                    defaultMessage: 'Media',
                 })}
                 opensSubpanel={true}
                 badge={loadingStats ? <LoadingSpinner/> : fileCount}
                 onClick={() => actions.showChannelFiles(channel.id)}
+            />
+            <MenuItem
+                icon={<i className='icon icon-calendar-outline'/>}
+                text={formatMessage({
+                    id: 'channel_info_rhs.menu.sync_calendar',
+                    defaultMessage: 'Sync Calendar',
+                })}
+                opensSubpanel={true}
+                badge={0}
+                onClick={() => {}}
+            />
+            <MenuItem
+                icon={<i className='icon icon-microphone-outline'/>}
+                text={formatMessage({
+                    id: 'channel_info_rhs.menu.recorded_calls',
+                    defaultMessage: 'Recorded Calls & Captions',
+                })}
+                opensSubpanel={true}
+                badge={0}
+                onClick={() => {}}
+            />
+            <MenuItem
+                icon={<i className='icon icon-account-multiple-outline'/>}
+                text={formatMessage({
+                    id: 'channel_info_rhs.menu.teams',
+                    defaultMessage: 'Teams',
+                })}
+                opensSubpanel={true}
+                badge={0}
+                onClick={() => {}}
+            />
+            <MenuItem
+                icon={<i className='icon icon-link-variant'/>}
+                text={formatMessage({
+                    id: 'channel_info_rhs.menu.links',
+                    defaultMessage: 'Links',
+                })}
+                opensSubpanel={true}
+                badge={0}
+                onClick={() => {}}
             />
         </MenuContainer>
     );

@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
+import React, {useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import styled from 'styled-components';
 
@@ -14,7 +14,32 @@ interface Props {
     isArchived: boolean;
     isMobile: boolean;
     onClose: () => void;
+    onTabChange?: (tab: string) => void;
 }
+
+const TabsContainer = styled.div`
+    display: flex;
+    flex: 1;
+    align-self: stretch;
+`;
+
+const Tab = styled.button<{active: boolean}>`
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: ${props => props.active ? 'rgba(var(--button-bg-rgb), 0.08)' : 'transparent'};
+    color: ${props => props.active ? 'var(--button-bg)' : 'rgba(var(--center-channel-color-rgb), 0.6)'};
+    font-weight: ${props => props.active ? '600' : '400'};
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        background: rgba(var(--button-bg-rgb), 0.04);
+        color: var(--button-bg);
+    }
+`;
 
 const Icon = styled.i`
     font-size:12px;
@@ -24,43 +49,43 @@ const HeaderTitle = styled.span`
     line-height: 2.4rem;
 `;
 
-const Header = ({channel, isArchived, isMobile, onClose}: Props) => {
+const Header = ({channel, isArchived, isMobile, onClose, onTabChange}: Props) => {
     const {formatMessage} = useIntl();
+    const [activeTab, setActiveTab] = useState('details');
+
+    const handleTabChange = (tab: string) => {
+        setActiveTab(tab);
+        onTabChange?.(tab);
+    };
 
     return (
-        <div className='sidebar--right__header'>
-            <span className='sidebar--right__title'>
-                {isMobile && (
-                    <button
-                        className='sidebar--right__back btn btn-icon btn-sm'
-                        onClick={onClose}
-                        aria-label={formatMessage({id: 'rhs_header.back.icon', defaultMessage: 'Back Icon'})}
-                    >
-                        <i
-                            className='icon icon-arrow-back-ios'
-                        />
-                    </button>
-                )}
-                <h2>
-                    <HeaderTitle
-                        id='rhsPanelTitle'
-                    >
-                        <FormattedMessage
-                            id='channel_info_rhs.header.title'
-                            defaultMessage='Info'
-                        />
-                    </HeaderTitle>
-
-                    {channel.display_name &&
-                    <span
-                        className='style--none sidebar--right__title__subtitle'
-                    >
-                        {isArchived && (<Icon className='icon icon-archive-outline'/>)}
-                        {channel.display_name}
-                    </span>
-                    }
-                </h2>
-            </span>
+        <div className='sidebar--right__header' style={{display: 'flex', alignItems: 'center'}}>
+            {isMobile && (
+                <button
+                    className='sidebar--right__back btn btn-icon btn-sm'
+                    onClick={onClose}
+                    aria-label={formatMessage({id: 'rhs_header.back.icon', defaultMessage: 'Back Icon'})}
+                >
+                    <i
+                        className='icon icon-arrow-back-ios'
+                    />
+                </button>
+            )}
+            
+            <TabsContainer>
+                <Tab
+                    active={activeTab === 'details'}
+                    onClick={() => handleTabChange('details')}
+                >
+                    Details
+                </Tab>
+                <Tab
+                    active={activeTab === 'history'}
+                    onClick={() => handleTabChange('history')}
+                >
+                    History
+                </Tab>
+            </TabsContainer>
 
             <WithTooltip
                 title={
@@ -76,6 +101,7 @@ const Header = ({channel, isArchived, isMobile, onClose}: Props) => {
                     className='sidebar--right__close btn btn-icon btn-sm'
                     aria-label={formatMessage({id: 'rhs_header.closeTooltip.icon', defaultMessage: 'Close Sidebar Icon'})}
                     onClick={onClose}
+                    style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
                 >
                     <i
                         className='icon icon-close'
@@ -87,3 +113,4 @@ const Header = ({channel, isArchived, isMobile, onClose}: Props) => {
 };
 
 export default Header;
+

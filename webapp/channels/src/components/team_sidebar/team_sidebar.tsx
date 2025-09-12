@@ -1,21 +1,26 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-
+/*eslint-disable */
 import classNames from 'classnames';
 import React from 'react';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import type {DroppableProvided, DropResult} from 'react-beautiful-dnd';
-import Scrollbars from 'react-custom-scrollbars';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import {injectIntl} from 'react-intl';
 import type {WrappedComponentProps} from 'react-intl';
 import type {RouteComponentProps} from 'react-router-dom';
 
 import type {Team} from '@mattermost/types/teams';
 
-import Permissions from 'mattermost-redux/constants/permissions';
+import {getLastVisitedHomePage} from 'utils/home_storage';
 
-import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
-import TeamButton from 'components/team_sidebar/components/team_button';
+/* eslint-disable */
+import Scrollbars from 'components/common/scrollbars';
+
+// import Permissions from 'mattermost-redux/constants/permissions';
+
+// import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
+// import TeamButton from 'components/team_sidebar/components/team_button';
+import SimpleTeamButton from 'components/team_sidebar/components/simple_team_button';
 
 import WebSocketClient from 'client/web_websocket_client';
 import Pluggable from 'plugins/pluggable';
@@ -23,7 +28,8 @@ import {Constants} from 'utils/constants';
 import * as Keyboard from 'utils/keyboard';
 import {getCurrentProduct} from 'utils/products';
 import {filterAndSortTeamsByDisplayName} from 'utils/team_utils';
-import * as Utils from 'utils/utils';
+
+// import * as Utils from 'utils/utils';
 
 import type {PropsFromRedux} from './index';
 
@@ -34,33 +40,6 @@ export interface Props extends PropsFromRedux, WrappedComponentProps {
 type State = {
     showOrder: boolean;
     teamsOrder: Team[];
-}
-
-export function renderView(props: Props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--view'
-        />
-    );
-}
-
-export function renderThumbHorizontal(props: Props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--horizontal'
-        />
-    );
-}
-
-export function renderThumbVertical(props: Props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--vertical'
-        />
-    );
 }
 
 export class TeamSidebar extends React.PureComponent<Props, State> {
@@ -166,6 +145,20 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
         document.removeEventListener('keyup', this.handleKeyUp);
     }
 
+    handleChatClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const teams = filterAndSortTeamsByDisplayName(this.props.myTeams, this.props.locale, this.props.userTeamsOrderPreference);
+
+        if (teams.length > 0) {
+            // Go to last team or first available team
+            const lastTeam = teams.find((team) => team.id === this.props.currentTeamId) || teams[0];
+            this.props.actions.switchTeam(`/${lastTeam.name}`);
+        } else {
+            // No teams, go to team selection
+            this.props.actions.switchTeam('/select_team');
+        }
+    };
+
     onDragEnd = (result: DropResult) => {
         const {
             updateTeamsOrderForUser,
@@ -203,100 +196,177 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const {intl} = this.props;
+        // const {intl} = this.props;
         const root: Element | null = document.querySelector('#root');
-        if (this.props.myTeams.length <= 1) {
-            root!.classList.remove('multi-teams');
-            return null;
-        }
         root!.classList.add('multi-teams');
 
         const plugins = [];
-        const sortedTeams = filterAndSortTeamsByDisplayName(this.props.myTeams, this.props.locale, this.props.userTeamsOrderPreference);
+
+        // const sortedTeams = filterAndSortTeamsByDisplayName(this.props.myTeams, this.props.locale, this.props.userTeamsOrderPreference);
 
         const currentProduct = getCurrentProduct(this.props.products, this.props.location.pathname);
         if (currentProduct && !currentProduct.showTeamSidebar) {
             return null;
         }
 
-        const teams = sortedTeams.map((team: Team, index: number) => {
-            return (
-                <TeamButton
-                    key={'switch_team_' + team.name}
-                    url={`/${team.name}`}
-                    tip={team.display_name}
-                    active={team.id === this.props.currentTeamId}
-                    displayName={team.display_name}
-                    order={index + 1}
-                    showOrder={this.state.showOrder}
-                    unread={this.props.unreadTeamsSet.has(team.id)}
-                    mentions={this.props.mentionsInTeamMap.has(team.id) ? this.props.mentionsInTeamMap.get(team.id) : 0}
-                    hasUrgent={this.props.teamHasUrgentMap.has(team.id) ? this.props.teamHasUrgentMap.get(team.id) : false}
-                    teamIconUrl={Utils.imageURLForTeam(team)}
-                    switchTeam={(url: string) => this.props.actions.switchTeam(url, currentProduct ? team : undefined)}
-                    isDraggable={true}
-                    teamId={team.id}
-                    teamIndex={index}
-                    isInProduct={Boolean(currentProduct)}
-                />
-            );
-        });
+        // const teams = sortedTeams.map((team: Team, index: number) => {
+        //     return (
+        //         <TeamButton
+        //             key={'switch_team_' + team.name}
+        //             url={`/${team.name}`}
+        //             tip={team.display_name}
+        //             active={team.id === this.props.currentTeamId}
+        //             displayName={team.display_name}
+        //             order={index + 1}
+        //             showOrder={this.state.showOrder}
+        //             unread={this.props.unreadTeamsSet.has(team.id)}
+        //             mentions={this.props.mentionsInTeamMap.has(team.id) ? this.props.mentionsInTeamMap.get(team.id) : 0}
+        //             hasUrgent={this.props.teamHasUrgentMap.has(team.id) ? this.props.teamHasUrgentMap.get(team.id) : false}
+        //             teamIconUrl={Utils.imageURLForTeam(team)}
+        //             switchTeam={(url: string) => this.props.actions.switchTeam(url, currentProduct ? team : undefined)}
+        //             isDraggable={true}
+        //             teamId={team.id}
+        //             teamIndex={index}
+        //             isInProduct={Boolean(currentProduct)}
+        //         />
+        //     );
+        // });
+        const currentTeam = this.props.myTeams.find(team => team.id === this.props.currentTeamId);
+        const isHomeActive = this.props.location.pathname.includes('/home');
+        const isOrganizationActive = !isHomeActive;
+        
+        const handleHomeClick = (e: React.MouseEvent) => {
+            e.preventDefault();
+            if (currentTeam) {
+                const lastVisitedPage = getLastVisitedHomePage(this.props.currentUserId, currentTeam.name);
+                if (lastVisitedPage) {
+                    this.props.actions.switchTeam(`/${currentTeam.name}/home/${lastVisitedPage}`);
+                } else {
+                    this.props.actions.switchTeam(`/${currentTeam.name}/home/dashboard`);
+                }
+            }
+        };
+        
+        const sidebarButtons = [
+            {
+                id: 'home',
+                icon: 'fa-home',
+                tooltip: 'Home',
+                active: isHomeActive,
+                onClick: handleHomeClick,
+            },
+            {
+                id: 'chats',
+                icon: 'icon-message-text-outline',
+                tooltip: 'Organization',
+                active: isOrganizationActive,
+                onClick: this.handleChatClick,
+            },
+            {
+                id: 'calendar',
+                icon: 'icon-calendar-outline',
+                tooltip: 'Calendar',
+                active: false,
+                disabled: true,
+            },
+            {
+                id: 'meetings',
+                icon: 'icon-video-outline',
+                tooltip: 'Meetings & Events',
+                active: false,
+                disabled: true,
+            },
+            {
+                id: 'tasks',
+                icon: 'fa-tasks',
+                tooltip: 'Task Manager',
+                active: false,
+                disabled: true,
+            },
+            {
+                id: 'files',
+                icon: 'icon-file-text-outline',
+                tooltip: 'Saved Files',
+                active: false,
+                disabled: true,
+            },
+            {
+                id: 'bhashika',
+                icon: 'icon-microphone-outline',
+                tooltip: 'Bhashika',
+                active: false,
+                disabled: true,
+            },
+        ];
 
-        const joinableTeams = [];
-
-        const plusIcon = (
-            <i
-                className='icon icon-plus'
-                role={'img'}
-                aria-label={intl.formatMessage({id: 'sidebar.team_menu.button.plusIcon', defaultMessage: 'Plus Icon'})}
+        const teams = sidebarButtons.map((button) => (
+            <SimpleTeamButton
+                key={button.id}
+                id={button.id}
+                icon={button.icon}
+                tooltip={button.tooltip}
+                active={button.active}
+                disabled={button.disabled}
+                onClick={button.onClick}
             />
-        );
+        ));
 
-        if (this.props.moreTeamsToJoin && !this.props.experimentalPrimaryTeam) {
-            joinableTeams.push(
-                <TeamButton
-                    btnClass='team-btn__add'
-                    key='more_teams'
-                    url='/select_team'
-                    tip={
-                        <FormattedMessage
-                            id='team_sidebar.join'
-                            defaultMessage='Other teams you can join'
-                        />
-                    }
-                    content={plusIcon}
-                    switchTeam={this.props.actions.switchTeam}
-                    displayName={intl.formatMessage({
-                        id: 'team_sidebar.join',
-                        defaultMessage: 'Other teams you can join',
-                    })}
-                />,
-            );
-        } else {
-            joinableTeams.push(
-                <SystemPermissionGate
-                    permissions={[Permissions.CREATE_TEAM]}
-                    key='more_teams'
-                >
-                    <TeamButton
-                        btnClass='team-btn__add'
-                        url='/create_team'
-                        tip={
-                            <FormattedMessage
-                                id='navbar_dropdown.create'
-                                defaultMessage='Create a Team'
-                            />
-                        }
-                        content={plusIcon}
-                        switchTeam={this.props.actions.switchTeam}
-                        displayName={intl.formatMessage({
-                            id: 'navbar_dropdown.create',
-                            defaultMessage: 'Create a Team',
-                        })}
-                    />
-                </SystemPermissionGate>,
-            );
-        }
+        // const joinableTeams = [];
+
+        // const plusIcon = (
+        //     <i
+        //         className='icon icon-plus'
+        //         role={'img'}
+        //         aria-label={intl.formatMessage({id: 'sidebar.team_menu.button.plusIcon', defaultMessage: 'Plus Icon'})}
+        //     />
+        // );
+
+        // if (this.props.moreTeamsToJoin && !this.props.experimentalPrimaryTeam) {
+        //     joinableTeams.push(
+        //         <TeamButton
+        //             btnClass='team-btn__add'
+        //             key='more_teams'
+        //             url='/select_team'
+        //             tip={
+        //                 <FormattedMessage
+        //                     id='team_sidebar.join'
+        //                     defaultMessage='Other teams you can join'
+        //                 />
+        //             }
+        //             content={plusIcon}
+        //             switchTeam={this.props.actions.switchTeam}
+        //             displayName={intl.formatMessage({
+        //                 id: 'team_sidebar.join',
+        //                 defaultMessage: 'Other teams you can join',
+        //             })}
+        //         />,
+        //     );
+        // } else {
+        //     joinableTeams.push(
+        //         <SystemPermissionGate
+        //             permissions={[Permissions.CREATE_TEAM]}
+        //             key='more_teams'
+        //         >
+        //             <TeamButton
+        //                 btnClass='team-btn__add'
+        //                 url='/create_team'
+        //                 tip={
+        //                     <FormattedMessage
+        //                         id='navbar_dropdown.create'
+        //                         defaultMessage='Create a Team'
+        //                     />
+        //                 }
+        //                 content={plusIcon}
+        //                 switchTeam={this.props.actions.switchTeam}
+        //                 displayName={intl.formatMessage({
+        //                     id: 'navbar_dropdown.create',
+        //                     defaultMessage: 'Create a Team',
+        //                 })}
+        //             />
+        //         </SystemPermissionGate>,
+        //     );
+        // }
+        const joinableTeams: any[] = [];
 
         // Disable team sidebar pluggables in products until proper support can be provided.
         const isNonChannelsProduct = !currentProduct;
@@ -317,17 +387,10 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
                 role='navigation'
                 aria-labelledby='teamSidebarWrapper'
             >
-                <div
-                    className='team-wrapper'
-                    id='teamSidebarWrapper'
-                >
-                    <Scrollbars
-                        autoHide={true}
-                        autoHideTimeout={500}
-                        autoHideDuration={500}
-                        renderThumbHorizontal={renderThumbHorizontal}
-                        renderThumbVertical={renderThumbVertical}
-                        renderView={renderView}
+                <Scrollbars>
+                    <div
+                        className='team-wrapper'
+                        id='teamSidebarWrapper'
                     >
                         <DragDropContext
                             onDragEnd={this.onDragEnd}
@@ -350,8 +413,8 @@ export class TeamSidebar extends React.PureComponent<Props, State> {
                             </Droppable>
                         </DragDropContext>
                         {joinableTeams}
-                    </Scrollbars>
-                </div>
+                    </div>
+                </Scrollbars>
                 {plugins}
             </div>
         );

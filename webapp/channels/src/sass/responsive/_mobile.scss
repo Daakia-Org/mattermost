@@ -850,6 +850,15 @@
             }
         }
 
+        /* Do not add extra right padding for current-user posts on mobile */
+        &.post--modern.current--user {
+            .post__header {
+                padding-right: 0;
+                /* padding-left: 70px; */
+                margin-bottom: 0;
+            }
+        }
+
         .comment-icon__container {
             display: none;
             visibility: visible;

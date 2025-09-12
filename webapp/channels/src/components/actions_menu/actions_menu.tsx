@@ -11,7 +11,6 @@ import type {Post} from '@mattermost/types/posts';
 import {AppCallResponseTypes} from 'mattermost-redux/constants/apps';
 import type {ActionResult} from 'mattermost-redux/types/actions';
 
-import type {OpenedFromType} from 'components/plugin_marketplace/marketplace_modal';
 import MarketplaceModal from 'components/plugin_marketplace/marketplace_modal';
 import Menu from 'components/widgets/menu/menu';
 import MenuWrapper from 'components/widgets/menu/menu_wrapper';
@@ -26,8 +25,10 @@ import type {HandleBindingClick, OpenAppsModal, PostEphemeralCallResponseForPost
 import type {PostDropdownMenuAction, PostDropdownMenuItemComponent} from 'types/store/plugins';
 
 import ActionsMenuButton from './actions_menu_button';
-import ActionsMenuEmptyPopover from './actions_menu_empty_popover';
-import {ActionsMenuIcon} from './actions_menu_icon';
+
+// import ActionsMenuEmptyPopover from './actions_menu_empty_popover';
+
+// import {ActionsMenuIcon} from './actions_menu_icon';
 
 import './actions_menu.scss';
 
@@ -130,11 +131,9 @@ export class ActionMenuClass extends React.PureComponent<Props, State> {
     };
 
     handleOpenMarketplace = (): void => {
-        const openedFrom: OpenedFromType = 'actions_menu';
         const openMarketplaceData = {
             modalId: ModalIdentifiers.PLUGIN_MARKETPLACE,
             dialogType: MarketplaceModal,
-            dialogProps: {openedFrom},
         };
         this.props.actions.openModal(openMarketplaceData);
 
@@ -296,29 +295,33 @@ export class ActionMenuClass extends React.PureComponent<Props, State> {
 
         const {formatMessage} = this.props.intl;
 
-        let marketPlace = null;
-        if (this.props.canOpenMarketplace) {
-            marketPlace = (
-                <React.Fragment key={'marketplace'}>
-                    {this.renderDivider('marketplace')}
-                    <Menu.ItemAction
-                        id={`marketplace_icon_${this.props.post.id}`}
-                        key={`marketplace_${this.props.post.id}`}
-                        show={true}
-                        text={formatMessage({id: 'post_info.marketplace', defaultMessage: 'App Marketplace'})}
-                        icon={<ActionsMenuIcon name='icon-view-grid-plus-outline'/>}
-                        onClick={this.handleOpenMarketplace}
-                    />
-                </React.Fragment>
-            );
-        }
+        const marketPlace = null;
+
+        // Commented out marketplace button
+        // if (this.props.canOpenMarketplace) {
+        //     marketPlace = (
+        //         <React.Fragment key={'marketplace'}>
+        //             {this.renderDivider('marketplace')}
+        //             <Menu.ItemAction
+        //                 id={`marketplace_icon_${this.props.post.id}`}
+        //                 key={`marketplace_${this.props.post.id}`}
+        //                 show={true}
+        //                 text={formatMessage({id: 'post_info.marketplace', defaultMessage: 'App Marketplace'})}
+        //                 icon={<ActionsMenuIcon name='icon-view-grid-plus-outline'/>}
+        //                 onClick={this.handleOpenMarketplace}
+        //             />
+        //         </React.Fragment>
+        //     );
+        // }
 
         const hasApps = Boolean(appBindings.length);
         const hasPluggables = Boolean(this.props.pluginMenuItemComponents?.length);
         const hasPluginItems = Boolean(pluginItems?.length);
 
         const hasPluginMenuItems = hasPluginItems || hasApps || hasPluggables;
-        if (!this.props.canOpenMarketplace && !hasPluginMenuItems) {
+
+        // Hide actions menu entirely if no plugin items (ignoring marketplace)
+        if (!hasPluginMenuItems) {
             return null;
         }
 
@@ -362,26 +365,28 @@ export class ActionMenuClass extends React.PureComponent<Props, State> {
                     </Menu>
                 </MenuWrapper>
             );
-        } else if (this.props.isSysAdmin) {
-            return (
-                <>
-
-                    <ActionsMenuButton
-                        ref={this.buttonRef}
-                        buttonId={buttonId}
-                        onClick={this.openDropdown}
-                        popupId={popupId}
-                        isMenuOpen={this.props.isMenuOpen}
-                    />
-                    <ActionsMenuEmptyPopover
-                        anchorElement={this.buttonElement}
-                        onOpenMarketplace={this.handleOpenMarketplace}
-                        onToggle={this.props.handleDropdownOpened}
-                        isOpen={this.props.isMenuOpen}
-                    />
-                </>
-            );
         }
+
+        // Commented out system admin marketplace fallback
+        // else if (this.props.isSysAdmin) {
+        //     return (
+        //         <>
+        //             <ActionsMenuButton
+        //                 ref={this.buttonRef}
+        //                 buttonId={buttonId}
+        //                 onClick={this.openDropdown}
+        //                 popupId={popupId}
+        //                 isMenuOpen={this.props.isMenuOpen}
+        //             />
+        //             <ActionsMenuEmptyPopover
+        //                 anchorElement={this.buttonElement}
+        //                 onOpenMarketplace={this.handleOpenMarketplace}
+        //                 onToggle={this.props.handleDropdownOpened}
+        //                 isOpen={this.props.isMenuOpen}
+        //             />
+        //         </>
+        //     );
+        // }
 
         return null;
     }

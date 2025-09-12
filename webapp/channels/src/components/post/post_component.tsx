@@ -16,8 +16,6 @@ import {
     isMeMessage as checkIsMeMessage,
     isPostPendingOrFailed} from 'mattermost-redux/utils/post_utils';
 
-import {trackEvent} from 'actions/telemetry_actions';
-
 import AutoHeightSwitcher, {AutoHeightSlots} from 'components/common/auto_height_switcher';
 import EditPost from 'components/edit_post';
 import FileAttachmentListContainer from 'components/file_attachment_list';
@@ -58,6 +56,7 @@ export type Props = {
     team?: Team;
     currentUserId: string;
     compactDisplay?: boolean;
+    modernDisplay?: boolean;
     colorizeUsernames?: boolean;
     isFlagged: boolean;
     previewCollapsed?: string;
@@ -294,6 +293,7 @@ function PostComponent(props: Props) {
             'post--root': props.hasReplies && !(post.root_id && post.root_id.length > 0),
             'post--comment': (post.root_id && post.root_id.length > 0 && !props.isCollapsedThreadsEnabled) || (props.location === Locations.RHS_COMMENT),
             'post--compact': props.compactDisplay,
+            'post--modern': props.modernDisplay,
             'post--hovered': hovered,
             'same--user': props.isConsecutivePost && (!props.compactDisplay || props.location === Locations.RHS_COMMENT),
             'cursor--pointer': alt && !props.channelIsArchived,
@@ -351,7 +351,6 @@ function PostComponent(props: Props) {
             props.location === Locations.CENTER &&
             !props.isPostBeingEdited
         ) {
-            trackEvent('crt', 'clicked_to_reply');
             props.actions.selectPost(post);
         }
 
