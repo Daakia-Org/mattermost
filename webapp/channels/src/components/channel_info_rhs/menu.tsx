@@ -16,6 +16,7 @@ const MenuContainer = styled.nav`
     flex-direction: column;
     align-items: flex-start;
     padding: 16px 0;
+    overflow: auto;
 
     font-size: 14px;
     line-height: 20px;

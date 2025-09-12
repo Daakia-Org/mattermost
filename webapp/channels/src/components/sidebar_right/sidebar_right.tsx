@@ -10,6 +10,7 @@ import type {Team} from '@mattermost/types/teams';
 
 import ChannelInfoRhs from 'components/channel_info_rhs';
 import ChannelMembersRhs from 'components/channel_members_rhs';
+import DaakiaInfoRhs from 'components/daakia_info_rhs';
 import FileUploadOverlay from 'components/file_upload_overlay';
 import {DropOverlayIdRHS} from 'components/file_upload_overlay/file_upload_overlay';
 import LoadingScreen from 'components/loading_screen';
@@ -348,12 +349,7 @@ export default class SidebarRight extends React.PureComponent<Props, State> {
                                 );
                             }
                             if (isHomeRoute && (isChannelInfo || !searchVisible)) {
-                                return (
-                                    <div className='sidebar-right__body'>
-                                        <h2>{'HOME SIDEBAR'}</h2>
-                                        <p>{'This is home route sidebar'}</p>
-                                    </div>
-                                );
+                                return <DaakiaInfoRhs/>;
                             }
                             return (
                                 <Search
