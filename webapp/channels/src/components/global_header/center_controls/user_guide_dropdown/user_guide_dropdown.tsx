@@ -19,11 +19,7 @@ const mattermostUserGuideLink = '#';
 const trainingResourcesLink = '#';
 const askTheCommunityUrl = '#';
 
-type Props = WrappedComponentProps & PropsFromRedux & {
-    location: {
-        pathname: string;
-    };
-}
+type Props = WrappedComponentProps & PropsFromRedux;
 
 type State = {
     buttonActive: boolean;

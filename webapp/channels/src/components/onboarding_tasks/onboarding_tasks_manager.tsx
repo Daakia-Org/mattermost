@@ -169,7 +169,7 @@ export const useHandleOnBoardingTaskData = () => {
     const dispatch = useDispatch();
     const currentUserId = useSelector(getCurrentUserId);
     const storeSavePreferences = useCallback(
-        (taskCategory: string, taskName, step: number) => {
+        (taskCategory: string, taskName: string, step: number) => {
             const preferences = [
                 {
                     user_id: currentUserId,
@@ -186,9 +186,8 @@ export const useHandleOnBoardingTaskData = () => {
     return useCallback((
         taskName: string,
         step: number,
-        taskCategory = OnboardingTaskCategory,
     ) => {
-        storeSavePreferences(taskCategory, taskName, step);
+        storeSavePreferences(OnboardingTaskCategory, taskName, step);
     }, [storeSavePreferences]);
 };
 
@@ -205,7 +204,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
     return (taskName: string) => {
         switch (taskName) {
         case OnboardingTasksName.CHANNELS_TOUR: {
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED);
             const tourCategory = TutorialTourName.ONBOARDING_TUTORIAL_STEP;
             const preferences = [
                 {
@@ -232,7 +231,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
         case OnboardingTasksName.COMPLETE_YOUR_PROFILE: {
             openMenu(ELEMENT_ID_FOR_USER_ACCOUNT_MENU_BUTTON);
             dispatch(setShowOnboardingCompleteProfileTour(true));
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED);
             if (inAdminConsole) {
                 dispatch(switchToChannels());
             }
@@ -241,7 +240,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
         case OnboardingTasksName.VISIT_SYSTEM_CONSOLE: {
             dispatch(setProductMenuSwitcherOpen(true));
             dispatch(setShowOnboardingVisitConsoleTour(true));
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED);
             break;
         }
         case OnboardingTasksName.INVITE_PEOPLE: {
@@ -252,7 +251,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
             } else {
                 dispatch(openInvitationsModal());
             }
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
             break;
         }
 
@@ -275,7 +274,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
                 dialogType: LearnMoreTrialModal,
             }));
 
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
             break;
         }
         default:

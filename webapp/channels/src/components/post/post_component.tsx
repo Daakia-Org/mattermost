@@ -590,7 +590,7 @@ function PostComponent(props: Props) {
                                     />
                                 }
                                 {priority}
-                                {post.props && post.props.card &&
+                                {Boolean(post.props && post.props.card) &&
                                     <WithTooltip
                                         title={
                                             <FormattedMessage
