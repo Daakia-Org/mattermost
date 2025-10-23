@@ -901,7 +901,7 @@
   },
   {
     "id": "api.channel.create_default_channels.town_square",
-    "translation": "System"
+    "translation": "Hệ thống"
   },
   {
     "id": "api.team.update_team_member_roles.guest_and_user.app_error",
