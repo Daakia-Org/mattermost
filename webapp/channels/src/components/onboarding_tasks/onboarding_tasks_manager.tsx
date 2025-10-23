@@ -24,7 +24,6 @@ import {getOnboardingTaskPreferences} from 'selectors/onboarding';
 import Channels from 'components/common/svg_images_components/channels_svg';
 import Gears from 'components/common/svg_images_components/gears_svg';
 import Handshake from 'components/common/svg_images_components/handshake_svg';
-import Phone from 'components/common/svg_images_components/phone_svg';
 import Security from 'components/common/svg_images_components/security_svg';
 import Sunglasses from 'components/common/svg_images_components/sunglasses_svg';
 import LearnMoreTrialModal from 'components/learn_more_trial_modal/learn_more_trial_modal';
@@ -43,7 +42,7 @@ import {ModalIdentifiers} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
-import {OnboardingTaskCategory, OnboardingTaskList, OnboardingTasksName, TaskNameMapToSteps} from './constants';
+import {OnboardingTaskCategory, OnboardingTasksName, TaskNameMapToSteps} from './constants';
 
 const useGetTaskDetails = () => {
     const {formatMessage} = useIntl();
@@ -256,7 +255,9 @@ export const useHandleOnBoardingTaskTrigger = () => {
             handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED, true);
             break;
         }
+
         // case OnboardingTasksName.DOWNLOAD_APP: {
+
         //     handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED, true);
         //     const preferences = [{
         //         user_id: currentUserId,
