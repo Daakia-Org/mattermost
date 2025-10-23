@@ -16,9 +16,9 @@ func (ts *TeamService) CreateTeam(rctx request.CTX, team *model.Team) (*model.Te
 		return nil, err
 	}
 
-	// if _, err := ts.createDefaultChannels(rctx, rteam.Id); err != nil {
-	// 	return nil, err
-	// }
+	if _, err := ts.createDefaultChannels(rctx, rteam.Id); err != nil {
+		return nil, err
+	}
 
 	return rteam, nil
 }

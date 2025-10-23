@@ -7544,7 +7544,7 @@
   },
   {
     "id": "api.channel.create_default_channels.town_square",
-    "translation": "Town Square"
+    "translation": "System"
   },
   {
     "id": "api.command_settings.unsupported.app_error",
