@@ -13,7 +13,7 @@ import ExternalLink from 'components/external_link';
 import Nbsp from 'components/html_entities/nbsp';
 import MattermostLogo from 'components/widgets/icons/mattermost_logo';
 
-import {AboutLinks} from 'utils/constants';
+// import {AboutLinks} from 'utils/constants';
 
 import AboutBuildModalCloud from './about_build_modal_cloud/about_build_modal_cloud';
 
@@ -197,72 +197,72 @@ export default class AboutBuildModal extends React.PureComponent<Props, State> {
             </ExternalLink>
         );
 
-        const buildnumber: JSX.Element | null = (
-            <div data-testid='aboutModalBuildNumber'>
-                <FormattedMessage
-                    id='about.buildnumber'
-                    defaultMessage='Build Number:'
-                />
-                <span id='buildnumberString'>{'\u00a0' + (config.BuildNumber === 'dev' ? 'n/a' : config.BuildNumber)}</span>
-            </div>
-        );
+        // const buildnumber: JSX.Element | null = (
+        //     <div data-testid='aboutModalBuildNumber'>
+        //         <FormattedMessage
+        //             id='about.buildnumber'
+        //             defaultMessage='Build Number:'
+        //         />
+        //         <span id='buildnumberString'>{'\u00a0' + (config.BuildNumber === 'dev' ? 'n/a' : config.BuildNumber)}</span>
+        //     </div>
+        // );
 
-        const mmversion: string | undefined = config.BuildNumber === 'dev' ? config.BuildNumber : config.Version;
+        // const mmversion: string | undefined = config.BuildNumber === 'dev' ? config.BuildNumber : config.Version;
 
-        let serverHostname;
-        if (!this.props.socketStatus.connected) {
-            serverHostname = (
-                <div>
-                    <FormattedMessage
-                        id='about.serverHostname'
-                        defaultMessage='Hostname:'
-                    />
-                    <Nbsp/>
-                    <FormattedMessage
-                        id='about.serverDisconnected'
-                        defaultMessage='disconnected'
-                    />
-                </div>
-            );
-        } else if (this.props.socketStatus.serverHostname) {
-            serverHostname = (
-                <div>
-                    <FormattedMessage
-                        id='about.serverHostname'
-                        defaultMessage='Hostname:'
-                    />
-                    <Nbsp/>
-                    {this.props.socketStatus.serverHostname}
-                </div>
-            );
-        } else {
-            serverHostname = (
-                <div>
-                    <FormattedMessage
-                        id='about.serverHostname'
-                        defaultMessage='Hostname:'
-                    />
-                    <Nbsp/>
-                    <FormattedMessage
-                        id='about.serverUnknown'
-                        defaultMessage='server did not provide hostname'
-                    />
-                </div>
-            );
-        }
+        // let serverHostname;
+        // if (!this.props.socketStatus.connected) {
+        //     serverHostname = (
+        //         <div>
+        //             <FormattedMessage
+        //                 id='about.serverHostname'
+        //                 defaultMessage='Hostname:'
+        //             />
+        //             <Nbsp/>
+        //             <FormattedMessage
+        //                 id='about.serverDisconnected'
+        //                 defaultMessage='disconnected'
+        //             />
+        //         </div>
+        //     );
+        // } else if (this.props.socketStatus.serverHostname) {
+        //     serverHostname = (
+        //         <div>
+        //             <FormattedMessage
+        //                 id='about.serverHostname'
+        //                 defaultMessage='Hostname:'
+        //             />
+        //             <Nbsp/>
+        //             {this.props.socketStatus.serverHostname}
+        //         </div>
+        //     );
+        // } else {
+        //     serverHostname = (
+        //         <div>
+        //             <FormattedMessage
+        //                 id='about.serverHostname'
+        //                 defaultMessage='Hostname:'
+        //             />
+        //             <Nbsp/>
+        //             <FormattedMessage
+        //                 id='about.serverUnknown'
+        //                 defaultMessage='server did not provide hostname'
+        //             />
+        //         </div>
+        //     );
+        // }
 
-        let loadMetricComponent: JSX.Element | null = null;
-        if (this.state.loadMetric !== null && this.state.loadMetric > 0) {
-            loadMetricComponent = (
-                <div data-testid='aboutModalLoadMetric'>
-                    <FormattedMessage
-                        id='about.loadmetric'
-                        defaultMessage='Load Metric:'
-                    />
-                    <span>{'\u00a0' + this.state.loadMetric}</span>
-                </div>
-            );
-        }
+        // let loadMetricComponent: JSX.Element | null = null;
+        // if (this.state.loadMetric !== null && this.state.loadMetric > 0) {
+        //     loadMetricComponent = (
+        //         <div data-testid='aboutModalLoadMetric'>
+        //             <FormattedMessage
+        //                 id='about.loadmetric'
+        //                 defaultMessage='Load Metric:'
+        //             />
+        //             <span>{'\u00a0' + this.state.loadMetric}</span>
+        //         </div>
+        //     );
+        // }
 
         return (
             <Modal
