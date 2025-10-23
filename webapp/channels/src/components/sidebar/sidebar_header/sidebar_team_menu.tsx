@@ -1,26 +1,26 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-
+/*eslint-disable */
 import React, {useCallback} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
 import {
-    LightbulbOutlineIcon,
+    // LightbulbOutlineIcon, // Commented out - used in disabled LearnAboutTeamsMenuItem
     AccountPlusOutlineIcon,
     AccountMultiplePlusOutlineIcon,
     SettingsOutlineIcon,
     AccountMultipleOutlineIcon,
     ExitToAppIcon,
     MessagePlusOutlineIcon,
-    PlusIcon,
+    // PlusIcon, // Commented out - used in disabled CreateTeamMenuItem
     MonitorAccountIcon,
 } from '@mattermost/compass-icons/components';
 import type {Team} from '@mattermost/types/teams';
 
 import {Permissions} from 'mattermost-redux/constants';
-import {getCloudSubscription, getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud';
+// import {getCloudSubscription, getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud'; // Commented out - used in disabled CreateTeamMenuItem
 import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
 import {haveICurrentTeamPermission} from 'mattermost-redux/selectors/entities/roles';
 import {haveISystemPermission} from 'mattermost-redux/selectors/entities/roles_helpers';
@@ -30,18 +30,20 @@ import {openModal} from 'actions/views/modals';
 import {getMainMenuPluginComponents} from 'selectors/plugins';
 
 import AddGroupsToTeamModal from 'components/add_groups_to_team_modal';
-import useGetUsageDeltas from 'components/common/hooks/useGetUsageDeltas';
+// import useGetUsageDeltas from 'components/common/hooks/useGetUsageDeltas'; // Commented out - used in disabled CreateTeamMenuItem
 import InvitationModal from 'components/invitation_modal';
 import LeaveTeamModal from 'components/leave_team_modal';
 import * as Menu from 'components/menu';
 import TeamGroupsManageModal from 'components/team_groups_manage_modal';
 import TeamMembersModal from 'components/team_members_modal';
 import TeamSettingsModal from 'components/team_settings_modal';
-import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_indicator';
+// import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_indicator'; // Commented out - used in disabled CreateTeamMenuItem
 
-import {FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS} from 'utils/cloud_utils';
-import {LicenseSkus, ModalIdentifiers, MattermostFeatures, CloudProducts} from 'utils/constants';
-import {isCloudLicense} from 'utils/license_utils';
+// import {FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS} from 'utils/cloud_utils'; // Commented out - used in disabled CreateTeamMenuItem
+import {ModalIdentifiers} from 'utils/constants';
+// import {LicenseSkus, MattermostFeatures, CloudProducts} from 'utils/constants'; // Commented out - used in disabled CreateTeamMenuItem
+
+// import {isCloudLicense} from 'utils/license_utils'; // Commented out - not used in simplified UI
 
 import type {GlobalState} from 'types/store';
 
@@ -57,7 +59,8 @@ export default function SidebarTeamMenu(props: Props) {
     const havePermissionToManageTeam = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.MANAGE_TEAM));
     const havePermissionToAddUserToTeam = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.ADD_USER_TO_TEAM));
     const havePermissionToInviteGuest = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.INVITE_GUEST));
-    const isCloud = isCloudLicense(license);
+
+    // const isCloud = isCloudLicense(license);
     const isGuestAccessEnabled = config?.EnableGuestAccounts === 'true';
     const isTeamGroupConstrained = Boolean(props.currentTeam?.group_constrained);
     const isLicensedForLDAPGroups = license?.LDAPGroups === 'true';
@@ -87,44 +90,44 @@ export default function SidebarTeamMenu(props: Props) {
                         </>
                     ),
                 }}
-            menuButtonTooltip={{
-                text: tooltipText,
-            }}
-            menu={{
-                id: 'sidebarTeamMenu',
-            }}
-        >
-            {((isGuestAccessEnabled && havePermissionToInviteGuest) || havePermissionToAddUserToTeam) && (
-                <InvitePeopleMenuItem/>
-            )}
-            {isTeamGroupConstrained && isLicensedForLDAPGroups && havePermissionToManageTeam && (
-                <AddGroupsToTeamMenuItem/>
-            )}
-            {havePermissionToManageTeam && (
-                <TeamSettingsMenuItem/>
-            )}
-            <ManageViewMembersMenuItem/>
-            {(isTeamGroupConstrained && isLicensedForLDAPGroups && havePermissionToManageTeam) && (
-                <ManageGroupsMenuItem
-                    teamID={props.currentTeam.id}
-                />
-            )}
-            {(!isTeamGroupConstrained && experimentalPrimaryTeam !== props.currentTeam.name) && (
-                <LeaveTeamMenuItem/>
-            )}
-            {(canJoinAnotherTeam || havePermissionToCreateTeam) && <Menu.Separator/>}
-            {canJoinAnotherTeam &&
-                <JoinAnotherTeamMenuItem/>
-            }
-            {havePermissionToCreateTeam && (
-                <CreateTeamMenuItem
-                    isCloud={isCloud}
-                />
-            )}
-            <Menu.Separator/>
-            <LearnAboutTeamsMenuItem/>
-            <PluginMenuItems/>
-        </Menu.Container>
+                menuButtonTooltip={{
+                    text: tooltipText,
+                }}
+                menu={{
+                    id: 'sidebarTeamMenu',
+                }}
+            >
+                {((isGuestAccessEnabled && havePermissionToInviteGuest) || havePermissionToAddUserToTeam) && (
+                    <InvitePeopleMenuItem/>
+                )}
+                {isTeamGroupConstrained && isLicensedForLDAPGroups && havePermissionToManageTeam && (
+                    <AddGroupsToTeamMenuItem/>
+                )}
+                {havePermissionToManageTeam && (
+                    <TeamSettingsMenuItem/>
+                )}
+                <ManageViewMembersMenuItem/>
+                {(isTeamGroupConstrained && isLicensedForLDAPGroups && havePermissionToManageTeam) && (
+                    <ManageGroupsMenuItem
+                        teamID={props.currentTeam.id}
+                    />
+                )}
+                {(!isTeamGroupConstrained && experimentalPrimaryTeam !== props.currentTeam.name) && (
+                    <LeaveTeamMenuItem/>
+                )}
+                {/* {(canJoinAnotherTeam || havePermissionToCreateTeam) && <Menu.Separator/>} */}
+                {canJoinAnotherTeam &&
+                    <JoinAnotherTeamMenuItem/>
+                }
+                {/* {havePermissionToCreateTeam && (
+                    <CreateTeamMenuItem
+                        isCloud={isCloud}
+                    />
+                )} */}
+                {/* <Menu.Separator/> */}
+                {/* <LearnAboutTeamsMenuItem/> */}
+                <PluginMenuItems/>
+            </Menu.Container>
         </div>
     );
 }
@@ -378,6 +381,8 @@ function JoinAnotherTeamMenuItem() {
     );
 }
 
+// Commented out unused components since CreateTeamMenuItem is disabled
+/*
 interface CreateTeamMenuItemProps {
     isCloud: boolean;
 }
@@ -464,7 +469,10 @@ function RestrictedIndicatorForCreateTeam({isFreeTrial}: {isFreeTrial: boolean})
         />
     );
 }
+*/
 
+// Commented out unused LearnAboutTeamsMenuItem
+/*
 const MATTERMOST_ACADEMY_TEAM_TRAINING_LINK = 'https://mattermost.com/pl/mattermost-academy-team-training';
 
 function LearnAboutTeamsMenuItem() {
@@ -491,6 +499,7 @@ function LearnAboutTeamsMenuItem() {
         />
     );
 }
+*/
 
 function PluginMenuItems() {
     const pluginInMainMenu = useSelector(getMainMenuPluginComponents);

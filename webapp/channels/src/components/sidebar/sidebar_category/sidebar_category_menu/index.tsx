@@ -34,7 +34,7 @@ import {ModalIdentifiers} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
-import CreateNewCategoryMenuItem from './create_new_category_menu_item';
+// import CreateNewCategoryMenuItem from './create_new_category_menu_item'; // Commented out - disabled Create New Category option
 import MarkAsReadMenuItem from './mark_as_read_menu_item';
 import SidebarCategoryGenericMenu from './sidebar_category_generic_menu';
 
@@ -243,8 +243,8 @@ const SidebarCategoryMenu = ({
             {deleteCategoryMenuItem}
             <Menu.Separator/>
             {sortChannelsMenuItem}
-            <Menu.Separator/>
-            <CreateNewCategoryMenuItem id={category.id}/>
+            {/* <Menu.Separator/> */}
+            {/* <CreateNewCategoryMenuItem id={category.id}/> */}
         </SidebarCategoryGenericMenu>
     );
 };

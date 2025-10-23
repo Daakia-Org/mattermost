@@ -168,6 +168,11 @@ const DaakiaTeamSwitcher: React.FC<Props> = ({isVisible = true}) => {
         return null;
     }
 
+    // Hide team switcher if there's only one team - no need to show switcher
+    if (sortedTeams.length <= 1) {
+        return null;
+    }
+
     return (
         <div className='daakia-team-switcher'>
             <DragDropContext onDragEnd={onDragEnd}>
