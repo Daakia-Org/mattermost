@@ -161,7 +161,7 @@
   },
   {
     "id": "api.channel.create_default_channels.town_square",
-    "translation": "公共频道"
+    "translation": "System"
   },
   {
     "id": "api.channel.create_direct_channel.invalid_user.app_error",

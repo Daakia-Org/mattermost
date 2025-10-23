@@ -6804,7 +6804,7 @@
   },
   {
     "id": "api.channel.create_default_channels.town_square",
-    "translation": "Főtér"
+    "translation": "System"
   },
   {
     "id": "api.channel.create_default_channels.off_topic",
