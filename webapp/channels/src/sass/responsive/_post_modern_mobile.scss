@@ -1,0 +1,419 @@
+// ============================================================================
+// MODERN DISPLAY MODE STYLES - MOBILE
+// ============================================================================
+// This file contains all Modern mode specific styling for posts on mobile devices
+// Mobile breakpoint: max-width 768px
+// ============================================================================
+
+@media screen and (max-width: 768px) {
+    .post {
+
+        // ============================================================================
+        // 1. OTHER USERS (LEFT-ALIGNED MESSAGES) - MOBILE
+        // ============================================================================
+
+        &.post--modern:not(.current--user) {
+            
+            // ----------------------------------------------------------------------------
+            // 1.1 Layout & Structure
+            // ----------------------------------------------------------------------------
+            
+            .post__content {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .post__img--modern {
+                flex-shrink: 0;
+                margin-top: 24px;
+                width: 28px;
+                height: 28px;
+            }
+            
+            .post__content--modern {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 1.2 Header (Name & Timestamp)
+            // ----------------------------------------------------------------------------
+            
+            .post__header {
+                .col__name {
+                    font-size: 0.85em;
+                    opacity: 0.73;
+                    font-weight: 600;
+                    line-height: 1.2;
+                    margin-right: 6px;
+                }
+                
+                .col.d-flex.align-items-center {
+                    .post__time {
+                        font-size: 0.85em;
+                        opacity: 0.73;
+                        line-height: 1.2;
+                        font-weight: normal;
+                    }
+                }
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 1.3 Message Body & Bubble
+            // ----------------------------------------------------------------------------
+            
+            .post__body {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .post-message {
+                max-width: 75%;
+                width: fit-content;
+                background: rgba(var(--center-channel-color-rgb), 0.04);
+                color: var(--center-channel-color);
+                border: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
+                padding: 6px 10px;
+                border-radius: 6px;
+                margin: 3px 0;
+                word-wrap: break-word;
+                word-break: break-word;
+                display: inline-block;
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 1.4 Reactions
+            // ----------------------------------------------------------------------------
+            
+            .post__body-reactions-acks,
+            .post-reaction-list {
+                display: flex;
+                justify-content: flex-start;
+                width: 100%;
+                margin-top: 3px;
+            }
+        }
+
+
+        // ============================================================================
+        // 2. CURRENT USER (RIGHT-ALIGNED MESSAGES) - MOBILE
+        // ============================================================================
+
+        &.post--modern.current--user {
+            
+            // ----------------------------------------------------------------------------
+            // 2.1 Hide Avatar & Username
+            // ----------------------------------------------------------------------------
+            
+            .post__img {
+                display: none !important;
+            }
+            
+            .col__name {
+                display: none !important;
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.2 Layout & Direction (RTL for right alignment)
+            // ----------------------------------------------------------------------------
+            
+            .post__content {
+                direction: rtl;
+            }
+
+            .post__header-body {
+                direction: ltr;
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.3 Header (Name & Timestamp)
+            // ----------------------------------------------------------------------------
+
+            .post__header {
+                justify-content: flex-end;
+                gap: 6px;
+                padding-right: 0;
+                margin-bottom: 0;
+                
+                .col__name {
+                    font-size: 0.85em;
+                    opacity: 0.73;
+                    font-weight: 600;
+                    line-height: 1.2;
+                    margin-right: 6px;
+                }
+                
+                .col.d-flex.align-items-center {
+                    .post__time {
+                        font-size: 0.85em;
+                        opacity: 0.73;
+                        line-height: 1.2;
+                        font-weight: normal;
+                    }
+                }
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.4 Message Body & Bubble
+            // ----------------------------------------------------------------------------
+
+            .post__body {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                width: 100%;
+                
+                p {
+                    text-align: left;
+                    direction: ltr;
+                    color: inherit;
+                }
+            }
+
+            .post-message {
+                max-width: 75%;
+                width: fit-content;
+                background: rgba(var(--button-bg-rgb), 0.15);
+                border: 1px solid rgba(var(--button-bg-rgb), 0.3);
+                padding: 6px 10px;
+                border-radius: 5px;
+                margin: 3px 0;
+                word-wrap: break-word;
+                word-break: break-word;
+                display: inline-block;
+            }
+
+            .post-message__text,
+            .post-message__text > * {
+                text-align: left;
+                direction: ltr;
+                color: inherit;
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.5 Reactions
+            // ----------------------------------------------------------------------------
+
+            .post__body-reactions-acks,
+            .post-reaction-list {
+                display: flex;
+                justify-content: flex-start;
+                width: 100%;
+                margin-top: 3px;
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.6 Attachments & Media
+            // ----------------------------------------------------------------------------
+
+            .post-image__columns {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                align-self: flex-end;
+                margin-left: auto;
+                direction: ltr;
+                text-align: left;
+            }
+
+            .file-view--single {
+                align-self: flex-end;
+                margin-left: auto;
+                direction: ltr;
+                text-align: left;
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.7 Actions Menu
+            // ----------------------------------------------------------------------------
+            
+            .post__header .post-menu {
+                left: 0;
+                right: auto;
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.8 Pinned Indicator
+            // ----------------------------------------------------------------------------
+            
+            .post-pre-header {
+                flex-direction: row-reverse;
+
+                .post-pre-header__icons-container {
+                    margin-left: 0;
+                    margin-right: 5px;
+                    padding-right: 0;
+                    padding-left: 9px;
+                    justify-content: flex-start;
+                }
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.9 Custom Status
+            // ----------------------------------------------------------------------------
+            
+            &.other--root,
+            &.post--root {
+                .post__header-set-custom-status {
+                    display: revert;
+                    padding: 0 4px;
+                    border-radius: 3px;
+                    margin-left: 6px;
+                    background: rgba(var(--center-channel-color-rgb), 0.08);
+
+                    &-icon > svg {
+                        width: 10px;
+                        height: 10px;
+                        margin-right: 3px;
+                        background: inherit;
+                        fill: rgba(var(--center-channel-color-rgb), 0.64);
+                        vertical-align: middle;
+                    }
+
+                    &-text {
+                        color: rgba(var(--center-channel-color-rgb), 0.75);
+                        font-size: 11px;
+                        font-weight: normal;
+                    }
+
+                    &:hover {
+                        &-icon > svg {
+                            fill: rgba(var(--center-channel-color-rgb), 0.8);
+                        }
+
+                        &-text {
+                            color: rgba(var(--center-channel-color-rgb), 0.8);
+                        }
+                    }
+
+                    &:active {
+                        background: rgba(var(--button-bg-rgb), 0.08);
+
+                        &-icon > svg {
+                            fill: var(--button-bg);
+                        }
+
+                        &-text {
+                            color: var(--button-bg);
+                        }
+                    }
+                }
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 2.10 Comment Posts
+            // ----------------------------------------------------------------------------
+
+            &.post--comment {
+                .post__body {
+                    border-color: rgba(var(--button-bg-rgb), 0.24);
+                }
+
+                &.other--root {
+                    .post-comment {
+                        border-color: rgba(var(--center-channel-color-rgb), 0.1);
+                        background-color: rgba(var(--center-channel-color-rgb), 0.05);
+                    }
+                }
+            }
+        }
+
+
+        // ============================================================================
+        // 3. CONSECUTIVE MESSAGES (SAME USER) - MOBILE
+        // ============================================================================
+
+        // ----------------------------------------------------------------------------
+        // 3.1 Hide Username for All Consecutive Messages
+        // ----------------------------------------------------------------------------
+        
+        &.post--modern.same--user {
+            .col__name {
+                display: none !important;
+            }
+        }
+        
+        // ----------------------------------------------------------------------------
+        // 3.2 Hide Username for Other Users' Consecutive Messages
+        // ----------------------------------------------------------------------------
+        
+        &.post--modern.same--user:not(.current--user) {
+            .col__name {
+                display: none !important;
+            }
+        }
+        
+        // ----------------------------------------------------------------------------
+        // 3.3 Hide Timestamp for Consecutive Messages
+        // ----------------------------------------------------------------------------
+        
+        &.post--modern.same--root.same--user {
+            .post__time {
+                display: none !important;
+            }
+        }
+          // ============================================================================
+        // 4. HOVER & PERMALINK STATES - MOBILE
+        // ============================================================================
+
+        // ----------------------------------------------------------------------------
+        // 4.1 Current User Hover States
+        // ----------------------------------------------------------------------------
+
+        &.post--modern.current--user.same--root.same--user:not(.post--compact) {
+            .post__permalink {
+                position: absolute;
+                right: 6px;
+                left: auto;
+            }
+
+            .post__time {
+                text-align: right;
+            }
+        }
+
+
+        // ============================================================================
+        // 5. THREADED POSTS - MOBILE
+        // ============================================================================
+
+        // ----------------------------------------------------------------------------
+        // 5.1 Current User Thread Timestamp
+        // ----------------------------------------------------------------------------
+
+        &.post--modern.current--user.post--thread.same--user {
+            .post__header--info {
+                .post__time {
+                    position: absolute;
+                    top: 4px;
+                    right: -14px;
+                    left: auto;
+                    text-align: right;
+                    width: 51px;
+                    line-height: 20px;
+                }
+            }
+        }
+
+
+        // ============================================================================
+        // 6. SPECIAL CASES & UTILITIES - MOBILE
+        // ============================================================================
+
+        // ----------------------------------------------------------------------------
+        // 6.1 Empty Message Bubbles (Attachments Only)
+        // ----------------------------------------------------------------------------
+
+        &.post--modern .post-message:has(.post-message__text:empty),
+        &.post--modern .post-message:has(.post-message__text > span:empty) {
+            background: none !important;
+            border: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+    }
+}

@@ -908,7 +908,7 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
             section: Preferences.MESSAGE_DISPLAY,
             display: 'messageDisplay',
             value: this.state.messageDisplay,
-            defaultDisplay: Preferences.MESSAGE_DISPLAY_CLEAN,
+            defaultDisplay: Preferences.MESSAGE_DISPLAY_MODERN,
             title: defineMessage({
                 id: 'user.settings.display.messageDisplayTitle',
                 defaultMessage: 'Message Display',
