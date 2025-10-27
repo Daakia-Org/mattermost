@@ -115,6 +115,10 @@
         img, video {
             opacity: 1;
         }
+        
+        .mention-link {
+            color: var(--mention-color) !important;
+        }
     }
     
     // ----------------------------------------------------------------------------
@@ -143,9 +147,18 @@
     // 1.5 Thread-specific Styling
     // ----------------------------------------------------------------------------
     
+    .post-pre-header {
+        padding-left: 7px;
+    }
+    
     &.post--thread {
         .post__content {
             gap: 0px;
+        }
+
+        .post-pre-header {
+           padding-left: 22px;
+     margin-bottom: -11px;
         }
     }
 }
@@ -263,6 +276,10 @@
         img, video {
             opacity: 1;
         }
+        
+        .mention-link {
+            color: var(--mention-color) !important;
+        }
     }
 
     .post-message__text,
@@ -341,6 +358,7 @@
     
     .post-pre-header {
         flex-direction: row-reverse;
+        padding-right: 23px;   
 
         .post-pre-header__icons-container {
             margin-left: 0;
@@ -352,7 +370,37 @@
     }
     
     // ----------------------------------------------------------------------------
-    // 2.9 Custom Status
+    // 2.9 Thread-specific Styling
+    // ----------------------------------------------------------------------------
+    
+    &.post--thread {
+        .post-pre-header {
+            margin-right: -44px;
+            margin-bottom: -11px;
+        }
+    }
+    
+    .ThreadFooter {
+        --button-separator-height: 15px;
+        --button-separator-gap: 4px;
+        position: relative;
+        right: -21px;
+        display: inline-flex;
+        flex-direction: row-reverse;
+        width: calc(100% + 15px);
+        align-items: center;
+        padding: 4px 9px 4px 0;
+        margin-top: 1px;
+        margin-bottom: 5px;
+        color: rgba(var(--center-channel-color-rgb), 0.75);
+        font-size: 12px;
+        line-height: 15px;
+        white-space: nowrap;
+        direction: ltr;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.10 Custom Status
     // ----------------------------------------------------------------------------
     
     &.other--root,
@@ -530,14 +578,15 @@
         }
     }
     
-    .post-menu--modern {
+    .post-menu--modern,
+    .post-menu {
         visibility: visible !important;
         position: absolute !important;
-        top: -10px;
+        top: -15px;
         left:  10;
         right: auto !important;
         z-index: 10;
-        border-radius: 12px !important;
+        border-radius: 5px !important;
         opacity: 0;
         transform: scale(0.9);
         transition: opacity 0.2s ease-out,
@@ -546,15 +595,17 @@
     }
     
     &.current--user {
-        .post-menu--modern {
+        .post-menu--modern,
+        .post-menu {
             left: auto !important;
             right:  5.4%!important;
         }
     }
     
     &.same--user {
-        .post-menu--modern {
-            top: -34px !important;
+        .post-menu--modern,
+        .post-menu {
+            top: -39px !important;
         }
     }
 }
