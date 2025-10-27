@@ -568,7 +568,7 @@ function PostComponent(props: Props) {
                     data-testid='postContent'
                 >
                     {/* Conditional avatar rendering for Modern mode */}
-                    {props.modernDisplay && props.currentUserId !== post.user_id ? (
+                    {props.modernDisplay ? (
 
                         // Modern mode: Avatar positioned to align with message bubble
                         <>

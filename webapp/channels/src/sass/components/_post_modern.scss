@@ -470,3 +470,36 @@
         }
     }
 }
+
+// ============================================================================
+// 8. MODERN POST MENU STYLES
+// ============================================================================
+
+.post--modern {
+    &:hover {
+        background-color: transparent !important;
+    }
+    
+    .post-menu--modern {
+        visibility: visible !important;
+        position: absolute !important;
+        top: 0;
+        left:  10;
+        right: auto !important;
+        z-index: 10;
+    }
+    
+    &.current--user {
+        .post-menu--modern {
+            left: auto !important;
+            right:  5.4%!important;
+        }
+    }
+    
+    &.same--user {
+        .post-menu--modern {
+            top: -23px !important;
+        }
+    }
+}
+    
