@@ -704,21 +704,23 @@ function createSetHeaderButton(channel: Channel) {
     }
 
     return (
-        <ToggleModalButton
-            modalId={ModalIdentifiers.EDIT_CHANNEL_HEADER}
-            ariaLabel={Utils.localizeMessage({id: 'intro_messages.setHeader', defaultMessage: 'Set header'})}
-            className={'action-button'}
-            dialogType={EditChannelHeaderModal}
-            dialogProps={{channel}}
-        >
-            <PencilOutlineIcon
-                size={24}
-            />
-            <FormattedMessage
-                id='intro_messages.setHeader'
-                defaultMessage='Set header'
-            />
-        </ToggleModalButton>
+        <div style={{display: 'none'}}>
+            <ToggleModalButton
+                modalId={ModalIdentifiers.EDIT_CHANNEL_HEADER}
+                ariaLabel={Utils.localizeMessage({id: 'intro_messages.setHeader', defaultMessage: 'Set header'})}
+                className={'action-button'}
+                dialogType={EditChannelHeaderModal}
+                dialogProps={{channel}}
+            >
+                <PencilOutlineIcon
+                    size={24}
+                />
+                <FormattedMessage
+                    id='intro_messages.setHeader'
+                    defaultMessage='Set header'
+                />
+            </ToggleModalButton>
+        </div>
     );
 }
 

@@ -84,7 +84,7 @@ export const Preferences = {
     MESSAGE_DISPLAY_CLEAN: 'clean',
     MESSAGE_DISPLAY_COMPACT: 'compact',
     MESSAGE_DISPLAY_MODERN: 'modern',
-    MESSAGE_DISPLAY_DEFAULT: 'clean',
+    MESSAGE_DISPLAY_DEFAULT: 'modern',
     COLORIZE_USERNAMES: 'colorize_usernames',
     COLORIZE_USERNAMES_DEFAULT: 'true',
     COLLAPSED_REPLY_THREADS: 'collapsed_reply_threads',
