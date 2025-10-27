@@ -78,7 +78,7 @@
                 border: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
                 padding: 6px 10px;
                 border-radius: 6px;
-                margin: 3px 0;
+                margin: 3px 0 1px 0;
                 word-wrap: break-word;
                 word-break: break-word;
                 display: inline-block;
@@ -93,7 +93,7 @@
                 display: flex;
                 justify-content: flex-start;
                 width: 100%;
-                margin-top: 3px;
+                margin-top: 0;
             }
         }
 
@@ -176,11 +176,12 @@
             .post-message {
                 max-width: 75%;
                 width: fit-content;
-                background: rgba(var(--button-bg-rgb), 0.15);
-                border: 1px solid rgba(var(--button-bg-rgb), 0.3);
+                background: rgba(var(--button-bg-rgb), 0.8);
+                color: var(--button-color);
+                border: 1px solid var(--button-bg);
                 padding: 6px 10px;
                 border-radius: 5px;
-                margin: 3px 0;
+                margin: 3px 0 1px 0;
                 word-wrap: break-word;
                 word-break: break-word;
                 display: inline-block;
@@ -190,7 +191,7 @@
             .post-message__text > * {
                 text-align: left;
                 direction: ltr;
-                color: inherit;
+                color: var(--button-color);
             }
             
             // ----------------------------------------------------------------------------
@@ -202,7 +203,7 @@
                 display: flex;
                 justify-content: flex-start;
                 width: 100%;
-                margin-top: 3px;
+                margin-top: 0;
             }
             
             // ----------------------------------------------------------------------------
@@ -351,8 +352,16 @@
         // ----------------------------------------------------------------------------
         
         &.post--modern.same--root.same--user {
+            // Remove gap between consecutive messages
+            padding-top: 0;
+            margin-top: -2px;
+            
             .post__time {
                 display: none !important;
+            }
+            
+            .post-message {
+                margin-top: 0;
             }
         }
           // ============================================================================
