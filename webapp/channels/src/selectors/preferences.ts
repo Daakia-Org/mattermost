@@ -30,6 +30,6 @@ export const isUseMilitaryTime = (state: GlobalState) => {
         state,
         Preferences.CATEGORY_DISPLAY_SETTINGS,
         Preferences.USE_MILITARY_TIME,
-        false,
+        true,
     );
 };

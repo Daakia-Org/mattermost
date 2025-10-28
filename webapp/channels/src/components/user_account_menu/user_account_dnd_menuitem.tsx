@@ -38,7 +38,7 @@ export default function UserAccountDndMenuItem(props: Props) {
 
     const dndEndTime = useSelector((state: GlobalState) => getDndEndTimeForUserId(state, props.userId));
 
-    const isMilitaryTime = useSelector((state: GlobalState) => getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false));
+    const isMilitaryTime = useSelector((state: GlobalState) => getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, true));
 
     const tomorrow9AMDateObject = getCurrentMomentForTimezone(props.timezone).add(1, 'day').set({hour: 9, minute: 0}).toDate();
 

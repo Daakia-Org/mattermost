@@ -55,7 +55,7 @@ function mapStateToProps(state: GlobalState, ownProps: Props) {
         enableSignUpWithOffice365,
         experimentalEnableAuthenticationTransfer,
         passwordConfig: getPasswordConfig(state),
-        militaryTime: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false),
+        militaryTime: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, true),
         deleteAccountLink: config.DeleteAccountLink,
     };
 }

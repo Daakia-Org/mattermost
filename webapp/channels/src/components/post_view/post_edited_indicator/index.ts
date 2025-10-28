@@ -56,7 +56,7 @@ function mapStateToProps(state: GlobalState, ownProps: OwnProps): StateProps {
     const timeZone: TimestampProps['timeZone'] = getCurrentTimezone(state);
     const postOwner = post ? isPostOwner(state, post) : undefined;
 
-    const isMilitaryTime = getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false);
+    const isMilitaryTime = getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, true);
     const canEdit = post ? canEditPost(state, post, license, config, channel, currentUserId) : false;
     return {isMilitaryTime, timeZone, postOwner, post, canEdit};
 }
