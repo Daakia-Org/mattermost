@@ -1,13 +1,13 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-
+/*eslint-disable */
 import React from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
 import {
     PlusIcon,
     AccountPlusOutlineIcon,
-    FolderPlusOutlineIcon,
+    // FolderPlusOutlineIcon, // Commented out - used in disabled Create new category option
     AccountMultiplePlusOutlineIcon,
     GlobeIcon,
     AccountOutlineIcon,
@@ -109,6 +109,8 @@ export default function SidebarBrowserOrAddChannelMenu(props: Props) {
         );
     }
 
+    // Commented out - disabled Create new category option
+    /*
     let createNewCategoryMenuItem: JSX.Element | null = null;
     if (!props.unreadFilterEnabled) {
         createNewCategoryMenuItem = (
@@ -126,6 +128,7 @@ export default function SidebarBrowserOrAddChannelMenu(props: Props) {
             />
         );
     }
+    */
 
     const invitePeopleMenuItem = (
         <Menu.Item
@@ -172,10 +175,10 @@ export default function SidebarBrowserOrAddChannelMenu(props: Props) {
             {browseChannelsMenuItem}
             {createDirectMessageMenuItem}
             {createUserGroupMenuItem}
-            {Boolean(createNewCategoryMenuItem) &&
+            {/* {Boolean(createNewCategoryMenuItem) &&
                 <Menu.Separator/>
-            }
-            {createNewCategoryMenuItem}
+            } */}
+            {/* {createNewCategoryMenuItem} */}
             <Menu.Separator/>
             {invitePeopleMenuItem}
         </Menu.Container>

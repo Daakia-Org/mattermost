@@ -63,7 +63,9 @@ export default function ChannelHeaderText(props: Props) {
     }
 
     if (isDirectChannel || isGroupChannel) {
-        return <AddChannelHeaderTextButton channel={props.channel}/>;
+        return null;
+
+        // return <AddChannelHeaderTextButton channel={props.channel}/>;
     }
 
     // should show option to add channel header text for any channel

@@ -28,9 +28,7 @@ import {
     uploadPublicSamlCertificate,
 } from 'actions/admin_actions';
 
-import ContentFlaggingAdditionalSettingsSection from 'components/admin_console/content_flagging/additional_settings/additional_settings';
-import ContentFlaggingContentReviewers from 'components/admin_console/content_flagging/content_reviewers/content_reviewers';
-import ContentFlaggingNotificationSettingsSection from 'components/admin_console/content_flagging/notificatin_settings/notification_settings';
+import ContentFlaggingSettings from 'components/admin_console/content_flagging/content_flagging_settings';
 import CustomPluginSettings from 'components/admin_console/custom_plugin_settings';
 import CustomProfileAttributes from 'components/admin_console/custom_profile_attributes/custom_profile_attributes';
 import PluginManagement from 'components/admin_console/plugin_management';
@@ -74,6 +72,7 @@ import {
     ComplianceExportFeatureDiscovery,
     CustomTermsOfServiceFeatureDiscovery,
     DataRetentionFeatureDiscovery,
+    GitLabFeatureDiscovery,
     GroupsFeatureDiscovery,
     GuestAccessFeatureDiscovery,
     LDAPFeatureDiscovery,
@@ -84,6 +83,7 @@ import {
     SystemRolesFeatureDiscovery,
 } from './feature_discovery/features';
 import AttributeBasedAccessControlFeatureDiscovery from './feature_discovery/features/attribute_based_access_control';
+import AutoTranslationFeatureDiscovery from './feature_discovery/features/auto_translation';
 import UserAttributesFeatureDiscovery from './feature_discovery/features/user_attributes';
 import FeatureFlags, {messages as featureFlagsMessages} from './feature_flags';
 import GroupDetails from './group_settings/group_details';
@@ -92,6 +92,8 @@ import IPFiltering from './ip_filtering';
 import LDAPWizard from './ldap_wizard';
 import LicenseSettings from './license_settings';
 import {searchableStrings as licenseSettingsSearchableStrings} from './license_settings/license_settings';
+import AutoTranslation, {searchableStrings as autoTranslationSearchableStrings} from './localization/auto_translation';
+import Localization, {searchableStrings as localizationSearchableStrings} from './localization/localization';
 import MessageExportSettings, {searchableStrings as messageExportSearchableStrings} from './message_export_settings';
 import OpenIdConvert from './openid_convert';
 import PasswordSettings, {searchableStrings as passwordSearchableStrings} from './password_settings';
@@ -433,7 +435,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.groups', defaultMessage: 'Groups'}),
                 isHidden: it.any(
                     it.licensedForFeature('LDAPGroups'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'Groups',
@@ -562,7 +563,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.systemRoles', defaultMessage: 'Delegated Granular Administration'}),
                 isHidden: it.any(
                     it.licensedForFeature('LDAPGroups'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'SystemRoles',
@@ -609,7 +609,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
                 isHidden: it.any(
                     it.minLicenseTier(LicenseSkus.Enterprise),
-                    it.not(it.enterpriseReady),
                     it.configIsFalse('FeatureFlags', 'CustomProfileAttributes'),
                 ),
                 schema: {
@@ -630,7 +629,7 @@ const AdminDefinition: AdminDefinitionType = {
                 url: `system_attributes/attribute_based_access_control/edit_policy/:policy_id(${ID_PATH_PATTERN})`,
                 isHidden: it.any(
                     it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-                    it.not(it.licensedForSku(LicenseSkus.EnterpriseAdvanced)),
+                    it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
                     it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
                 ),
                 isDisabled: it.any(
@@ -646,7 +645,7 @@ const AdminDefinition: AdminDefinitionType = {
                 url: 'system_attributes/attribute_based_access_control/edit_policy',
                 isHidden: it.any(
                     it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-                    it.not(it.licensedForSku(LicenseSkus.EnterpriseAdvanced)),
+                    it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
                     it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
                     it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
                 ),
@@ -729,7 +728,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.attributeBasedAccessControl', defaultMessage: 'Attribute-Based Access'}),
                 isHidden: it.any(
                     it.minLicenseTier(LicenseSkus.EnterpriseAdvanced),
-                    it.not(it.enterpriseReady),
                     it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
                 ),
                 schema: {
@@ -2188,7 +2186,6 @@ const AdminDefinition: AdminDefinitionType = {
                 isHidden: it.any(
                     it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.MOBILE_SECURITY)),
                     it.minLicenseTier(LicenseSkus.Enterprise),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'MobileSecurityFeatureDiscoverySettings',
@@ -2443,51 +2440,38 @@ const AdminDefinition: AdminDefinitionType = {
                 url: 'site_config/localization',
                 title: defineMessage({id: 'admin.sidebar.localization', defaultMessage: 'Localization'}),
                 isHidden: it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.SITE.LOCALIZATION)),
+                searchableStrings: localizationSearchableStrings.concat(autoTranslationSearchableStrings),
                 schema: {
                     id: 'LocalizationSettings',
                     name: defineMessage({id: 'admin.site.localization', defaultMessage: 'Localization'}),
                     settings: [
                         {
-                            type: 'language',
-                            key: 'LocalizationSettings.DefaultServerLocale',
-                            label: defineMessage({id: 'admin.general.localization.serverLocaleTitle', defaultMessage: 'Default Server Language:'}),
-                            help_text: defineMessage({id: 'admin.general.localization.serverLocaleDescription', defaultMessage: 'Default language for system messages.'}),
+                            type: 'custom',
+                            key: 'LocalizationSettings',
+                            component: Localization,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.LOCALIZATION)),
                         },
                         {
-                            type: 'language',
-                            key: 'LocalizationSettings.DefaultClientLocale',
-                            label: defineMessage({id: 'admin.general.localization.clientLocaleTitle', defaultMessage: 'Default Client Language:'}),
-                            help_text: defineMessage({id: 'admin.general.localization.clientLocaleDescription', defaultMessage: 'Default language for newly created users and pages where the user hasn\'t logged in.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.LOCALIZATION)),
+                            type: 'custom',
+                            key: 'AutoTranslationSettings',
+                            component: AutoTranslation,
+                            isHidden: it.any(
+                                it.configIsFalse('FeatureFlags', 'AutoTranslation'),
+                                it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
+                            ),
                         },
                         {
-                            type: 'language',
-                            key: 'LocalizationSettings.AvailableLocales',
-                            label: defineMessage({id: 'admin.general.localization.availableLocalesTitle', defaultMessage: 'Available Languages:'}),
-                            help_text: defineMessage({id: 'admin.general.localization.availableLocalesDescription', defaultMessage: 'Set which languages are available for users in <strong>Settings > Display > Language</strong> (leave this field blank to have all supported languages available). If you\'re manually adding new languages, the <strong>Default Client Language</strong> must be added before saving this setting.\n \nWould like to help with translations? Join the <link>Mattermost Translation Server</link> to contribute.'}),
-                            help_text_markdown: false,
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='http://translate.mattermost.com/'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
+                            type: 'custom',
+                            key: 'auto-translation-discovery',
+                            component: AutoTranslationFeatureDiscovery,
+                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
+                            isHidden: it.any(
+                                it.all(
+                                    it.configIsTrue('FeatureFlags', 'AutoTranslation'),
+                                    it.minLicenseTier(LicenseSkus.EnterpriseAdvanced),
                                 ),
-                                strong: (msg: string) => <strong>{msg}</strong>,
-                            },
-                            multiple: true,
-                            no_result: defineMessage({id: 'admin.general.localization.availableLocalesNoResults', defaultMessage: 'No results found'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.LOCALIZATION)),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'LocalizationSettings.EnableExperimentalLocales',
-                            label: defineMessage({id: 'admin.general.localization.enableExperimentalLocalesTitle', defaultMessage: 'Enable Experimental Locales:'}),
-                            help_text: defineMessage({id: 'admin.general.localization.enableExperimentalLocalesDescription', defaultMessage: 'When true, it allows users to select experimental (e.g., in progress) languages.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.LOCALIZATION)),
+                                it.configIsFalse('FeatureFlags', 'AutoTranslation'),
+                            ),
                         },
                     ],
                 },
@@ -2527,7 +2511,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'dropdown',
                             key: 'TeamSettings.RestrictDirectMessage',
                             label: defineMessage({id: 'admin.team.restrictDirectMessage', defaultMessage: 'Enable users to open Direct Message channels with:'}),
-                            help_text: defineMessage({id: 'admin.team.restrictDirectMessageDesc', defaultMessage: '"Any user on the Mattermost server" enables users to open a Direct Message channel with any user on the server, even if they are not on any teams together. "Any member of the team" limits the ability in the Direct Messages "More" menu to only open Direct Message channels with users who are in the same team. Note: This setting only affects the UI, not permissions on the server.'}),
+                            help_text: defineMessage({id: 'admin.team.restrictDirectMessageDesc', defaultMessage: '"Any user on the Mattermost server" enables users to open a Direct Message channel with any user on the server, even if they are not on any teams together. "Any member of the team" limits the ability in the Direct Messages "More" menu to only open Direct Message channels with users who are in the same team.'}),
                             options: [
                                 {
                                     value: 'any',
@@ -2880,7 +2864,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.announcement', defaultMessage: 'System-wide Notifications'}),
                 isHidden: it.any(
                     it.licensedForFeature('Announcement'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'AnnouncementSettings',
@@ -3262,7 +3245,7 @@ const AdminDefinition: AdminDefinitionType = {
                 url: 'site_config/content_flagging',
                 title: defineMessage({id: 'admin.sidebar.contentFlagging', defaultMessage: 'Content Flagging'}),
                 isHidden: it.any(
-                    it.not(it.licensedForSku(LicenseSkus.EnterpriseAdvanced)),
+                    it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
                     it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
                     it.configIsFalse('FeatureFlags', 'ContentFlagging'),
                 ),
@@ -3270,29 +3253,7 @@ const AdminDefinition: AdminDefinitionType = {
                 restrictedIndicator: getRestrictedIndicator(false, LicenseSkus.EnterpriseAdvanced),
                 schema: {
                     id: 'ContentFlaggingSettings',
-                    name: defineMessage({id: 'admin.contentFlagging.title', defaultMessage: 'Content Flagging'}),
-                    settings: [
-                        {
-                            type: 'bool',
-                            key: 'ContentFlaggingSettings.EnableContentFlagging',
-                            label: defineMessage({id: 'admin.contentFlagging.enableTitle', defaultMessage: 'Enable Content Flagging'}),
-                        },
-                        {
-                            type: 'custom',
-                            key: 'ContentFlaggingSettings.ReviewerSettings',
-                            component: ContentFlaggingContentReviewers,
-                        },
-                        {
-                            type: 'custom',
-                            key: 'ContentFlaggingSettings.NotificationSettings',
-                            component: ContentFlaggingNotificationSettingsSection,
-                        },
-                        {
-                            type: 'custom',
-                            key: 'ContentFlaggingSettings.AdditionalSettings',
-                            component: ContentFlaggingAdditionalSettingsSection,
-                        },
-                    ],
+                    component: ContentFlaggingSettings,
                 },
             },
             wrangler: {
@@ -3715,7 +3676,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.ldap', defaultMessage: 'AD/LDAP'}),
                 isHidden: it.any(
                     it.licensedForFeature('LDAP'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'LdapSettings',
@@ -4193,7 +4153,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.saml', defaultMessage: 'SAML 2.0'}),
                 isHidden: it.any(
                     it.licensedForFeature('SAML'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'SamlSettings',
@@ -4208,112 +4167,6 @@ const AdminDefinition: AdminDefinitionType = {
                     ],
                 },
                 restrictedIndicator: getRestrictedIndicator(true),
-            },
-            gitlab: {
-                url: 'authentication/gitlab',
-                title: defineMessage({id: 'admin.sidebar.gitlab', defaultMessage: 'GitLab'}),
-                isHidden: it.any(
-                    it.licensed,
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                ),
-                schema: {
-                    id: 'GitLabSettings',
-                    name: defineMessage({id: 'admin.authentication.gitlab', defaultMessage: 'GitLab'}),
-                    onConfigLoad: (config) => {
-                        const newState: { 'GitLabSettings.Url'?: string } = {};
-                        newState['GitLabSettings.Url'] = config.GitLabSettings?.UserAPIEndpoint?.replace('/api/v4/user', '');
-                        return newState;
-                    },
-                    onConfigSave: (config) => {
-                        const newConfig = {...config};
-                        newConfig.GitLabSettings.UserAPIEndpoint = config.GitLabSettings.Url.replace(/\/$/, '') + '/api/v4/user';
-                        return newConfig;
-                    },
-                    settings: [
-                        {
-                            type: 'bool',
-                            key: 'GitLabSettings.Enable',
-                            label: defineMessage({id: 'admin.gitlab.enableTitle', defaultMessage: 'Enable authentication with GitLab: '}),
-                            help_text: defineMessage({id: 'admin.gitlab.enableDescription', defaultMessage: 'When true, Mattermost allows team creation and account signup using GitLab OAuth.{lineBreak} {lineBreak}1. Log in to your GitLab account and go to Profile Settings -> Applications.{lineBreak}2. Enter Redirect URIs "<loginUrlChunk>your-mattermost-url</loginUrlChunk>" (example: http://localhost:8065/login/gitlab/complete) and "<signupUrlChunk>your-mattermost-url</signupUrlChunk>".\n3. Then use "Application Secret Key" and "Application ID" fields from GitLab to complete the options below.\n4. Complete the Endpoint URLs below.'}),
-                            help_text_values: {
-                                lineBreak: '\n',
-                                loginUrlChunk: (chunk: string) => `<${chunk}>/login/gitlab/complete"`,
-                                signupUrlChunk: (chunk: string) => `<${chunk}>/signup/gitlab/complete"`,
-                            },
-                            help_text_markdown: true,
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Id',
-                            label: defineMessage({id: 'admin.gitlab.clientIdTitle', defaultMessage: 'Application ID:'}),
-                            help_text: defineMessage({id: 'admin.gitlab.clientIdDescription', defaultMessage: 'Obtain this value via the instructions above for logging into GitLab.'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.clientIdExample', defaultMessage: 'E.g.: "jcuS8PuvcpGhpgHhlcpT1Mx42pnqMxQY"'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                                it.stateIsFalse('GitLabSettings.Enable'),
-                            ),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Secret',
-                            label: defineMessage({id: 'admin.gitlab.clientSecretTitle', defaultMessage: 'Application Secret Key:'}),
-                            help_text: defineMessage({id: 'admin.gitlab.clientSecretDescription', defaultMessage: 'Obtain this value via the instructions above for logging into GitLab.'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.clientSecretExample', defaultMessage: 'E.g.: "jcuS8PuvcpGhpgHhlcpT1Mx42pnqMxQY"'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                                it.stateIsFalse('GitLabSettings.Enable'),
-                            ),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Url',
-                            label: defineMessage({id: 'admin.gitlab.siteUrl', defaultMessage: 'GitLab Site URL:'}),
-                            help_text: defineMessage({id: 'admin.gitlab.siteUrlDescription', defaultMessage: 'Enter the URL of your GitLab instance, e.g. https://example.com:3000. If your GitLab instance is not set up with SSL, start the URL with http:// instead of https://.'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.siteUrlExample', defaultMessage: 'E.g.: https://'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                                it.stateIsFalse('GitLabSettings.Enable'),
-                            ),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.UserAPIEndpoint',
-                            label: defineMessage({id: 'admin.gitlab.userTitle', defaultMessage: 'User API Endpoint:'}),
-                            dynamic_value: (value, config, state) => {
-                                if (state['GitLabSettings.Url']) {
-                                    return state['GitLabSettings.Url'].replace(/\/$/, '') + '/api/v4/user';
-                                }
-                                return '';
-                            },
-                            isDisabled: true,
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.AuthEndpoint',
-                            label: defineMessage({id: 'admin.gitlab.authTitle', defaultMessage: 'Auth Endpoint:'}),
-                            dynamic_value: (value, config, state) => {
-                                if (state['GitLabSettings.Url']) {
-                                    return state['GitLabSettings.Url'].replace(/\/$/, '') + '/oauth/authorize';
-                                }
-                                return '';
-                            },
-                            isDisabled: true,
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.TokenEndpoint',
-                            label: defineMessage({id: 'admin.gitlab.tokenTitle', defaultMessage: 'Token Endpoint:'}),
-                            dynamic_value: (value, config, state) => {
-                                if (state['GitLabSettings.Url']) {
-                                    return state['GitLabSettings.Url'].replace(/\/$/, '') + '/oauth/token';
-                                }
-                                return '';
-                            },
-                            isDisabled: true,
-                        },
-                    ],
-                },
             },
             oauth: {
                 url: 'authentication/oauth',
@@ -4993,7 +4846,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.openid', defaultMessage: 'OpenID Connect'}),
                 isHidden: it.any(
                     it.any(it.licensedForFeature('OpenId'), it.cloudLicensed),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'OpenIdSettings',
@@ -5003,6 +4855,27 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'custom',
                             component: OpenIDFeatureDiscovery,
                             key: 'OpenIDFeatureDiscovery',
+                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
+                        },
+                    ],
+                },
+                restrictedIndicator: getRestrictedIndicator(true),
+            },
+            gitlab_feature_discovery: {
+                url: 'authentication/gitlab',
+                isDiscovery: true,
+                title: defineMessage({id: 'admin.sidebar.gitlab', defaultMessage: 'GitLab'}),
+                isHidden: it.any(
+                    it.licensedForFeature('OpenId'),
+                ),
+                schema: {
+                    id: 'GitLabSettings',
+                    name: defineMessage({id: 'admin.authentication.gitlab', defaultMessage: 'GitLab'}),
+                    settings: [
+                        {
+                            type: 'custom',
+                            component: GitLabFeatureDiscovery,
+                            key: 'GitLabFeatureDiscovery',
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
                         },
                     ],
@@ -5096,7 +4969,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.guest_access', defaultMessage: 'Guest Access'}),
                 isHidden: it.any(
                     it.licensedForFeature('GuestAccounts'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'GuestAccountsSettings',
@@ -5536,7 +5408,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.dataRetentionPolicy', defaultMessage: 'Data Retention Policy'}),
                 isHidden: it.any(
                     it.licensedForFeature('DataRetention'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'DataRetentionSettings',
@@ -5573,7 +5444,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.complianceExport', defaultMessage: 'Compliance Export'}),
                 isHidden: it.any(
                     it.licensedForFeature('MessageExport'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'MessageExportSettings',
@@ -5827,7 +5697,6 @@ const AdminDefinition: AdminDefinitionType = {
                 title: defineMessage({id: 'admin.sidebar.customTermsOfService', defaultMessage: 'Custom Terms of Service'}),
                 isHidden: it.any(
                     it.licensedForFeature('CustomTermsOfService'),
-                    it.not(it.enterpriseReady),
                 ),
                 schema: {
                     id: 'TermsOfServiceSettings',

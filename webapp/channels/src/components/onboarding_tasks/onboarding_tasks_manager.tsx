@@ -24,7 +24,6 @@ import {getOnboardingTaskPreferences} from 'selectors/onboarding';
 import Channels from 'components/common/svg_images_components/channels_svg';
 import Gears from 'components/common/svg_images_components/gears_svg';
 import Handshake from 'components/common/svg_images_components/handshake_svg';
-import Phone from 'components/common/svg_images_components/phone_svg';
 import Security from 'components/common/svg_images_components/security_svg';
 import Sunglasses from 'components/common/svg_images_components/sunglasses_svg';
 import LearnMoreTrialModal from 'components/learn_more_trial_modal/learn_more_trial_modal';
@@ -43,7 +42,7 @@ import {ModalIdentifiers} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
-import {OnboardingTaskCategory, OnboardingTaskList, OnboardingTasksName, TaskNameMapToSteps} from './constants';
+import {OnboardingTaskCategory, OnboardingTasksName, TaskNameMapToSteps} from './constants';
 
 const useGetTaskDetails = () => {
     const {formatMessage} = useIntl();
@@ -170,7 +169,7 @@ export const useHandleOnBoardingTaskData = () => {
     const dispatch = useDispatch();
     const currentUserId = useSelector(getCurrentUserId);
     const storeSavePreferences = useCallback(
-        (taskCategory: string, taskName, step: number) => {
+        (taskCategory: string, taskName: string, step: number) => {
             const preferences = [
                 {
                     user_id: currentUserId,
@@ -187,9 +186,8 @@ export const useHandleOnBoardingTaskData = () => {
     return useCallback((
         taskName: string,
         step: number,
-        taskCategory = OnboardingTaskCategory,
     ) => {
-        storeSavePreferences(taskCategory, taskName, step);
+        storeSavePreferences(OnboardingTaskCategory, taskName, step);
     }, [storeSavePreferences]);
 };
 
@@ -206,7 +204,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
     return (taskName: string) => {
         switch (taskName) {
         case OnboardingTasksName.CHANNELS_TOUR: {
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED);
             const tourCategory = TutorialTourName.ONBOARDING_TUTORIAL_STEP;
             const preferences = [
                 {
@@ -233,7 +231,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
         case OnboardingTasksName.COMPLETE_YOUR_PROFILE: {
             openMenu(ELEMENT_ID_FOR_USER_ACCOUNT_MENU_BUTTON);
             dispatch(setShowOnboardingCompleteProfileTour(true));
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED);
             if (inAdminConsole) {
                 dispatch(switchToChannels());
             }
@@ -242,7 +240,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
         case OnboardingTasksName.VISIT_SYSTEM_CONSOLE: {
             dispatch(setProductMenuSwitcherOpen(true));
             dispatch(setShowOnboardingVisitConsoleTour(true));
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED);
             break;
         }
         case OnboardingTasksName.INVITE_PEOPLE: {
@@ -253,10 +251,12 @@ export const useHandleOnBoardingTaskTrigger = () => {
             } else {
                 dispatch(openInvitationsModal());
             }
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
             break;
         }
+
         // case OnboardingTasksName.DOWNLOAD_APP: {
+
         //     handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED, true);
         //     const preferences = [{
         //         user_id: currentUserId,
@@ -274,7 +274,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
                 dialogType: LearnMoreTrialModal,
             }));
 
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED, true);
+            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
             break;
         }
         default:

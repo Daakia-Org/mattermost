@@ -2,6 +2,9 @@
 @use "utils/mixins";
 @use "utils/variables";
 
+// Import Modern mode specific mobile styles
+@import "post_modern_mobile";
+
 @media screen and (max-width: 768px) {
     #navbar_wrapper {
         .navbar-default {
@@ -850,14 +853,7 @@
             }
         }
 
-        /* Do not add extra right padding for current-user posts on mobile */
-        &.post--modern.current--user {
-            .post__header {
-                padding-right: 0;
-                /* padding-left: 70px; */
-                margin-bottom: 0;
-            }
-        }
+            
 
         .comment-icon__container {
             display: none;
@@ -1606,7 +1602,7 @@
     .app__body {
         &.announcement-bar--fixed {
             .modal {
-                padding-top: variables.$announcement-bar-height;
+                padding-top: calc(var(--announcement-bar-count, 1) * #{variables.$announcement-bar-height});
             }
         }
 

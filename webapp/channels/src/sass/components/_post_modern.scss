@@ -1,0 +1,612 @@
+// ============================================================================
+// MODERN DISPLAY MODE STYLES
+// ============================================================================
+// This file contains all Modern mode specific styling for posts
+// Modern mode displays messages in a chat-like bubble interface
+// ============================================================================
+
+// ============================================================================
+// 0. GENERAL MODERN MODE OVERRIDES
+// ============================================================================
+
+.post--modern {
+    // Reduce overall post spacing
+    padding: 4px 0.5em 0 1.5em;
+    
+    // Reduce spacing for consecutive posts from same user
+    &.same--root.same--user {
+        padding: 2px 0.5em 0 1.5em;
+    }
+}
+
+
+// ============================================================================
+// 1. OTHER USERS (LEFT-ALIGNED MESSAGES)
+// ============================================================================
+
+.post--modern:not(.current--user) {
+    
+    // ----------------------------------------------------------------------------
+    // 1.1 Layout & Structure
+    // ----------------------------------------------------------------------------
+    
+    .post__content {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    
+    .post__img--modern {
+        flex-shrink: 0;
+        margin-top: 22px;
+        width: 32px;
+        height: 32px;
+    }
+    
+    .post__content--modern {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 1.2 Header (Name & Timestamp)
+    // ----------------------------------------------------------------------------
+    
+    .post__header {
+        margin-bottom: 1px;
+        
+        .col__name {
+            font-size: 0.9em;
+            opacity: 0.73;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-right: 8px;
+        }
+        
+        .col.d-flex.align-items-center {
+            .post__time {
+                font-size: 0.9em;
+                opacity: 0.73;
+                line-height: 1.2;
+                font-weight: normal;
+            }
+        }
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 1.3 Message Body & Bubble
+    // ----------------------------------------------------------------------------
+    
+    .post__body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        padding: 0;
+    }
+
+    .post-message {
+        max-width: 70%;
+        width: fit-content;
+        background: rgba(var(--center-channel-color-rgb), 0.06);
+        color: var(--center-channel-color);
+        padding: 8px 12px;
+        border-radius: 2px 5px 5px 2px;
+        margin: 2px 0 1px 0;
+        word-wrap: break-word;
+        word-break: break-word;
+        display: inline-block;
+        
+        // Links & Mentions
+        a, .mention, .channel-link {
+            color: var(--link-color) !important;
+            opacity: 0.9;
+        }
+        
+        // Code blocks
+        code {
+            background: rgba(var(--center-channel-color-rgb), 0.1);
+            color: var(--center-channel-color);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        // Media
+        img, video {
+            opacity: 1;
+        }
+        
+        .mention-link {
+            color: var(--mention-color) !important;
+        }
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 1.4 Reactions
+    // ----------------------------------------------------------------------------
+    
+    .post__body-reactions-acks,
+    .post-reaction-list {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: -4px;
+        margin-bottom: 4px;
+        gap: 2px;
+        
+        .Reaction {
+            margin: 0 1px;
+        }
+        
+        .post-acknowledgements {
+            margin: 0 2px;
+        }
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 1.5 Thread-specific Styling
+    // ----------------------------------------------------------------------------
+    
+    .post-pre-header {
+        padding-left: 7px;
+    }
+    
+    &.post--thread {
+        .post__content {
+            gap: 0px;
+        }
+
+        .post-pre-header {
+           padding-left: 22px;
+     margin-bottom: -11px;
+        }
+    }
+}
+
+
+// ============================================================================
+// 2. CURRENT USER (RIGHT-ALIGNED MESSAGES)
+// ============================================================================
+
+.post--modern.current--user {
+    
+    // ----------------------------------------------------------------------------
+    // 2.1 Hide Avatar & Username
+    // ----------------------------------------------------------------------------
+    
+    .post__img {
+        display: none !important;
+    }
+    
+    .col__name {
+        display: none !important;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.2 Layout & Direction (RTL for right alignment)
+    // ----------------------------------------------------------------------------
+    
+    .post__content {
+        direction: rtl;
+    }
+
+    .post__header-body {
+        direction: ltr;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.3 Header (Name & Timestamp)
+    // ----------------------------------------------------------------------------
+
+    .post__header {
+        justify-content: flex-end;
+        gap: 8px;
+        margin-bottom: 1px;
+        
+        .col__name {
+            font-size: 0.9em;
+            opacity: 0.73;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-right: 8px;
+        }
+        
+        .col.d-flex.align-items-center {
+            .post__time {
+                font-size: 0.9em;
+                opacity: 0.73;
+                line-height: 1.2;
+                font-weight: normal;
+            }
+        }
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.4 Message Body & Bubble
+    // ----------------------------------------------------------------------------
+
+    .post__body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+        padding: 0;
+        
+        p {
+            text-align: left;
+            direction: ltr;
+            color: var(--button-color);
+        }
+    }
+
+    .post-message {
+        max-width: 70%;
+        width: fit-content;
+        background: rgba(var(--button-bg-rgb), 0.8);
+        color: var(--button-color);
+        padding: 8px 12px;
+        border-radius: 5px 2px 2px 5px;
+        margin: 2px 0 1px 0;
+        word-wrap: break-word;
+        word-break: break-word;
+        display: inline-block;
+        
+        // Links & Channel Links
+        a, .channel-link {
+            color: var(--button-color) !important;
+            text-decoration: underline;
+        }
+        
+        // Mentions
+        .mention {
+            background: var(--mention-bg);
+            color: var(--mention-color) !important;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        // Code blocks
+        code {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--button-color);
+        }
+        
+        // Media
+        img, video {
+            opacity: 1;
+        }
+        
+        .mention-link {
+            color: var(--mention-color) !important;
+        }
+    }
+
+    .post-message__text,
+    .post-message__text > * {
+        text-align: left;
+        direction: ltr;
+        color: var(--button-color);
+        
+        a, .channel-link {
+            color: var(--button-color) !important;
+            text-decoration: underline;
+        }
+        
+        .mention {
+            background: var(--mention-bg);
+            color: var(--mention-color) !important;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        code {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--button-color);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.5 Reactions
+    // ----------------------------------------------------------------------------
+    
+    .post__body-reactions-acks,
+    .post-reaction-list {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: -4px;
+        margin-bottom: 2px;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.6 Attachments & Media
+    // ----------------------------------------------------------------------------
+
+    .post-image__columns {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-self: flex-end;
+        margin-left: auto;
+        direction: ltr;
+        text-align: left;
+    }
+
+    .file-view--single {
+        align-self: flex-end;
+        margin-left: auto;
+        direction: ltr;
+        text-align: left;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.7 Actions Menu
+    // ----------------------------------------------------------------------------
+    
+    .post__header .post-menu {
+        left: 0;
+        right: auto;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.8 Pinned Indicator
+    // ----------------------------------------------------------------------------
+    
+    .post-pre-header {
+        flex-direction: row-reverse;
+        padding-right: 23px;   
+
+        .post-pre-header__icons-container {
+            margin-left: 0;
+            margin-right: 5px;
+            padding-right: 0;
+            padding-left: 9px;
+            justify-content: flex-start;
+        }
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.9 Thread-specific Styling
+    // ----------------------------------------------------------------------------
+    
+    &.post--thread {
+        .post-pre-header {
+            margin-right: -44px;
+            margin-bottom: -11px;
+        }
+    }
+    
+    .ThreadFooter {
+        --button-separator-height: 15px;
+        --button-separator-gap: 4px;
+        position: relative;
+        right: -21px;
+        display: inline-flex;
+        flex-direction: row-reverse;
+        width: calc(100% + 15px);
+        align-items: center;
+        padding: 4px 9px 4px 0;
+        margin-top: 1px;
+        margin-bottom: 5px;
+        color: rgba(var(--center-channel-color-rgb), 0.75);
+        font-size: 12px;
+        line-height: 15px;
+        white-space: nowrap;
+        direction: ltr;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 2.10 Custom Status
+    // ----------------------------------------------------------------------------
+    
+    &.other--root,
+    &.post--root {
+        .post__header-set-custom-status {
+            display: revert;
+            padding: 0 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            background: rgba(var(--center-channel-color-rgb), 0.08);
+
+            &-icon > svg {
+                width: 12px;
+                height: 12px;
+                margin-right: 4px;
+                background: inherit;
+                fill: rgba(var(--center-channel-color-rgb), 0.64);
+                vertical-align: middle;
+            }
+
+            &-text {
+                color: rgba(var(--center-channel-color-rgb), 0.75);
+                font-size: 12px;
+                font-weight: normal;
+            }
+
+            &:hover {
+                &-icon > svg {
+                    fill: rgba(var(--center-channel-color-rgb), 0.8);
+                }
+
+                &-text {
+                    color: rgba(var(--center-channel-color-rgb), 0.8);
+                }
+            }
+
+            &:active {
+                background: rgba(var(--button-bg-rgb), 0.08);
+
+                &-icon > svg {
+                    fill: var(--button-bg);
+                }
+
+                &-text {
+                    color: var(--button-bg);
+                }
+            }
+        }
+    }
+}
+
+
+// ============================================================================
+// 3. CONSECUTIVE MESSAGES (SAME USER)
+// ============================================================================
+
+.post--modern.same--root.same--user {
+    // Remove gap between consecutive messages
+    padding-top: 0;
+    margin-top: -2px;
+    
+    // ----------------------------------------------------------------------------
+    // 3.1 Hide Timestamp
+    // ----------------------------------------------------------------------------
+    
+    .post__time {
+        display: none !important;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 3.2 Adjust Message Bubble Margins
+    // ----------------------------------------------------------------------------
+    
+    .post-message {
+        margin-top: 0;
+    }
+}
+
+
+// ============================================================================
+// 4. HOVER & PERMALINK STATES
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// 4.1 Current User Hover States
+// ----------------------------------------------------------------------------
+
+.post--modern.current--user.same--root.same--user:not(.post--compact) {
+    .post__permalink {
+        position: absolute;
+        right: 6px;
+        left: auto;
+    }
+
+    .post__time {
+        text-align: right;
+    }
+}
+
+
+// ============================================================================
+// 5. THREADED POSTS
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// 5.1 Current User Thread Timestamp
+// ----------------------------------------------------------------------------
+
+.post--modern.current--user.post--thread.same--user {
+    .post__header--info {
+        .post__time {
+            position: absolute;
+            top: 4px;
+            right: -14px;
+            left: auto;
+            text-align: right;
+            width: 51px;
+            line-height: 20px;
+        }
+    }
+}
+
+
+// ============================================================================
+// 6. SPECIAL CASES & UTILITIES
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// 6.1 Empty Message Bubbles (Attachments Only)
+// ----------------------------------------------------------------------------
+
+.post--modern .post-message:has(.post-message__text:empty),
+.post--modern .post-message:has(.post-message__text > span:empty) {
+    background: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+// ============================================================================
+// 7. CONTAINER-SPECIFIC ADJUSTMENTS
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// 7.1 Right Container & Thread Viewer
+// ----------------------------------------------------------------------------
+
+.post-right__container,
+.ThreadViewer {
+    .post--modern {
+        .post__img--modern {
+            padding: 2px 10px 0 0 !important;
+        }
+    }
+}
+
+// ============================================================================
+// 8. MODERN POST MENU STYLES
+// ============================================================================
+
+.post--modern {
+    &:hover {
+        background-color: transparent !important;
+    }
+    
+    // Show menu when hovering the message bubble OR the menu itself (so it doesn't disappear)
+    &:has(.post-message:hover),
+    &:has(.post-menu--modern:hover) {
+        .post-menu--modern {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    }
+    
+    .post-menu--modern,
+    .post-menu {
+        visibility: visible !important;
+        position: absolute !important;
+        top: -15px;
+        left:  10;
+        right: auto !important;
+        z-index: 10;
+        border-radius: 5px !important;
+        opacity: 0;
+        transform: scale(0.9);
+        transition: opacity 0.2s ease-out,
+                    transform 0.2s ease-out;
+        pointer-events: auto !important;
+    }
+    
+    &.current--user {
+        .post-menu--modern,
+        .post-menu {
+            left: auto !important;
+            right:  5.4%!important;
+        }
+    }
+    
+    &.same--user {
+        .post-menu--modern,
+        .post-menu {
+            top: -39px !important;
+        }
+    }
+}
+    

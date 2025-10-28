@@ -98,3 +98,9 @@
 .userGuideHelp {
     display: inline-table;
 }
+
+// Channel header avatar status icon fix
+.channel-header__top .status {
+    width: 10px !important;
+    height: 10px !important;
+}

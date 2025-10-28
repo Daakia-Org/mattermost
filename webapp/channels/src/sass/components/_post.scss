@@ -2,6 +2,9 @@
 @use "utils/mixins";
 @use "utils/variables";
 
+// Import Modern mode specific styles
+@import "post_modern";
+
 .app__body {
     .custom-textarea {
         overflow: hidden;
@@ -1192,26 +1195,12 @@
         }
     }
 
-    // Modern display mode: flip pinned indicator to right side for current user
-    &.post--modern.current--user {
-        .post-pre-header {
-            flex-direction: row-reverse;
-
-            .post-pre-header__icons-container {
-                margin-left: 0;
-                margin-right: 5px;
-                padding-right: 0;
-                padding-left: 9px;
-                justify-content: flex-start;
-            }
-        }
-    }
 
     .post__content {
         position: relative;
         display: table;
         width: 100%;
-        padding: 0 8px 0 5px; // if the left margin changes, the margin of post-pre-header__icons-container needs to be adjusted accordingly
+        padding: 0 60px 0 5px; // if the left margin changes, the margin of post-pre-header__icons-container needs to be adjusted accordingly
         margin: 0 auto;
         table-layout: fixed;
 
@@ -2014,154 +2003,10 @@
     text-align: left;
 }
 
-.post--modern.current--user {
-    .post__content {
-        direction: rtl;
-    }
 
-    .post__header-body {
-        direction: ltr;
-    }
 
-    .post__header {
-        justify-content: flex-end;
-        gap: 8px;
-    }
 
-    .post__body {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end; // bubble and reactions to right edge
-        width: 100%;
-    }
 
-    .post-message {
-        max-width: 70%;
-        width: fit-content;
-        background: var(--center-channel-bg);
-        color: var(--center-channel-color);
-        border: 1px solid rgba(var(--button-bg-rgb), 0.24);
-        padding: 8px 12px;
-        border-radius: 10px;
-        margin: 4px 0;
-        word-wrap: break-word;
-        word-break: break-word;
-        display: inline-block;
-    }
-
-    .post-message__text,
-    .post-message__text > * {
-        text-align: left;
-        direction: ltr;
-        color: inherit;
-    }
-
-    .post__body p {
-        text-align: left;
-        direction: ltr;
-        color: inherit;
-    }
-
-    .post__body-reactions-acks,
-    .post-reaction-list {
-        display: flex;
-        justify-content: flex-start;
-        width: 100%;
-        margin-top: 4px;
-    }
-
-    .post-image__columns {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        align-self: flex-end;
-        margin-left: auto; // push the whole attachments block to the right
-        direction: ltr; // keep internal layout stable
-        text-align: left;
-    }
-
-    /* Single image/file preview block should sit on the right as well */
-    .file-view--single {
-        align-self: flex-end;
-        margin-left: auto;
-        direction: ltr;
-        text-align: left;
-    }
-}
-
-/* Hide bubble when there is no message text (attachments-only) */
-.post--modern .post-message:has(.post-message__text:empty),
-.post--modern .post-message:has(.post-message__text > span:empty) {
-    background: none !important;
-    border: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-/* Flip actions menu to left for current user; others remain right by default */
-.post--modern.current--user .post__header .post-menu {
-    left: 0;
-    right: auto;
-}
-
-/* Hover timestamp/permalink on the opposite side for current user */
-.post--modern.current--user.same--root.same--user:not(.post--compact) {
-    .post__permalink {
-        position: absolute;
-        right: 6px;
-        left: auto;
-    }
-
-    .post__time {
-        text-align: right;
-    }
-}
-
-/* Threaded current-user posts: move inline time to the right side */
-.post--modern.current--user.post--thread.same--user {
-    .post__header--info {
-        .post__time {
-            position: absolute;
-            top: 4px;
-            right: -14px;
-            left: auto;
-            text-align: right;
-            width: 51px;
-            line-height: 20px;
-        }
-    }
-}
-
-/* Other users: neutral bubble on the left with slightly tighter radius */
-.post--modern:not(.current--user) {
-    .post__body {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; // bubble and reactions to left edge
-        width: 100%;
-    }
-
-    .post-message {
-        max-width: 70%;
-        width: fit-content;
-        background: rgba(var(--center-channel-color-rgb), 0.04);
-        color: var(--center-channel-color);
-        border: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
-        padding: 8px 12px;
-        border-radius: 8px; /* tighter than current-user */
-        margin: 4px 0;
-        word-wrap: break-word;
-        word-break: break-word;
-        display: inline-block;
-    }
-    .post__body-reactions-acks,
-    .post-reaction-list {
-        display: flex;
-        justify-content: flex-start;
-        width: 100%;
-        margin-top: 4px;
-    }
-}
 
 .view-history__text {
     display: block;
@@ -2374,65 +2219,3 @@
     display: none;
 }
 
-.post--modern.current--user {
-    &.other--root,
-    &.post--root {
-        .post__header-set-custom-status {
-            display: revert;
-            padding: 0 6px;
-            border-radius: 4px;
-            margin-left: 8px;
-            background: rgba(var(--center-channel-color-rgb), 0.08);
-
-            &-icon > svg {
-                width: 12px;
-                height: 12px;
-                margin-right: 4px;
-                background: inherit;
-                fill: rgba(var(--center-channel-color-rgb), 0.64);
-                vertical-align: middle;
-            }
-
-            &-text {
-                color: rgba(var(--center-channel-color-rgb), 0.75);
-                font-size: 12px;
-                font-weight: normal;
-            }
-
-            &:hover {
-                &-icon > svg {
-                    fill: rgba(var(--center-channel-color-rgb), 0.8);
-                }
-
-                &-text {
-                    color: rgba(var(--center-channel-color-rgb), 0.8);
-                }
-            }
-
-            &:active {
-                background: rgba(var(--button-bg-rgb), 0.08);
-
-                &-icon > svg {
-                    fill: var(--button-bg);
-                }
-
-                &-text {
-                    color: var(--button-bg);
-                }
-            }
-        }
-    }
-
-    &.post--comment {
-        .post__body {
-            border-color: rgba(var(--button-bg-rgb), 0.24);
-        }
-
-        &.other--root {
-            .post-comment {
-                border-color: rgba(var(--center-channel-color-rgb), 0.1);
-                background-color: rgba(var(--center-channel-color-rgb), 0.05);
-            }
-        }
-    }
-}

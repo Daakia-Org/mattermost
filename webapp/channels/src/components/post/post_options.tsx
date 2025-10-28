@@ -55,6 +55,7 @@ type Props = {
     isPostBeingEdited?: boolean;
     canDelete?: boolean;
     pluginActions: PostActionComponent[];
+    modernDisplay?: boolean;
     actions: {
         emitShortcutReactToLastPostFrom: (emittedFrom: 'CENTER' | 'RHS_ROOT' | 'NO_WHERE') => void;
     };
@@ -288,7 +289,10 @@ const PostOptions = (props: Props): JSX.Element => {
         options = (
             <ul
                 data-testid={`post-menu-${props.post.id}`}
-                className={classnames('col post-menu', {'post-menu--position': !hoverLocal && showCommentIcon})}
+                className={classnames('col post-menu', {
+                    'post-menu--position': !hoverLocal && showCommentIcon,
+                    'post-menu--modern': props.modernDisplay && !isMobileView,
+                })}
             >
                 {!collapsedThreadsEnabled && !showRecentlyUsedReactions && dotMenu}
                 {showRecentReactions}
