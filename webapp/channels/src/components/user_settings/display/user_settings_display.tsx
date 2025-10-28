@@ -761,7 +761,7 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
             section: 'clock',
             display: 'militaryTime',
             value: this.state.militaryTime,
-            defaultDisplay: 'false',
+            defaultDisplay: 'true',
             title: defineMessage({
                 id: 'user.settings.display.clockDisplay',
                 defaultMessage: 'Clock Display',
@@ -904,71 +904,8 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
             );
         }
 
-        const messageDisplaySection = this.createSection({
-            section: Preferences.MESSAGE_DISPLAY,
-            display: 'messageDisplay',
-            value: this.state.messageDisplay,
-            defaultDisplay: Preferences.MESSAGE_DISPLAY_MODERN,
-            title: defineMessage({
-                id: 'user.settings.display.messageDisplayTitle',
-                defaultMessage: 'Message Display',
-            }),
-            firstOption: {
-                value: Preferences.MESSAGE_DISPLAY_CLEAN,
-                radionButtonText: {
-                    label: defineMessage({
-                        id: 'user.settings.display.messageDisplayClean',
-                        defaultMessage: 'Standard',
-                    }),
-                    more: defineMessage({
-                        id: 'user.settings.display.messageDisplayCleanDes',
-                        defaultMessage: 'Easy to scan and read.',
-                    }),
-                },
-            },
-            secondOption: {
-                value: Preferences.MESSAGE_DISPLAY_COMPACT,
-                radionButtonText: {
-                    label: defineMessage({
-                        id: 'user.settings.display.messageDisplayCompact',
-                        defaultMessage: 'Compact',
-                    }),
-                    more: defineMessage({
-                        id: 'user.settings.display.messageDisplayCompactDes',
-                        defaultMessage: 'Fit as many messages on the screen as we can.',
-                    }),
-                },
-                childOption: {
-                    label: defineMessage({
-                        id: 'user.settings.display.colorize',
-                        defaultMessage: 'Colorize usernames',
-                    }),
-                    value: this.state.colorizeUsernames,
-                    display: 'colorizeUsernames',
-                    more: defineMessage({
-                        id: 'user.settings.display.colorizeDes',
-                        defaultMessage: 'Use colors to distinguish users in compact mode',
-                    }),
-                },
-            },
-            thirdOption: {
-                value: Preferences.MESSAGE_DISPLAY_MODERN,
-                radionButtonText: {
-                    label: defineMessage({
-                        id: 'user.settings.display.messageDisplayModern',
-                        defaultMessage: 'Modern',
-                    }),
-                    more: defineMessage({
-                        id: 'user.settings.display.messageDisplayModernDes',
-                        defaultMessage: 'Polished design with a focus on readability and flow.',
-                    }),
-                },
-            },
-            description: defineMessage({
-                id: 'user.settings.display.messageDisplayDescription',
-                defaultMessage: 'Select how messages in a channel should be displayed.',
-            }),
-        });
+        // Hide Message Display settings (enforce Modern by default)
+        const messageDisplaySection = null;
 
         let collapsedReplyThreads;
 
@@ -1011,7 +948,7 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
             section: Preferences.CLICK_TO_REPLY,
             display: 'clickToReply',
             value: this.state.clickToReply,
-            defaultDisplay: 'true',
+            defaultDisplay: 'false',
             title: defineMessage({
                 id: 'user.settings.display.clickToReply',
                 defaultMessage: 'Click to open threads',

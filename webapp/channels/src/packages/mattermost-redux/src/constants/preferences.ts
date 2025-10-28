@@ -139,7 +139,7 @@ const Preferences = {
             codeTheme: 'github',
         },
         quartz: {
-            type: 'Quartz',
+            type: 'Light (default)',
             sidebarBg: '#f4f4f6',
             sidebarText: '#1f2228',
             sidebarUnreadText: '#1f2228',
@@ -195,7 +195,7 @@ const Preferences = {
             codeTheme: 'solarized-dark',
         },
         onyx: {
-            type: 'Onyx',
+            type: 'Dark',
             sidebarBg: '#202228',
             sidebarText: '#ffffff',
             sidebarUnreadText: '#ffffff',

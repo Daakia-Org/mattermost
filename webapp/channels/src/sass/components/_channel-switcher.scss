@@ -57,6 +57,9 @@
             padding: 0 34px;
             border-radius: 4px;
             margin: 2px 32px;
+            &::placeholder {
+                font-size: 12px;
+            }
 
             &:focus {
                 padding: 0 33px;

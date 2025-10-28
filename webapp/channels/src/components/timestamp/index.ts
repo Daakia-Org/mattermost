@@ -29,7 +29,7 @@ export function mapStateToProps(state: GlobalState, ownProps: Props) {
     let hourCycle: TimestampProps['hourCycle'];
     let hour12: TimestampProps['hour12'];
 
-    const useMilitaryTime = getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false);
+    const useMilitaryTime = getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, true);
 
     if (supportsHourCycle) {
         hourCycle = ownProps.hourCycle || (useMilitaryTime ? 'h23' : 'h12');

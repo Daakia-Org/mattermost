@@ -21,9 +21,17 @@ const PremadeThemeChooser = ({theme, updateTheme, allowedThemes = []}: Props) =>
     const premadeThemes = [];
     const hasAllowedThemes = allowedThemes.length > 1 || (allowedThemes[0] && allowedThemes[0].trim().length > 0);
 
+    // Hide specific themes as requested: Denim, Sapphire, Indigo
+    const hiddenThemes = new Set(['denim', 'sapphire', 'indigo']);
+
     for (const k in Preferences.THEMES) {
         if (Object.hasOwn(Preferences.THEMES, k)) {
             if (hasAllowedThemes && allowedThemes.indexOf(k) < 0) {
+                continue;
+            }
+
+            // Skip rendering hidden themes
+            if (hiddenThemes.has(k.toLowerCase())) {
                 continue;
             }
 
