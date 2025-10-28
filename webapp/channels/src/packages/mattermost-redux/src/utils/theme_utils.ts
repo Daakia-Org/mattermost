@@ -128,8 +128,10 @@ const themeTypeMap: ThemeTypeMap = {
     Denim: 'denim',
     Sapphire: 'sapphire',
     Quartz: 'quartz',
+    'Light (default)': 'quartz',
     Indigo: 'indigo',
     Onyx: 'onyx',
+    Dark: 'onyx',
 };
 
 // setThemeDefaults will set defaults on the theme for any unset properties.
