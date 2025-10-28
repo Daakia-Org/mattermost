@@ -99,7 +99,7 @@ class ChannelNavigator extends React.PureComponent<Props> {
                     <i className='icon icon-magnify'/>
                     <FormattedMessage
                         id='sidebar_left.channel_navigator.jumpTo'
-                        defaultMessage='Find channel'
+                        defaultMessage='Search DM & Channels'
                     />
                     <div className={'SidebarChannelNavigator_shortcutText'}>
                         {`${UserAgent.isMac() ? '⌘' : 'Ctrl+'}K`}

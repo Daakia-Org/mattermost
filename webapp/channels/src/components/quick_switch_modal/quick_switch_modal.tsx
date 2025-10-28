@@ -158,7 +158,7 @@ export class QuickSwitchModal extends React.PureComponent<Props, State> {
             <h2 id='quickSwitchHeader'>
                 <FormattedMessage
                     id='quick_switch_modal.switchChannels'
-                    defaultMessage='Find Channels'
+                    defaultMessage='Search DM & Channels'
                 />
             </h2>
         );
