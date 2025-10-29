@@ -90,6 +90,9 @@ type Channels struct {
 }
 
 func NewChannels(s *Server) (*Channels, error) {
+	// Register OpenID provider for open-source builds
+	RegisterOpenIDProvider()
+	
 	ch := &Channels{
 		srv:               s,
 		imageProxy:        imageproxy.MakeImageProxy(s.platform, s.httpService, s.Log()),
