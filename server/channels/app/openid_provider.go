@@ -64,16 +64,16 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
 		}
 	}
 	
-	if givenName, ok := claims["given_name"].(string); ok && givenName != "" {
+	if givenName, ok := claims["first_name"].(string); ok && givenName != "" {
 		user.FirstName = givenName
 	}
 	
-	if familyName, ok := claims["family_name"].(string); ok && familyName != "" {
+	if familyName, ok := claims["last_name"].(string); ok && familyName != "" {
 		user.LastName = familyName
 	}
 	
-	if preferredUsername, ok := claims["preferred_username"].(string); ok && preferredUsername != "" {
-		user.Username = preferredUsername
+	if username, ok := claims["username"].(string); ok && username != "" {
+		user.Username = username
 	}
 	
 	if nickname, ok := claims["nickname"].(string); ok && nickname != "" && user.Username == "" {
