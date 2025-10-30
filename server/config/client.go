@@ -3,6 +3,8 @@
 
 package config
 
+// NOTE: Changed in branch feat/openid (marker for review visibility)
+
 import (
 	"strconv"
 	"strings"

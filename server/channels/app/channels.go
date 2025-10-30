@@ -3,6 +3,8 @@
 
 package app
 
+// NOTE: Changed in branch feat/openid (marker for review visibility)
+
 import (
 	"net/http"
 	"os"

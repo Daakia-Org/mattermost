@@ -3,6 +3,8 @@
 
 package app
 
+// NOTE: Changed in branch feat/openid (marker for review visibility)
+
 import (
 	"bytes"
 	"context"
@@ -778,38 +780,22 @@ func (a *App) GetAuthorizationCode(rctx request.CTX, w http.ResponseWriter, r *h
 		HttpOnly: true,
 	}
 	
-	// For localhost development, we need SameSite=None to allow cross-origin OAuth redirects
-	// Chrome allows Secure cookies on localhost even without HTTPS
-	if strings.Contains(r.Host, "localhost") || strings.Contains(r.Host, "127.0.0.1") {
-		oauthCookie.SameSite = http.SameSiteNoneMode
-		oauthCookie.Secure = true // Required for SameSite=None, Chrome allows this on localhost
-	} else {
-		oauthCookie.Secure = secure
-		if secure {
-			oauthCookie.SameSite = http.SameSiteNoneMode
-		} else {
-			oauthCookie.SameSite = http.SameSiteLaxMode
-		}
-	}
+    // Production-safe cookie policy:
+    // - Use SameSite=None only over HTTPS (Secure=true)
+    // - Fall back to SameSite=Lax for HTTP
+    oauthCookie.Secure = secure
+    if secure {
+        oauthCookie.SameSite = http.SameSiteNoneMode
+    } else {
+        oauthCookie.SameSite = http.SameSiteLaxMode
+    }
 
 	http.SetCookie(w, oauthCookie)
 	
-	// Debug: Log cookie settings
-	sameSiteStr := "Default"
-	switch oauthCookie.SameSite {
-	case http.SameSiteNoneMode:
-		sameSiteStr = "None"
-	case http.SameSiteLaxMode:
-		sameSiteStr = "Lax"
-	case http.SameSiteStrictMode:
-		sameSiteStr = "Strict"
-	}
-	rctx.Logger().Info("Setting OAuth cookie",
-		mlog.String("cookie_value", cookieValue),
-		mlog.String("host", r.Host),
-		mlog.Bool("secure", oauthCookie.Secure),
-		mlog.String("samesite", sameSiteStr),
-		mlog.String("path", oauthCookie.Path))
+    // Minimal cookie settings log (no sensitive values)
+    rctx.Logger().Info("Setting OAuth cookie",
+        mlog.String("host", r.Host),
+        mlog.Bool("secure", oauthCookie.Secure))
 
 	clientId := *sso.Id
 	endpoint := *sso.AuthEndpoint
@@ -821,10 +807,7 @@ func (a *App) GetAuthorizationCode(rctx request.CTX, w http.ResponseWriter, r *h
 		return "", err
 	}
 	
-	// Debug: Log state token
-	rctx.Logger().Info("Created OAuth state token",
-		mlog.String("token", stateToken.Token),
-		mlog.String("cookie_in_token", cookieValue))
+    // Do not log state token or cookie values in production
 
 	props["token"] = stateToken.Token
 	state := b64.StdEncoding.EncodeToString([]byte(model.MapToJSON(props)))
@@ -880,15 +863,7 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.invalid_state.app_error", nil, "", http.StatusBadRequest).Wrap(err)
 	}
 
-	// Debug: Log all cookies received
-	allCookies := r.Cookies()
-	rctx.Logger().Info("OAuth callback - checking cookies",
-		mlog.Int("num_cookies", len(allCookies)),
-		mlog.String("host", r.Host),
-		mlog.String("state_token", stateProps["token"]))
-	for _, c := range allCookies {
-		rctx.Logger().Debug("Cookie received", mlog.String("name", c.Name), mlog.String("value", c.Value[:min(10, len(c.Value))]))
-	}
+    // Do not log received cookies or state token details
 	
 	cookie, cookieErr := r.Cookie(CookieOAuth)
 	if cookieErr != nil {
@@ -901,11 +876,7 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.invalid_state.app_error", nil, "", http.StatusBadRequest).Wrap(parseErr)
 	}
 
-	// Debug: Compare cookie values
-	rctx.Logger().Info("Validating OAuth cookie",
-		mlog.String("cookie_from_request", cookie.Value),
-		mlog.String("cookie_from_token", tokenCookie),
-		mlog.Bool("match", cookie.Value == tokenCookie))
+    // Do not log cookie or token values
 
 	if tokenEmail != stateEmail || tokenAction != stateAction || tokenCookie != cookie.Value {
 		rctx.Logger().Error("OAuth state validation failed",
@@ -996,11 +967,10 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.service.app_error", map[string]any{"Service": service}, "", http.StatusInternalServerError).Wrap(err)
 	}
 	
-	// Debug: Log userinfo request/response
-	rctx.Logger().Info("OAuth userinfo request completed",
-		mlog.String("url", *sso.UserAPIEndpoint),
-		mlog.Int("status_code", resp.StatusCode),
-		mlog.String("access_token_prefix", ar.AccessToken[:min(20, len(ar.AccessToken))]))
+    // Minimal log for userinfo request (no tokens)
+    rctx.Logger().Info("OAuth userinfo request completed",
+        mlog.String("url", *sso.UserAPIEndpoint),
+        mlog.Int("status_code", resp.StatusCode))
 	
 	if resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()
@@ -1023,16 +993,14 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.response.app_error", nil, "response_body="+bodyString, http.StatusInternalServerError)
 	}
 	
-	// Debug: Read and log the body, then return it as a new reader
-	bodyBytes, err := io.ReadAll(resp.Body)
+    // Read the body and return it as a new reader
+    bodyBytes, err := io.ReadAll(resp.Body)
 	resp.Body.Close()
 	if err != nil {
 		rctx.Logger().Error("Failed to read userinfo response body", mlog.Err(err))
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.response.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
-	rctx.Logger().Info("OAuth userinfo response body",
-		mlog.String("body", string(bodyBytes)),
-		mlog.Int("length", len(bodyBytes)))
+    // Do not log userinfo response body in production
 
 	// Note that resp.Body is not closed here, so it must be closed by the caller
 	return io.NopCloser(bytes.NewReader(bodyBytes)), stateProps, userFromToken, nil

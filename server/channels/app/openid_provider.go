@@ -3,6 +3,8 @@
 
 package app
 
+// NOTE: Changed in branch feat/openid (marker for review visibility)
+
 import (
 	"encoding/json"
 	"io"
@@ -27,6 +29,7 @@ func RegisterOpenIDProvider() {
 func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, tokenUser *model.User) (*model.User, error) {
 	rctx.Logger().Info("🔵 OpenID GetUserFromJSON called")
 	
+	
 	// If tokenUser is already provided from ID token, we still need to parse the userinfo
 	// to ensure all fields (especially AuthData) are properly set
 
@@ -36,7 +39,7 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
 	if err := decoder.Decode(&claims); err != nil {
 		return nil, err
 	}
-	
+	rctx.Logger().Info("🔵 OpenID claims received", mlog.Any("claims", claims))
 	// Debug: Log received claims
 	rctx.Logger().Info("OpenID claims received", mlog.Any("claims", claims))
 
