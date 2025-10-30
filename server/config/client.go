@@ -3,6 +3,8 @@
 
 package config
 
+// NOTE: Changed in branch feat/openid (marker for review visibility)
+
 import (
 	"strconv"
 	"strings"
@@ -360,8 +362,12 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 	props["HideGuestTags"] = strconv.FormatBool(*c.GuestAccountsSettings.HideTags)
 	props["GuestAccountsEnforceMultifactorAuthentication"] = strconv.FormatBool(*c.GuestAccountsSettings.EnforceMultifactorAuthentication)
 
-	if license != nil {
-		if *license.Features.LDAP {
+	// Check if we're in developer mode (EnableDeveloper && EnableTesting)
+	isDeveloperMode := c.ServiceSettings.EnableDeveloper != nil && *c.ServiceSettings.EnableDeveloper &&
+		c.ServiceSettings.EnableTesting != nil && *c.ServiceSettings.EnableTesting
+
+	if license != nil || isDeveloperMode {
+		if license != nil && *license.Features.LDAP || isDeveloperMode {
 			props["EnableLdap"] = strconv.FormatBool(*c.LdapSettings.Enable)
 			props["LdapLoginFieldName"] = *c.LdapSettings.LoginFieldName
 			props["LdapLoginButtonColor"] = *c.LdapSettings.LoginButtonColor
@@ -369,7 +375,7 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 			props["LdapLoginButtonTextColor"] = *c.LdapSettings.LoginButtonTextColor
 		}
 
-		if *license.Features.SAML {
+		if license != nil && *license.Features.SAML || isDeveloperMode {
 			props["EnableSaml"] = strconv.FormatBool(*c.SamlSettings.Enable)
 			props["SamlLoginButtonText"] = *c.SamlSettings.LoginButtonText
 			props["SamlLoginButtonColor"] = *c.SamlSettings.LoginButtonColor
@@ -377,30 +383,30 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 			props["SamlLoginButtonTextColor"] = *c.SamlSettings.LoginButtonTextColor
 		}
 
-		if *license.Features.CustomTermsOfService {
+		if license != nil && *license.Features.CustomTermsOfService {
 			props["EnableCustomTermsOfService"] = strconv.FormatBool(*c.SupportSettings.CustomTermsOfServiceEnabled)
 			props["CustomTermsOfServiceReAcceptancePeriod"] = strconv.FormatInt(int64(*c.SupportSettings.CustomTermsOfServiceReAcceptancePeriod), 10)
 		}
 
-		if *license.Features.MFA {
+		if license != nil && *license.Features.MFA {
 			props["EnforceMultifactorAuthentication"] = strconv.FormatBool(*c.ServiceSettings.EnforceMultifactorAuthentication)
 		}
 
-		if license.IsCloud() {
+		if license != nil && license.IsCloud() {
 			// MM-48727: enable SSO options for free cloud - not in self hosted
 			*license.Features.GoogleOAuth = true
 			*license.Features.Office365OAuth = true
 		}
 
-		if *license.Features.GoogleOAuth {
+		if license != nil && *license.Features.GoogleOAuth || isDeveloperMode {
 			props["EnableSignUpWithGoogle"] = strconv.FormatBool(*c.GoogleSettings.Enable)
 		}
 
-		if *license.Features.Office365OAuth {
+		if license != nil && *license.Features.Office365OAuth || isDeveloperMode {
 			props["EnableSignUpWithOffice365"] = strconv.FormatBool(*c.Office365Settings.Enable)
 		}
 
-		if *license.Features.OpenId {
+		if license != nil && *license.Features.OpenId || isDeveloperMode {
 			props["EnableSignUpWithOpenId"] = strconv.FormatBool(*c.OpenIdSettings.Enable)
 			props["OpenIdButtonColor"] = *c.OpenIdSettings.ButtonColor
 			props["OpenIdButtonText"] = *c.OpenIdSettings.ButtonText
@@ -409,7 +415,7 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 			props["GitLabButtonText"] = *c.GitLabSettings.ButtonText
 		}
 
-		if model.MinimumEnterpriseLicense(license) {
+		if model.MinimumEnterpriseLicense(license) || isDeveloperMode {
 			props["MobileEnableBiometrics"] = strconv.FormatBool(*c.NativeAppSettings.MobileEnableBiometrics)
 			props["MobilePreventScreenCapture"] = strconv.FormatBool(*c.NativeAppSettings.MobilePreventScreenCapture)
 			props["MobileJailbreakProtection"] = strconv.FormatBool(*c.NativeAppSettings.MobileJailbreakProtection)

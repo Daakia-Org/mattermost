@@ -3,6 +3,8 @@
 
 package app
 
+// NOTE: Changed in branch feat/openid (marker for review visibility)
+
 import (
 	"net/http"
 	"os"
@@ -90,6 +92,9 @@ type Channels struct {
 }
 
 func NewChannels(s *Server) (*Channels, error) {
+	// Register OpenID provider for open-source builds
+	RegisterOpenIDProvider()
+	
 	ch := &Channels{
 		srv:               s,
 		imageProxy:        imageproxy.MakeImageProxy(s.platform, s.httpService, s.Log()),
