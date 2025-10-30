@@ -790,12 +790,7 @@ func (a *App) GetAuthorizationCode(rctx request.CTX, w http.ResponseWriter, r *h
         oauthCookie.SameSite = http.SameSiteLaxMode
     }
 
-	http.SetCookie(w, oauthCookie)
-	
-    // Minimal cookie settings log (no sensitive values)
-    rctx.Logger().Info("Setting OAuth cookie",
-        mlog.String("host", r.Host),
-        mlog.Bool("secure", oauthCookie.Secure))
+    http.SetCookie(w, oauthCookie)
 
 	clientId := *sso.Id
 	endpoint := *sso.AuthEndpoint
@@ -966,11 +961,6 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 	if err != nil {
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.service.app_error", map[string]any{"Service": service}, "", http.StatusInternalServerError).Wrap(err)
 	}
-	
-    // Minimal log for userinfo request (no tokens)
-    rctx.Logger().Info("OAuth userinfo request completed",
-        mlog.String("url", *sso.UserAPIEndpoint),
-        mlog.Int("status_code", resp.StatusCode))
 	
 	if resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()
