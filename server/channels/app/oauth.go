@@ -3,6 +3,8 @@
 
 package app
 
+// NOTE: Changed in branch feat/openid (marker for review visibility)
+
 import (
 	"bytes"
 	"context"
@@ -776,10 +778,19 @@ func (a *App) GetAuthorizationCode(rctx request.CTX, w http.ResponseWriter, r *h
 		MaxAge:   OAuthCookieMaxAgeSeconds,
 		Expires:  expiresAt,
 		HttpOnly: true,
-		Secure:   secure,
 	}
+	
+    // Production-safe cookie policy:
+    // - Use SameSite=None only over HTTPS (Secure=true)
+    // - Fall back to SameSite=Lax for HTTP
+    oauthCookie.Secure = secure
+    if secure {
+        oauthCookie.SameSite = http.SameSiteNoneMode
+    } else {
+        oauthCookie.SameSite = http.SameSiteLaxMode
+    }
 
-	http.SetCookie(w, oauthCookie)
+    http.SetCookie(w, oauthCookie)
 
 	clientId := *sso.Id
 	endpoint := *sso.AuthEndpoint
@@ -790,6 +801,8 @@ func (a *App) GetAuthorizationCode(rctx request.CTX, w http.ResponseWriter, r *h
 	if err != nil {
 		return "", err
 	}
+	
+    // Do not log state token or cookie values in production
 
 	props["token"] = stateToken.Token
 	state := b64.StdEncoding.EncodeToString([]byte(model.MapToJSON(props)))
@@ -845,8 +858,11 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.invalid_state.app_error", nil, "", http.StatusBadRequest).Wrap(err)
 	}
 
+    // Do not log received cookies or state token details
+	
 	cookie, cookieErr := r.Cookie(CookieOAuth)
 	if cookieErr != nil {
+		rctx.Logger().Error("OAuth cookie not found", mlog.Err(cookieErr))
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.invalid_state.app_error", nil, "", http.StatusBadRequest).Wrap(cookieErr)
 	}
 
@@ -855,7 +871,15 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.invalid_state.app_error", nil, "", http.StatusBadRequest).Wrap(parseErr)
 	}
 
+    // Do not log cookie or token values
+
 	if tokenEmail != stateEmail || tokenAction != stateAction || tokenCookie != cookie.Value {
+		rctx.Logger().Error("OAuth state validation failed",
+			mlog.String("token_email", tokenEmail),
+			mlog.String("state_email", stateEmail),
+			mlog.String("token_action", tokenAction),
+			mlog.String("state_action", stateAction),
+			mlog.Bool("cookie_match", tokenCookie == cookie.Value))
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.invalid_state.app_error", nil, "", http.StatusBadRequest).Wrap(errors.New("invalid state token"))
 	}
 
@@ -936,7 +960,9 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 	resp, err = a.HTTPService().MakeClient(true).Do(req)
 	if err != nil {
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.service.app_error", map[string]any{"Service": service}, "", http.StatusInternalServerError).Wrap(err)
-	} else if resp.StatusCode != http.StatusOK {
+	}
+	
+	if resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()
 
 		// Ignore the error below because the resulting string will just be the empty string if bodyBytes is nil
@@ -956,9 +982,18 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.response.app_error", nil, "response_body="+bodyString, http.StatusInternalServerError)
 	}
+	
+    // Read the body and return it as a new reader
+    bodyBytes, err := io.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err != nil {
+		rctx.Logger().Error("Failed to read userinfo response body", mlog.Err(err))
+		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.response.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+	}
+    // Do not log userinfo response body in production
 
 	// Note that resp.Body is not closed here, so it must be closed by the caller
-	return resp.Body, stateProps, userFromToken, nil
+	return io.NopCloser(bytes.NewReader(bodyBytes)), stateProps, userFromToken, nil
 }
 
 func (a *App) SwitchEmailToOAuth(rctx request.CTX, w http.ResponseWriter, r *http.Request, email, password, code, service string) (string, *model.AppError) {
