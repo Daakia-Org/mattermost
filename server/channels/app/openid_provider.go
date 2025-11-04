@@ -79,6 +79,17 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
     }
   }
 
+  // Extract daakia_jwt_token from claims and store in Props
+  // This token is passed from the OIDC provider in the userinfo endpoint response
+  if daakiaToken, ok := claims["daakia_jwt_token"].(string); ok && daakiaToken != "" {
+    // Initialize Props map if nil
+    if user.Props == nil {
+      user.Props = make(map[string]string)
+    }
+    // Store the token in Props for persistence across sessions
+    user.Props["daakia_jwt_token"] = daakiaToken
+  }
+
   return user, nil
 }
 

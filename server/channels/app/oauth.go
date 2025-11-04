@@ -807,10 +807,12 @@ func (a *App) GetAuthorizationCode(rctx request.CTX, w http.ResponseWriter, r *h
 	props["token"] = stateToken.Token
 	state := b64.StdEncoding.EncodeToString([]byte(model.MapToJSON(props)))
 
-	siteURL := a.GetSiteURL()
-	if strings.TrimSpace(siteURL) == "" {
+    siteURL := a.GetSiteURL()
+    if strings.TrimSpace(siteURL) == "" {
+        // siteURL = GetProtocol(r) + "://" + r.Host <- use when running locally
 		siteURL = "https://" + r.Host
-	}
+
+    }
 
 	redirectURI := siteURL + "/signup/" + service + "/complete"
 
@@ -990,7 +992,6 @@ func (a *App) AuthorizeOAuthUser(rctx request.CTX, w http.ResponseWriter, r *htt
 		rctx.Logger().Error("Failed to read userinfo response body", mlog.Err(err))
 		return nil, stateProps, nil, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.response.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
-    // Do not log userinfo response body in production
 
 	// Note that resp.Body is not closed here, so it must be closed by the caller
 	return io.NopCloser(bytes.NewReader(bodyBytes)), stateProps, userFromToken, nil
