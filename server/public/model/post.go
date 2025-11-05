@@ -54,6 +54,7 @@ const (
 	PostTypeMe                   = "me"
 	PostCustomTypePrefix         = "custom_"
 	PostTypeReminder             = "reminder"
+	PostTypeQuoteReply           = "quote_reply"
 
 	PostFileidsMaxRunes   = 300
 	PostFilenamesMaxRunes = 4000
@@ -500,6 +501,7 @@ func (o *Post) IsValid(maxPostSize int) *AppError {
 		PostTypeAddBotTeamsChannels,
 		PostTypeReminder,
 		PostTypeMe,
+		PostTypeQuoteReply,
 		PostTypeWrangler,
 		PostTypeGMConvertedToChannel:
 	default:

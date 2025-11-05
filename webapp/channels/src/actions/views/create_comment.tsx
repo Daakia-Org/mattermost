@@ -28,6 +28,7 @@ import {runMessageWillBePostedHooks, runSlashCommandWillBePostedHooks} from 'act
 import * as PostActions from 'actions/post_actions';
 import {createSchedulePostFromDraft} from 'actions/post_actions';
 
+import {PostTypes} from 'utils/constants';
 import EmojiMap from 'utils/emoji_map';
 import {containsAtChannel, groupsMentionedInText} from 'utils/post_utils';
 import * as Utils from 'utils/utils';
@@ -50,6 +51,9 @@ export function submitPost(
 
         const time = Utils.getTimestamp();
 
+        // Check if this is a quote reply post
+        const isQuoteReply = draft.props?.quoted_post_id;
+
         let post = {
             file_ids: [],
             message: draft.message,
@@ -60,6 +64,7 @@ export function submitPost(
             create_at: time,
             metadata: {...draft.metadata},
             props: {...draft.props},
+            type: isQuoteReply ? PostTypes.QUOTE_REPLY : '',
         } as unknown as Post;
 
         const channel = getChannel(state, channelId);
