@@ -2339,6 +2339,21 @@ func (a *App) UpdateOAuthUserAttrs(rctx request.CTX, userData io.Reader, user *m
 		userAttrsChanged = true
 	}
 
+	// Update daakia_jwt_token in Props if it exists in oauthUser
+	// This ensures the token is refreshed on each login if it changes
+	if oauthUser.Props != nil {
+		if daakiaToken, exists := oauthUser.Props["daakia_jwt_token"]; exists && daakiaToken != "" {
+			if user.Props == nil {
+				user.Props = make(map[string]string)
+			}
+			// Update token if it changed or if it doesn't exist yet
+			if user.Props["daakia_jwt_token"] != daakiaToken {
+				user.Props["daakia_jwt_token"] = daakiaToken
+				userAttrsChanged = true
+			}
+		}
+	}
+
 	if userAttrsChanged {
 		users, err := a.Srv().Store().User().Update(rctx, user, true)
 		if err != nil {
