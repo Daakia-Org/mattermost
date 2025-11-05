@@ -122,18 +122,6 @@ export type Props = {
 function PostComponent(props: Props) {
     const {post, shouldHighlight, togglePostMenu} = props;
 
-    // Log quote reply posts for verification
-    if (post.type === Constants.PostTypes.QUOTE_REPLY) {
-        // eslint-disable-next-line no-console
-        console.log('📝 Quote Reply Post Detected:', {
-            postId: post.id,
-            message: post.message,
-            quotedPostId: post.props?.quoted_post_id,
-            quotedMessage: post.props?.quoted_message,
-            quotedUserId: post.props?.quoted_user_id,
-        });
-    }
-
     const isSearchResultItem = (props.matches && props.matches.length > 0) || props.isMentionSearch || (props.term && props.term.length > 0);
     const isRHS = props.location === Locations.RHS_ROOT || props.location === Locations.RHS_COMMENT || props.location === Locations.SEARCH;
     const postRef = useRef<HTMLDivElement>(null);

@@ -124,6 +124,7 @@ function makeMapStateToProps() {
             isMilitaryTime,
             canMove: channel ? canWrangler(state, channel.type, threadReplyCount) : false,
             canFlagContent,
+            channelType: channel?.type,
         };
     };
 }

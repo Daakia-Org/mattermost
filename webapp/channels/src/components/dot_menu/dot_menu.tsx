@@ -13,6 +13,7 @@ import {
     ContentCopyIcon,
     DotsHorizontalIcon,
     EmoticonPlusOutlineIcon,
+    FormatQuoteOpenIcon,
     LinkVariantIcon,
     MarkAsUnreadIcon,
     MessageArrowRightOutlineIcon,
@@ -38,7 +39,7 @@ import * as Menu from 'components/menu';
 import MoveThreadModal from 'components/move_thread_modal';
 import ChannelPermissionGate from 'components/permissions_gates/channel_permission_gate';
 
-import {Locations, ModalIdentifiers, Constants} from 'utils/constants';
+import {Locations, ModalIdentifiers, Constants, StoragePrefixes} from 'utils/constants';
 import DelayedAction from 'utils/delayed_action';
 import * as Keyboard from 'utils/keyboard';
 import * as PostUtils from 'utils/post_utils';
@@ -83,6 +84,7 @@ type Props = {
     isMilitaryTime: boolean;
     canMove: boolean;
     canFlagContent?: boolean;
+    channelType?: string;
 
     actions: {
 
@@ -236,6 +238,34 @@ export class DotMenuClass extends React.PureComponent<Props, State> {
         this.props.actions.markPostAsUnread(this.props.post, this.props.location);
     };
 
+    handleQuoteReplyMenuItemActivated = (): void => {
+        this.props.handleDropdownOpened?.(false);
+
+        const {post} = this.props;
+        const quotedPostData = {
+            postId: post.id,
+            message: post.message,
+            channelId: post.channel_id,
+            channelType: this.props.channelType || 'unknown',
+            userId: post.user_id,
+        };
+
+        // Store in localStorage (following Mattermost draft pattern)
+        const storageKey = `${StoragePrefixes.QUOTED_POST}${post.channel_id}`;
+        localStorage.setItem(storageKey, JSON.stringify(quotedPostData));
+
+        // Dispatch custom event to trigger re-render of quote preview
+        window.dispatchEvent(new CustomEvent('quotedPostChanged', {
+            detail: {channelId: post.channel_id},
+        }));
+
+        // Focus the textbox
+        const textbox = document.getElementById('post_textbox') || document.getElementById('reply_textbox');
+        if (textbox) {
+            textbox.focus();
+        }
+    };
+
     handleDeleteMenuItemActivated = (): void => {
         const deletePostModalData = {
             modalId: ModalIdentifiers.DELETE_POST,
@@ -360,6 +390,12 @@ export class DotMenuClass extends React.PureComponent<Props, State> {
         case Keyboard.isKeyPressed(event, Constants.KeyCodes.F) && isShiftKeyPressed:
             forceCloseMenu();
             this.handleForwardMenuItemActivated();
+            break;
+
+            // quote reply
+        case Keyboard.isKeyPressed(event, Constants.KeyCodes.Q):
+            forceCloseMenu();
+            this.handleQuoteReplyMenuItemActivated();
             break;
 
             // copy link
@@ -522,6 +558,21 @@ export class DotMenuClass extends React.PureComponent<Props, State> {
                         leadingElement={<ReplyOutlineIcon size={18}/>}
                         trailingElements={<ShortcutKey shortcutKey='R'/>}
                         onClick={this.handleCommentClick}
+                    />
+                }
+                {!isSystemMessage &&
+                    <Menu.Item
+                        id={`quote_reply_post_${this.props.post.id}`}
+                        data-testid={`quote_reply_post_${this.props.post.id}`}
+                        labels={
+                            <FormattedMessage
+                                id='post_info.quote_reply'
+                                defaultMessage='Quote Reply'
+                            />
+                        }
+                        leadingElement={<FormatQuoteOpenIcon size={18}/>}
+                        trailingElements={<ShortcutKey shortcutKey='Q'/>}
+                        onClick={this.handleQuoteReplyMenuItemActivated}
                     />
                 }
                 {this.canPostBeForwarded &&

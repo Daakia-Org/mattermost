@@ -31,7 +31,7 @@ import NotifyConfirmModal from 'components/notify_confirm_modal';
 import PostDeletedModal from 'components/post_deleted_modal';
 import ResetStatusModal from 'components/reset_status_modal';
 
-import Constants, {ModalIdentifiers, UserStatuses} from 'utils/constants';
+import Constants, {ModalIdentifiers, StoragePrefixes, UserStatuses} from 'utils/constants';
 import {isErrorInvalidSlashCommand, isServerError, specialMentionsInText} from 'utils/post_utils';
 
 import type {GlobalState} from 'types/store';
@@ -168,6 +168,44 @@ const useSubmit = (
 
         setServerError(null);
 
+        // Check for quoted post in localStorage and add to draft props
+        let draftToSubmit = submittingDraft;
+        if (!isInEditMode) {
+            const storageKey = `${StoragePrefixes.QUOTED_POST}${channelId}`;
+            const quotedPostDataStr = localStorage.getItem(storageKey);
+            if (quotedPostDataStr) {
+                try {
+                    const quotedPostData = JSON.parse(quotedPostDataStr);
+                    const truncateMessage = (message: string, maxLength = 100) => {
+                        if (message.length <= maxLength) {
+                            return message;
+                        }
+                        return message.substring(0, maxLength) + '...';
+                    };
+
+                    draftToSubmit = {
+                        ...submittingDraft,
+                        props: {
+                            ...submittingDraft.props,
+                            quoted_post_id: quotedPostData.postId,
+                            quoted_message: truncateMessage(quotedPostData.message || ''),
+                            quoted_user_id: quotedPostData.userId,
+                        },
+                    };
+
+                    // Clear from localStorage after using
+                    localStorage.removeItem(storageKey);
+
+                    // Dispatch event to update preview
+                    window.dispatchEvent(new CustomEvent('quotedPostChanged', {
+                        detail: {channelId},
+                    }));
+                } catch (e) {
+                    // Invalid JSON, ignore
+                }
+            }
+        }
+
         const ignoreSlash = skipCommands || (isErrorInvalidSlashCommand(serverError) && serverError?.submittedMessage === submittingDraft.message);
         const options: OnSubmitOptions = {
             ignoreSlash,
@@ -179,10 +217,10 @@ const useSubmit = (
         try {
             let response;
             if (isInEditMode) {
-                response = await dispatch(editPost(submittingDraft));
-                handleFileChange(submittingDraft);
+                response = await dispatch(editPost(draftToSubmit));
+                handleFileChange(draftToSubmit);
             } else {
-                response = await dispatch(onSubmit(submittingDraft, options, schedulingInfo));
+                response = await dispatch(onSubmit(draftToSubmit, options, schedulingInfo));
             }
             if (response?.error) {
                 throw response.error;

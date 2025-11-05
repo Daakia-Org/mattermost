@@ -879,6 +879,7 @@ export const StoragePrefixes = {
     COMMENT_DRAFT: 'comment_draft_',
     EDIT_DRAFT: 'edit_draft_',
     DRAFT: 'draft_',
+    QUOTED_POST: 'quoted_post_',
     LOGOUT: '__logout__',
     LOGIN: '__login__',
     ANNOUNCEMENT: '__announcement__',

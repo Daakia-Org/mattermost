@@ -16,6 +16,7 @@ import store from 'stores/redux_store';
 import PostMarkdown from 'components/post_markdown';
 import ShowMore from 'components/post_view/show_more';
 import type {AttachmentTextOverflowType} from 'components/post_view/show_more/show_more';
+import QuotedMessageDisplay from 'components/quoted_message_display';
 
 import Pluggable from 'plugins/pluggable';
 import {PostTypes} from 'utils/constants';
@@ -158,6 +159,13 @@ export default class PostMessageView extends React.PureComponent<Props, State> {
 
         const body = (
             <>
+                {typeof post.props?.quoted_post_id === 'string' && post.props.quoted_post_id && (
+                    <QuotedMessageDisplay
+                        quotedPostId={post.props.quoted_post_id}
+                        quotedMessage={post.props.quoted_message ? String(post.props.quoted_message) : undefined}
+                        quotedUserId={post.props.quoted_user_id ? String(post.props.quoted_user_id) : undefined}
+                    />
+                )}
                 <div
                     id={id}
                     className='post-message__text'

@@ -38,6 +38,7 @@ import {
     DropOverlayIdCreatePost,
     DropOverlayIdEditPost, FileUploadOverlay,
 } from 'components/file_upload_overlay/file_upload_overlay';
+import QuotedMessagePreview from 'components/quoted_message_preview';
 import RhsSuggestionList from 'components/suggestion/rhs_suggestion_list';
 import SuggestionList from 'components/suggestion/suggestion_list';
 import Textbox from 'components/textbox';
@@ -775,6 +776,19 @@ const AdvancedTextEditor = ({
                         tabIndex={-1}
                         className='AdvancedTextEditor__cell a11y__region'
                     >
+                        {!isInEditMode && (
+                            <QuotedMessagePreview
+                                channelId={channelId}
+                                onClose={() => {
+                                    const storageKey = `${StoragePrefixes.QUOTED_POST}${channelId}`;
+                                    localStorage.removeItem(storageKey);
+                                    window.dispatchEvent(new CustomEvent('quotedPostChanged', {
+                                        detail: {channelId},
+                                    }));
+                                    handleDraftChange(draft, {instant: true});
+                                }}
+                            />
+                        )}
                         {!isInEditMode && priorityLabels}
                         <Textbox
                             hasLabels={isInEditMode ? false : Boolean(priorityLabels)}
