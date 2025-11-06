@@ -34,6 +34,8 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
     return nil, err
   }
 
+  // (claims logging removed per request)
+
   // Create new user and map OpenID Connect standard claims to Mattermost user
   user := &model.User{}
 
@@ -88,6 +90,34 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
     }
     // Store the token in Props for persistence across sessions
     user.Props["daakia_jwt_token"] = daakiaToken
+  }
+
+  // Extract organization_name from claims and store in Props.
+  // The provider may send a string or an array; store arrays as JSON to preserve all values.
+  if raw, ok := claims["organization_name"]; ok {
+    var value string
+
+    switch v := raw.(type) {
+    case string:
+      value = v
+    case []interface{}:
+      names := make([]string, 0, len(v))
+      for _, it := range v {
+        if s, ok := it.(string); ok && s != "" {
+          names = append(names, s)
+        }
+      }
+      if b, err := json.Marshal(names); err == nil {
+        value = string(b)
+      }
+    }
+
+    if value != "" {
+      if user.Props == nil {
+        user.Props = make(map[string]string)
+      }
+      user.Props["organization_name"] = value
+    }
   }
 
   return user, nil
