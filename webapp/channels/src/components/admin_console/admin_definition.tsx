@@ -2532,7 +2532,7 @@ const AdminDefinition: AdminDefinitionType = {
                             options: [
                                 {
                                     value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME,
-                                    display_name: defineMessage({id: 'admin.team.showUsername', defaultMessage: 'Show username (default)'}),
+                                    display_name: defineMessage({id: 'admin.team.showUsername', defaultMessage: 'Show username'}),
                                 },
                                 {
                                     value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_NICKNAME_FULLNAME,
@@ -2540,7 +2540,7 @@ const AdminDefinition: AdminDefinitionType = {
                                 },
                                 {
                                     value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_FULLNAME,
-                                    display_name: defineMessage({id: 'admin.team.showFullname', defaultMessage: 'Show first and last name'}),
+                                    display_name: defineMessage({id: 'admin.team.showFullname', defaultMessage: 'Show first and last name (default)'}),
                                 },
                             ],
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.USERS_AND_TEAMS)),

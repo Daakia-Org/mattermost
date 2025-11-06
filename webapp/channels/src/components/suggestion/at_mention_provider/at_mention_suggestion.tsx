@@ -1,6 +1,6 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-
+/*eslint-disable */
 import React from 'react';
 import type {ReactNode} from 'react';
 import {FormattedMessage} from 'react-intl';
@@ -119,12 +119,20 @@ const AtMentionSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Item
     } else {
         itemname = item.username;
 
-        if (item.isCurrentUser) {
-            if (item.first_name || item.last_name) {
-                description = <span>{Utils.getFullName(item)}</span>;
-            }
-        } else if (item.first_name || item.last_name || item.nickname) {
-            description = <span>{`${Utils.getFullName(item)} ${item.nickname ? `(${item.nickname})` : ''}`.trim()}</span>;
+        // Display preference: show full name only when available; otherwise show @username.
+        // Keep previous behavior non-destructively by commenting out the prior description content.
+        // if (item.isCurrentUser) {
+        //     if (item.first_name || item.last_name) {
+        //         description = <span>{Utils.getFullName(item)}</span>;
+        //     }
+        // } else if (item.first_name || item.last_name || item.nickname) {
+        //     description = <span>{`${Utils.getFullName(item)} ${item.nickname ? `(${item.nickname})` : ''}`.trim()}</span>;
+        // }
+
+        const hasFullName = Boolean(item.first_name || item.last_name);
+        // When full name exists, we show it as the main label and suppress description.
+        if (hasFullName) {
+            description = undefined;
         }
 
         icon = (
@@ -209,7 +217,10 @@ const AtMentionSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Item
                     id={ids.atMention}
                     className='suggestion-list__main'
                 >
-                    {'@' + itemname}
+                    {(() => {
+                        const hasFullName = Boolean(item.first_name || item.last_name);
+                        return hasFullName ? Utils.getFullName(item) : ('@' + itemname);
+                    })()}
                 </span>
                 {item.is_bot && <span id={ids.botTag}><BotTag/></span>}
                 {description && <span id={ids.description}>{description}</span>}

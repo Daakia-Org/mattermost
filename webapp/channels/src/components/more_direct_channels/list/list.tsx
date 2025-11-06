@@ -13,6 +13,7 @@ import MultiSelect from 'components/multiselect/multiselect';
 import NewChannelModal from 'components/new_channel_modal/new_channel_modal';
 
 import Constants, {ModalIdentifiers} from 'utils/constants';
+import * as Utils from 'utils/utils';
 
 import ListItem from '../list_item';
 import {optionValue} from '../types';
@@ -174,9 +175,19 @@ const List = React.forwardRef((props: Props, ref?: React.Ref<MultiSelect<OptionV
 export default List;
 
 function renderValue(props: {data: OptionValue}) {
-    return (props.data as UserProfile).username;
+    // Non-destructive: previously showed username; now prefer full name when available
+    // return (props.data as UserProfile).username;
+    const user = props.data as UserProfile;
+    const hasFullName = Boolean(user.first_name || user.last_name);
+    return hasFullName ? Utils.getFullName(user) : `@${user.username}`;
 }
 
 function renderAriaLabel(option: OptionValue) {
-    return (option as UserProfile)?.username ?? '';
+    // Keep ARIA label meaningful: prefer full name, fallback to @username
+    const user = option as UserProfile;
+    if (!user) {
+        return '';
+    }
+    const hasFullName = Boolean(user.first_name || user.last_name);
+    return hasFullName ? Utils.getFullName(user) : `@${user.username}`;
 }

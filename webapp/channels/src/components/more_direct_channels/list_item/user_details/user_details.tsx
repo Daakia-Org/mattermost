@@ -17,7 +17,8 @@ import SharedUserIndicator from 'components/shared_user_indicator';
 import BotTag from 'components/widgets/tag/bot_tag';
 import GuestTag from 'components/widgets/tag/guest_tag';
 
-import {displayEntireNameForUser} from 'utils/utils';
+// import {displayEntireNameForUser} from 'utils/utils';
+import * as Utils from 'utils/utils';
 
 import type {GlobalState} from 'types/store';
 
@@ -51,7 +52,11 @@ export default function UserDetails(props: Props): JSX.Element {
         last_picture_update: lastPictureUpdate,
     } = option;
 
-    const displayName = displayEntireNameForUser(option);
+    // Display rule override: show full name when available; otherwise show @username.
+    // Keep original behavior non-destructively by commenting it and computing locally.
+    // const displayName = displayEntireNameForUser(option);
+    const hasFullName = Boolean(option.first_name || option.last_name);
+    const displayName = hasFullName ? Utils.getFullName(option) : `@${option.username}`;
 
     let modalName: React.ReactNode = displayName;
     if (option.id === currentUserId) {

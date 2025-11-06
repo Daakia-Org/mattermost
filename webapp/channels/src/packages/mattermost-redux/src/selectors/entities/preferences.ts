@@ -107,7 +107,10 @@ export const getTeammateNameDisplaySetting: (state: GlobalState) => string = cre
         } else if (config.TeammateNameDisplay) {
             return config.TeammateNameDisplay;
         }
-        return General.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME;
+
+        // Default changed: prefer showing first and last name by default when no config or user pref exists.
+        // return General.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME;
+        return General.TEAMMATE_NAME_DISPLAY.SHOW_FULLNAME;
     },
 );
 

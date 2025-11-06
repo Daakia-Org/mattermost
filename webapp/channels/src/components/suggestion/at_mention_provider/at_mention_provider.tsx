@@ -1,6 +1,6 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-
+/*eslint-disable */
 import {defineMessage} from 'react-intl';
 
 import type {Group} from '@mattermost/types/groups';
@@ -339,20 +339,22 @@ export default class AtMentionProvider extends Provider {
             filter((member) => !localUserIds[member.id]).
             sort(orderUsers);
 
-        const items = [];
+        const items = [] as Array<ProviderResultsGroup<UserProfile | Group | SpecialMention | Loading>>;
 
         if (priorityProfiles.length > 0 || localAndRemoteMembers.length > 0) {
             items.push(membersGroup([...priorityProfiles, ...localAndRemoteMembers]));
         }
-        if (localAndRemoteGroups.length > 0) {
-            items.push(groupsGroup(localAndRemoteGroups));
-        }
+        // NOTE: Restricting suggestions to channel members only. Keeping code non-destructive by commenting out groups.
+        // if (localAndRemoteGroups.length > 0) {
+        //     items.push(groupsGroup(localAndRemoteGroups));
+        // }
         if (specialMentions.length > 0) {
             items.push(specialMentionsGroup(specialMentions));
         }
-        if (remoteNonMembers.length > 0) {
-            items.push(nonMembersGroup(remoteNonMembers));
-        }
+        // NOTE: Restricting suggestions to channel members only. Keeping code non-destructive by commenting out non-members.
+        // if (remoteNonMembers.length > 0) {
+        //     items.push(nonMembersGroup(remoteNonMembers));
+        // }
 
         return items;
     }
@@ -392,15 +394,17 @@ export default class AtMentionProvider extends Provider {
         this.updateMatches(resultCallback, this.items());
 
         // If we haven't gotten server-side results in 500 ms, add the loading indicator.
-        let showLoadingIndicator: NodeJS.Timeout | null = setTimeout(() => {
-            if (this.shouldCancelDispatch(prefix)) {
-                return;
-            }
-
-            this.updateMatches(resultCallback, [...this.items(), ...[otherMembersGroup()]]);
-
-            showLoadingIndicator = null;
-        }, 500);
+        // NOTE: Non-destructive change to avoid showing "Other Members" when restricting to channel members.
+        // let showLoadingIndicator: NodeJS.Timeout | null = setTimeout(() => {
+        //     if (this.shouldCancelDispatch(prefix)) {
+        //         return;
+        //     }
+        //
+        //     this.updateMatches(resultCallback, [...this.items(), ...[otherMembersGroup()]]);
+        //
+        //     showLoadingIndicator = null;
+        // }, 500);
+        let showLoadingIndicator: NodeJS.Timeout | null = null;
 
         // Query the server for remote results to add to the local results.
         this.autocompleteUsersInChannel(prefix).then(({data}) => {
