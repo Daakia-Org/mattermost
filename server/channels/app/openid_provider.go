@@ -8,6 +8,7 @@ package app
 import (
     "encoding/json"
     "io"
+    "net/http"
     "strings"
 
     "github.com/mattermost/mattermost/server/public/model"
@@ -33,8 +34,6 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
   if err := decoder.Decode(&claims); err != nil {
     return nil, err
   }
-
-  // (claims logging removed per request)
 
   // Create new user and map OpenID Connect standard claims to Mattermost user
   user := &model.User{}
@@ -118,6 +117,31 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
       }
       user.Props["organization_name"] = value
     }
+  }
+
+  // VALIDATION: Check if required fields are present and not empty
+  // This fails early for both new user signups and existing user logins
+  daakiaToken := ""
+  if user.Props != nil {
+    daakiaToken = user.Props["daakia_jwt_token"]
+  }
+  
+  orgName := ""
+  if user.Props != nil {
+    orgName = user.Props["organization_name"]
+  }
+
+  // Fail if daakia_jwt_token is missing or empty
+  if daakiaToken == "" {
+    return nil, model.NewAppError("GetUserFromJSON", "api.user.login_by_oauth.missing_token.app_error",
+      map[string]any{"Field": "daakia_jwt_token"}, "daakia_jwt_token is required for SSO login", http.StatusBadRequest)
+  }
+
+  // Fail if organization_name is missing or empty
+  // Check for empty string or empty JSON array "[]"
+  if orgName == "" || orgName == "[]" {
+    return nil, model.NewAppError("GetUserFromJSON", "api.user.login_by_oauth.missing_org.app_error",
+      map[string]any{"Field": "organization_name"}, "organization_name is required for SSO login", http.StatusBadRequest)
   }
 
   return user, nil

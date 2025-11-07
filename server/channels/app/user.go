@@ -4,32 +4,33 @@
 package app
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"io"
-	"mime/multipart"
-	"net/http"
-	"path/filepath"
-	"strconv"
-	"strings"
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "io"
+    "mime/multipart"
+    "net/http"
+    "path/filepath"
+    "regexp"
+    "strconv"
+    "strings"
 
-	"github.com/pkg/errors"
+    "github.com/pkg/errors"
 
-	"golang.org/x/sync/errgroup"
+    "golang.org/x/sync/errgroup"
 
-	"github.com/mattermost/mattermost/server/public/model"
-	"github.com/mattermost/mattermost/server/public/plugin"
-	"github.com/mattermost/mattermost/server/public/shared/i18n"
-	"github.com/mattermost/mattermost/server/public/shared/mlog"
-	"github.com/mattermost/mattermost/server/public/shared/request"
-	"github.com/mattermost/mattermost/server/v8/channels/app/email"
-	"github.com/mattermost/mattermost/server/v8/channels/app/imaging"
-	"github.com/mattermost/mattermost/server/v8/channels/app/password/hashers"
-	"github.com/mattermost/mattermost/server/v8/channels/app/users"
-	"github.com/mattermost/mattermost/server/v8/channels/store"
-	"github.com/mattermost/mattermost/server/v8/einterfaces"
-	"github.com/mattermost/mattermost/server/v8/platform/shared/mfa"
+    "github.com/mattermost/mattermost/server/public/model"
+    "github.com/mattermost/mattermost/server/public/plugin"
+    "github.com/mattermost/mattermost/server/public/shared/i18n"
+    "github.com/mattermost/mattermost/server/public/shared/mlog"
+    "github.com/mattermost/mattermost/server/public/shared/request"
+    "github.com/mattermost/mattermost/server/v8/channels/app/email"
+    "github.com/mattermost/mattermost/server/v8/channels/app/imaging"
+    "github.com/mattermost/mattermost/server/v8/channels/app/password/hashers"
+    "github.com/mattermost/mattermost/server/v8/channels/app/users"
+    "github.com/mattermost/mattermost/server/v8/channels/store"
+    "github.com/mattermost/mattermost/server/v8/einterfaces"
+    "github.com/mattermost/mattermost/server/v8/platform/shared/mfa"
 )
 
 const (
@@ -405,6 +406,17 @@ func (a *App) CreateOAuthUser(rctx request.CTX, service string, userData io.Read
 		rctx.Logger().Warn("Failed to add user to team", mlog.Err(err))
 	}
 
+	// Auto-create/join team from organization_name
+	// If this fails due to domain restrictions, fail the login
+	if appErr := a.AddUserToTeamByOrganization(rctx, ruser); appErr != nil {
+		// Check if it's a domain restriction error - if so, fail login
+		if appErr.Id == "api.team.join_user_to_team.allowed_domains.app_error" {
+			return nil, appErr
+		}
+		// For other errors, log but don't fail login
+		rctx.Logger().Warn("Auto team from organization failed", mlog.Err(appErr))
+	}
+
 	return ruser, nil
 }
 
@@ -435,6 +447,90 @@ func (a *App) AddUserToTeamByInviteIfNeeded(rctx request.CTX, user *model.User, 
 	}
 
 	return nil
+}
+
+// AddUserToTeamByOrganization ensures the user is added to a team derived from organization_name.
+// Non-blocking; returns nil on missing data or on recoverable errors after logging.
+func (a *App) AddUserToTeamByOrganization(rctx request.CTX, user *model.User) *model.AppError {
+    if user == nil || user.Id == "" {
+        return nil
+    }
+    if user.Props == nil {
+        return nil
+    }
+    raw, ok := user.Props["organization_name"]
+    if !ok || strings.TrimSpace(raw) == "" {
+        return nil
+    }
+
+    // Extract first organization name from JSON array or plain string
+    org := ""
+    trimmed := strings.TrimSpace(raw)
+    if strings.HasPrefix(trimmed, "[") {
+        var arr []string
+        if err := json.Unmarshal([]byte(trimmed), &arr); err == nil {
+            if len(arr) > 0 {
+                org = strings.TrimSpace(arr[0])
+            }
+        }
+    } else {
+        org = trimmed
+    }
+    if org == "" {
+        return nil
+    }
+
+    // DisplayName: strip parenthetical segments and collapse whitespace; retain natural casing
+    reParen := regexp.MustCompile(`\s*\([^)]*\)`) // remove " ( ... )" segments
+    displayName := strings.TrimSpace(reParen.ReplaceAllString(org, ""))
+    reWS := regexp.MustCompile(`\s+`)
+    displayName = reWS.ReplaceAllString(displayName, " ")
+    if displayName == "" {
+        return nil
+    }
+
+    // Slug (team.Name): lowercase and hyphenated
+    name := strings.ToLower(displayName)
+    reNon := regexp.MustCompile(`[^a-z0-9]+`)
+    name = reNon.ReplaceAllString(name, "-")
+    name = strings.Trim(name, "-")
+    if name == "" {
+        return nil
+    }
+
+    // Try to get team by slug
+    team, getErr := a.GetTeamByName(name)
+    if getErr != nil {
+        // Not found -> create private (invite-only) team; user becomes admin via CreateTeamWithUser
+        newTeam := &model.Team{
+            DisplayName:     displayName,
+            Name:            name,
+            Type:            model.TeamInvite, // private/invite-only
+            AllowOpenInvite: false,
+        }
+        _, createErr := a.CreateTeamWithUser(rctx, newTeam, user.Id)
+        if createErr != nil {
+            rctx.Logger().Error("AddUserToTeamByOrganization: FAILED - could not create team", mlog.Err(createErr), mlog.String("user_id", user.Id), mlog.String("slug", name))
+            return createErr
+        }
+        return nil
+    }
+
+    // Team exists: Check email domain restrictions BEFORE joining
+    if !a.ch.srv.teamService.IsTeamEmailAllowed(user, team) {
+        rctx.Logger().Error("AddUserToTeamByOrganization: FAILED - user email domain not allowed", mlog.String("user_email", user.Email), mlog.String("team", team.Name), mlog.String("allowed_domains", team.AllowedDomains))
+        return model.NewAppError("AddUserToTeamByOrganization", "api.team.join_user_to_team.allowed_domains.app_error", 
+            map[string]any{"Team": team.DisplayName, "AllowedDomains": team.AllowedDomains}, 
+            fmt.Sprintf("User %s with email %s cannot join team %s due to domain restrictions: %s", user.Id, user.Email, team.Name, team.AllowedDomains), 
+            http.StatusForbidden)
+    }
+
+    // Ensure membership if team exists and domain check passed
+    if _, err := a.JoinUserToTeam(rctx, team, user, ""); err != nil {
+        rctx.Logger().Error("AddUserToTeamByOrganization: FAILED - could not join team", mlog.Err(err), mlog.String("user_id", user.Id), mlog.String("team", team.Name))
+        return err
+    }
+    return nil
 }
 
 func (a *App) GetUser(userID string) (*model.User, *model.AppError) {
@@ -2352,6 +2448,50 @@ func (a *App) UpdateOAuthUserAttrs(rctx request.CTX, userData io.Reader, user *m
 				userAttrsChanged = true
 			}
 		}
+		// Update organization_name in Props if it exists in oauthUser
+		// This ensures organization_name is refreshed on each login if it changes
+		if orgName, exists := oauthUser.Props["organization_name"]; exists && orgName != "" {
+			if user.Props == nil {
+				user.Props = make(map[string]string)
+			}
+			// Update organization_name if it changed or if it doesn't exist yet
+			if user.Props["organization_name"] != orgName {
+				user.Props["organization_name"] = orgName
+				userAttrsChanged = true
+			}
+		}
+	}
+
+	// VALIDATION: Check if required fields are present after update
+	// Edge case: If user was already logged in but values become empty, logout and fail
+	daakiaToken := ""
+	orgName := ""
+	if user.Props != nil {
+		daakiaToken = user.Props["daakia_jwt_token"]
+		orgName = user.Props["organization_name"]
+	}
+
+	// Check if daakia_jwt_token is missing or empty
+	if daakiaToken == "" {
+		// Logout user by revoking all sessions
+		if revokeErr := a.RevokeAllSessions(rctx, user.Id); revokeErr != nil {
+			rctx.Logger().Error("Failed to revoke sessions for user with missing token", 
+				mlog.String("user_id", user.Id), mlog.Err(revokeErr))
+		}
+		return model.NewAppError("UpdateOAuthUserAttrs", "api.user.login_by_oauth.missing_token.app_error",
+			map[string]any{"Field": "daakia_jwt_token"}, "daakia_jwt_token is required for SSO login", http.StatusBadRequest)
+	}
+
+	// Check if organization_name is missing or empty
+	// Check for empty string or empty JSON array "[]"
+	if orgName == "" || orgName == "[]" {
+		// Logout user by revoking all sessions
+		if revokeErr := a.RevokeAllSessions(rctx, user.Id); revokeErr != nil {
+			rctx.Logger().Error("Failed to revoke sessions for user with missing org", 
+				mlog.String("user_id", user.Id), mlog.Err(revokeErr))
+		}
+		return model.NewAppError("UpdateOAuthUserAttrs", "api.user.login_by_oauth.missing_org.app_error",
+			map[string]any{"Field": "organization_name"}, "organization_name is required for SSO login", http.StatusBadRequest)
 	}
 
 	if userAttrsChanged {
@@ -2371,6 +2511,22 @@ func (a *App) UpdateOAuthUserAttrs(rctx request.CTX, userData io.Reader, user *m
 
 		user = users.New
 		a.InvalidateCacheForUser(user.Id)
+	}
+
+	// Ensure team membership based on organization_name after updating props
+	// If this fails due to domain restrictions, fail the login and logout user
+	if appErr := a.AddUserToTeamByOrganization(rctx, user); appErr != nil {
+		// Check if it's a domain restriction error - if so, logout and fail login
+		if appErr.Id == "api.team.join_user_to_team.allowed_domains.app_error" {
+			// Logout user by revoking all sessions
+			if revokeErr := a.RevokeAllSessions(rctx, user.Id); revokeErr != nil {
+				rctx.Logger().Error("Failed to revoke sessions for user with domain restriction", 
+					mlog.String("user_id", user.Id), mlog.Err(revokeErr))
+			}
+			return appErr
+		}
+		// For other errors, log but don't fail login
+		rctx.Logger().Warn("Auto team from organization failed", mlog.Err(appErr))
 	}
 
 	return nil
