@@ -631,6 +631,9 @@ func (a *App) LoginByOAuth(rctx request.CTX, service string, userData io.Reader,
 			map[string]any{"Service": service}, "", http.StatusBadRequest)
 	}
 
+	// Log raw OAuth claims received
+	rctx.Logger().Info("OAuth claims received", mlog.String("service", service), mlog.String("claims", buf.String()))
+
 	authUser, err1 := provider.GetUserFromJSON(rctx, bytes.NewReader(buf.Bytes()), tokenUser)
 	if err1 != nil {
 		return nil, model.NewAppError("LoginByOAuth", "api.user.login_by_oauth.parse.app_error",
@@ -809,8 +812,8 @@ func (a *App) GetAuthorizationCode(rctx request.CTX, w http.ResponseWriter, r *h
 
     siteURL := a.GetSiteURL()
     if strings.TrimSpace(siteURL) == "" {
-        // siteURL = GetProtocol(r) + "://" + r.Host <- use when running locally
-		siteURL = "https://" + r.Host
+        siteURL = GetProtocol(r) + "://" + r.Host
+		// siteURL = "https://" + r.Host
 
     }
 

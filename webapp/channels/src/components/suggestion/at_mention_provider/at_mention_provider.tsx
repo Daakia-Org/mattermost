@@ -6,11 +6,12 @@ import {defineMessage} from 'react-intl';
 import type {Group} from '@mattermost/types/groups';
 import type {UserProfile} from '@mattermost/types/users';
 
+import {getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
 import type {Filters} from 'mattermost-redux/selectors/entities/users';
 import {makeGetProfilesInChannel} from 'mattermost-redux/selectors/entities/users';
 import {makeAddLastViewAtToProfiles} from 'mattermost-redux/selectors/entities/utils';
 import type {ActionResult} from 'mattermost-redux/types/actions';
-import {getSuggestionsSplitBy, getSuggestionsSplitByMultiple} from 'mattermost-redux/utils/user_utils';
+import {getSuggestionsSplitBy, getSuggestionsSplitByMultiple, displayUsername} from 'mattermost-redux/utils/user_utils';
 
 import store from 'stores/redux_store';
 
@@ -439,12 +440,35 @@ export default class AtMentionProvider extends Provider {
     }
 }
 
+// ============================================================================
+// FEATURE: Display Name to Username Conversion for Mentions
+// ============================================================================
+// This function was modified to insert display names (e.g., "@John Doe")
+// instead of usernames (e.g., "@john.doe") into the text field when users
+// select mentions from the autocomplete dropdown.
+//
+// WHY: Users prefer seeing full names in the text field for better readability,
+//      especially when "Teammate Name Display" is set to "Show first and last name".
+//
+// HOW IT WORKS:
+// - Uses displayUsername() utility to get the display name based on user preferences
+// - The display name is inserted into the text field when user selects from autocomplete
+// - The conversion back to username happens in create_comment.tsx before server submission
+//
+// RELATED CHANGES:
+// - This file: Modified to insert display names in text field
+// - create_comment.tsx: Converts display names to usernames before server submission
+// ============================================================================
 export function membersGroup(items: CreatedProfile[]) {
+    const state = store.getState();
+    const teammateNameDisplay = getTeammateNameDisplaySetting(state);
     return {
         key: 'members',
         label: defineMessage({id: 'suggestion.mention.members', defaultMessage: 'Channel Members'}),
         items,
-        terms: items.map((profile) => '@' + profile.username),
+
+        // MODIFIED: Changed from profile.username to displayUsername() to show full names
+        terms: items.map((profile) => '@' + displayUsername(profile, teammateNameDisplay)),
         component: AtMentionSuggestion,
     };
 }
@@ -469,12 +493,35 @@ export function specialMentionsGroup(items: Array<{username: string}>) {
     };
 }
 
+// ============================================================================
+// FEATURE: Display Name to Username Conversion for Mentions
+// ============================================================================
+// This function was modified to insert display names (e.g., "@John Doe")
+// instead of usernames (e.g., "@john.doe") into the text field when users
+// select mentions from the autocomplete dropdown for users not in the channel.
+//
+// WHY: Users prefer seeing full names in the text field for better readability,
+//      especially when "Teammate Name Display" is set to "Show first and last name".
+//
+// HOW IT WORKS:
+// - Uses displayUsername() utility to get the display name based on user preferences
+// - The display name is inserted into the text field when user selects from autocomplete
+// - The conversion back to username happens in create_comment.tsx before server submission
+//
+// RELATED CHANGES:
+// - This file: Modified to insert display names in text field
+// - create_comment.tsx: Converts display names to usernames before server submission
+// ============================================================================
 export function nonMembersGroup(items: CreatedProfile[]) {
+    const state = store.getState();
+    const teammateNameDisplay = getTeammateNameDisplaySetting(state);
     return {
         key: 'nonMembers',
         label: defineMessage({id: 'suggestion.mention.nonmembers', defaultMessage: 'Not in Channel'}),
         items,
-        terms: items.map((item) => '@' + item.username),
+
+        // MODIFIED: Changed from item.username to displayUsername() to show full names
+        terms: items.map((item) => '@' + displayUsername(item, teammateNameDisplay)),
         component: AtMentionSuggestion,
     };
 }

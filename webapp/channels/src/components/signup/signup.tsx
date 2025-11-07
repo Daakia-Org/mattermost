@@ -38,6 +38,7 @@ import type {CustomizeHeaderType} from 'components/header_footer_route/header_fo
 import LoadingScreen from 'components/loading_screen';
 import Markdown from 'components/markdown';
 import SaveButton from 'components/save_button';
+import SSOOnlySignup from 'components/signup/sso_only_signup';
 import EntraIdIcon from 'components/widgets/icons/entra_id_icon';
 import LockIcon from 'components/widgets/icons/lock_icon';
 import LoginGitlabIcon from 'components/widgets/icons/login_gitlab_icon';
@@ -202,7 +203,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
             });
         }
 
-        if (isLicensed && enableSignUpWithOpenId) {
+        if (enableSignUpWithOpenId) {
             const url = `${Client4.getOAuthRoute()}/openid/signup${search}`;
             externalLoginOptions.push({
                 id: 'openid',
@@ -668,10 +669,35 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     };
 
     const getContent = () => {
+        // Show SSO-only signup when OpenID is enabled
+        // This provides a clean, focused signup experience
+        const isSSOOnly = EnableSignUpWithOpenId === 'true';
+
+        if (isSSOOnly && !isWaiting && !noOpenServer && !serverError && !usedBefore && !desktopLoginLink) {
+            return (
+                <SSOOnlySignup
+                    openIdButtonText={OpenIdButtonText}
+                    openIdButtonColor={OpenIdButtonColor}
+                    siteName={SiteName}
+                    termsOfServiceLink={TermsOfServiceLink}
+                    privacyPolicyLink={PrivacyPolicyLink}
+                    onSSOClick={(url: string) => {
+                        if (isDesktopApp()) {
+                            setDesktopLoginLink(url);
+                            history.push(`/signup_user_complete/desktop${search}`);
+                        } else {
+                            window.location.href = url;
+                        }
+                    }}
+                    onBackClick={handleHeaderBackButtonOnClick}
+                />
+            );
+        }
+
         if (!enableSignUpWithEmail && !enableExternalSignup) {
             return (
                 <ColumnLayout
-                    title={formatMessage({id: 'login.noMethods.title', defaultMessage: 'This server doesn’t have any sign-in methods enabled'})}
+                    title={formatMessage({id: 'login.noMethods.title', defaultMessage: 'This server doesn\'t have any sign-in methods enabled'})}
                     message={formatMessage({id: 'login.noMethods.subtitle', defaultMessage: 'Please contact your System Administrator to resolve this.'})}
                 />
             );
@@ -749,7 +775,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                         className='header-back-button'
                         onClick={handleHeaderBackButtonOnClick}
                     >
-                        ← Back
+                        {'← Back'}
                     </button>
                     {enableCustomBrand && !brandImageError ? (
                         <img

@@ -1,0 +1,254 @@
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// See LICENSE.txt for license information.
+
+// Global rule to hide footer when SSO-only signup is present
+// Target footer elements anywhere on the page when SSO-only signup is present
+body:has(.sso-only-signup) {
+    .row.footer .footer-copyright,
+    .row.footer .footer-link,
+    .footer-pane .footer-copyright,
+    .footer-pane .footer-link,
+    .hfroute-footer .footer-copyright,
+    .hfroute-footer .footer-link,
+    #copyright.footer-link,
+    #copyright.copyright {
+        display: none !important;
+    }
+}
+
+.sso-only-signup {
+    .sso-only-signup-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .sso-only-signup-card {
+        display: flex;
+        width: 100%;
+        max-width: 540px;
+        flex-direction: column;
+        align-items: center;
+        padding: 56px 48px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        position: relative;
+
+        .sso-only-signup-back-button {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            margin: 0;
+            padding: 0;
+            background: none;
+            border: none;
+            color: var(--center-channel-color);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 400;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+
+            &:hover {
+                opacity: 0.7;
+            }
+
+            &:active {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .sso-only-signup-title {
+        margin: 0 0 16px;
+        color: var(--center-channel-color);
+        font-family: 'Metropolis', sans-serif;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 40px;
+    }
+
+    .sso-only-signup-description {
+        margin: 0 0 40px;
+        color: rgba(var(--center-channel-color-rgb), 0.75);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+
+    .sso-only-signup-button-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        button,
+        a {
+            width: 100%;
+            max-width: 400px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        // Style OpenID button specifically for SSO-only signup
+        a#openid.external-login-button.openid {
+            background-color: var(--button-bg);
+            color: white !important;
+            border-color: var(--button-bg);
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+
+            &:hover {
+                background-color: var(--button-bg);
+                opacity: 0.9;
+            }
+
+            &:active {
+                opacity: 0.8;
+            }
+
+            // Style SVG icon to be white
+            svg {
+                fill: white;
+                color: white;
+            }
+
+            // Ensure text is white
+            span,
+            .external-login-button__text {
+                color: white !important;
+            }
+        }
+    }
+
+    .sso-only-signup-login-link {
+        margin-top: 24px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .sso-only-signup-alternate-link {
+            margin: 0;
+            font-size: 14px;
+            color: black;
+
+            .alternate-link__message {
+                color: black !important;
+                font-size: 14px;
+            }
+
+            a {
+                color: black !important;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline !important;
+                }
+            }
+        }
+    }
+
+    .sso-only-signup-footer {
+        width: 100%;
+        max-width: 540px;
+        margin-top: 32px;
+        padding: 0 24px;
+    }
+
+    .sso-only-signup-footer-text {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        text-align: center;
+
+        a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: underline;
+
+            &:hover {
+                color: white;
+            }
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .sso-only-signup-container {
+            padding: 16px;
+        }
+
+        .sso-only-signup-card {
+            width: 100%;
+            padding: 40px 32px;
+
+            .sso-only-signup-back-button {
+                top: 16px;
+                left: 16px;
+                font-size: 14px;
+            }
+        }
+
+        .sso-only-signup-title {
+            font-size: 28px;
+            line-height: 36px;
+        }
+
+        .sso-only-signup-description {
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .sso-only-signup-footer {
+            width: 100%;
+            padding: 0 16px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .sso-only-signup-container {
+            padding: 12px;
+        }
+
+        .sso-only-signup-card {
+            padding: 32px 24px;
+
+            .sso-only-signup-back-button {
+                top: 12px;
+                left: 12px;
+                font-size: 13px;
+            }
+        }
+
+        .sso-only-signup-title {
+            font-size: 24px;
+            line-height: 32px;
+        }
+
+        .sso-only-signup-description {
+            font-size: 13px;
+            line-height: 18px;
+        }
+
+        .sso-only-signup-button-container {
+            button,
+            a {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+        }
+
+        .sso-only-signup-footer {
+            padding: 0 12px;
+
+            .sso-only-signup-footer-text {
+                font-size: 10px;
+                line-height: 14px;
+            }
+        }
+    }
+}
+

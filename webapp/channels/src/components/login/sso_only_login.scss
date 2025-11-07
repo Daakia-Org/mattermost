@@ -1,0 +1,227 @@
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// See LICENSE.txt for license information.
+
+// Global rule to hide footer when SSO-only login is present
+body:has(.sso-only-login) {
+    .row.footer .footer-copyright,
+    .row.footer .footer-link,
+    .footer-pane .footer-copyright,
+    .footer-pane .footer-link,
+    .hfroute-footer .footer-copyright,
+    .hfroute-footer .footer-link,
+    #copyright.footer-link,
+    #copyright.copyright {
+        display: none !important;
+    }
+}
+
+.sso-only-login {
+
+    .sso-only-login-content {
+        display: flex;
+        height: fit-content;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+        position: relative;
+        flex-direction: column;
+
+        // Centered card
+        .sso-only-login-card {
+            display: flex;
+            width: 100%;
+            max-width: 540px;
+            flex-direction: column;
+            align-items: center;
+            padding: 56px 48px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+
+            .sso-only-login-card-content {
+                display: flex;
+                flex: 1;
+                flex-flow: column;
+                width: 100%;
+                align-items: center;
+                border: none;
+                box-shadow: none;
+                text-align: center;
+
+                .sso-only-login-card-title {
+                    margin: 0 0 16px;
+                    color: var(--center-channel-color);
+                    font-family: 'Metropolis', sans-serif;
+                    font-size: 32px;
+                    font-weight: 600;
+                    line-height: 40px;
+                    text-align: center;
+                }
+
+                .sso-only-login-card-subtitle {
+                    margin: 0 0 40px;
+                    color: rgba(var(--center-channel-color-rgb), 0.75);
+                    font-size: 16px;
+                    font-weight: 400;
+                    line-height: 24px;
+                    text-align: center;
+                }
+
+                .sso-only-login-button-container {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+
+                    button,
+                    a {
+                        width: 100%;
+                        max-width: 400px;
+                        padding: 14px 24px;
+                        font-size: 16px;
+                        font-weight: 600;
+                    }
+
+                    // Style OpenID button specifically for SSO-only login
+                    a#openid.external-login-button.openid {
+                        background-color: var(--button-bg);
+                        color: white !important;
+                        border-color: var(--button-bg);
+                        transition: background-color 0.2s ease, opacity 0.2s ease;
+
+                        &:hover {
+                            background-color: var(--button-bg);
+                            opacity: 0.9;
+                        }
+
+                        &:active {
+                            opacity: 0.8;
+                        }
+
+                        // Style SVG icon to be white
+                        svg {
+                            fill: white;
+                            color: white;
+                        }
+
+                        // Ensure text is white
+                        span,
+                        .external-login-button__text {
+                            color: white !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Footer
+        .sso-only-login-footer {
+            width: 100%;
+            max-width: 540px;
+            margin-top: 32px;
+            padding: 0 24px;
+        }
+
+        .sso-only-login-footer-text {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 16px;
+            text-align: center;
+
+            a {
+                color: rgba(255, 255, 255, 0.9);
+                text-decoration: underline;
+
+                &:hover {
+                    color: white;
+                }
+            }
+        }
+    }
+
+    // Responsive design
+    @media screen and (max-width: 768px) {
+        .sso-only-login-content {
+            padding: 16px;
+
+            .sso-only-login-card {
+                width: 100%;
+                padding: 40px 32px;
+
+                .sso-only-login-card-content {
+                    .sso-only-login-card-title {
+                        font-size: 28px;
+                        line-height: 36px;
+                    }
+
+                    .sso-only-login-card-subtitle {
+                        font-size: 14px;
+                        line-height: 20px;
+                    }
+
+                    .sso-only-login-button-container {
+                        button,
+                        a {
+                            padding: 12px 20px;
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
+
+            .sso-only-login-footer {
+                width: 100%;
+                margin-top: 24px;
+                padding: 0 16px;
+
+                .sso-only-login-footer-text {
+                    font-size: 11px;
+                    line-height: 14px;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .sso-only-login-content {
+            padding: 12px;
+
+            .sso-only-login-card {
+                padding: 32px 24px;
+
+                .sso-only-login-card-content {
+                    .sso-only-login-card-title {
+                        font-size: 24px;
+                        line-height: 32px;
+                    }
+
+                    .sso-only-login-card-subtitle {
+                        font-size: 13px;
+                        line-height: 18px;
+                    }
+
+                    .sso-only-login-button-container {
+                        button,
+                        a {
+                            padding: 12px 16px;
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
+
+            .sso-only-login-footer {
+                padding: 0 12px;
+
+                .sso-only-login-footer-text {
+                    font-size: 10px;
+                    line-height: 14px;
+                }
+            }
+        }
+    }
+}
