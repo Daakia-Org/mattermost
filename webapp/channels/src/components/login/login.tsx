@@ -35,6 +35,7 @@ import AlternateLinkLayout from 'components/header_footer_route/content_layouts/
 import ColumnLayout from 'components/header_footer_route/content_layouts/column';
 import type {CustomizeHeaderType} from 'components/header_footer_route/header_footer_route';
 import LoadingScreen from 'components/loading_screen';
+import SSOOnlyLogin from 'components/login/sso_only_login';
 import Markdown from 'components/markdown';
 import SaveButton from 'components/save_button';
 import EntraIdIcon from 'components/widgets/icons/entra_id_icon';
@@ -817,6 +818,29 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
                     loginId={loginId}
                     password={password}
                     onSubmit={submit}
+                />
+            );
+        }
+
+        // Show SSO-only login when OpenID is enabled
+        // This provides a clean, focused login experience
+        const isSSOOnly = EnableSignUpWithOpenId === 'true';
+
+        if (isSSOOnly && !desktopLoginLink && !query.get('server_token')) {
+            return (
+                <SSOOnlyLogin
+                    openIdButtonText={OpenIdButtonText}
+                    openIdButtonColor={OpenIdButtonColor}
+                    termsOfServiceLink={'https://www.daakia.co.in/about-us'}
+                    privacyPolicyLink={'https://www.daakia.co.in/privacy-policy'}
+                    onSSOClick={(url: string) => {
+                        if (isDesktopApp()) {
+                            setDesktopLoginLink(url);
+                            history.push(`/login/desktop${search}`);
+                        } else {
+                            window.location.href = url;
+                        }
+                    }}
                 />
             );
         }

@@ -17,6 +17,18 @@ body:has(.sso-only-signup) {
 }
 
 .sso-only-signup {
+    background: #2F60F7;
+    min-height: 100vh;
+
+    .sso-only-signup-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 40px 24px;
+        position: relative;
+    }
 
     .sso-only-signup-header {
         position: absolute;
@@ -128,13 +140,16 @@ body:has(.sso-only-signup) {
     }
 
     @media screen and (max-width: 768px) {
-        padding: 16px;
+        .sso-only-signup-container {
+            padding: 16px;
+        }
 
         .sso-only-signup-header {
             padding: 16px;
         }
 
         .sso-only-signup-card {
+            width: 100%;
             padding: 40px 32px;
 
             .sso-only-signup-back-button {
@@ -152,6 +167,58 @@ body:has(.sso-only-signup) {
         .sso-only-signup-description {
             font-size: 14px;
             line-height: 20px;
+        }
+
+        .sso-only-signup-footer {
+            width: 100%;
+            padding: 0 16px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .sso-only-signup-container {
+            padding: 12px;
+        }
+
+        .sso-only-signup-header {
+            padding: 12px;
+        }
+
+        .sso-only-signup-card {
+            padding: 32px 24px;
+
+            .sso-only-signup-back-button {
+                top: 12px;
+                left: 12px;
+                font-size: 13px;
+            }
+        }
+
+        .sso-only-signup-title {
+            font-size: 24px;
+            line-height: 32px;
+        }
+
+        .sso-only-signup-description {
+            font-size: 13px;
+            line-height: 18px;
+        }
+
+        .sso-only-signup-button-container {
+            button,
+            a {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+        }
+
+        .sso-only-signup-footer {
+            padding: 0 12px;
+
+            .sso-only-signup-footer-text {
+                font-size: 10px;
+                line-height: 14px;
+            }
         }
     }
 }
