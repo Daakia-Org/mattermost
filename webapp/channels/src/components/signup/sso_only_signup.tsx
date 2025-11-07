@@ -56,22 +56,6 @@ const SSOOnlySignup = ({
     return (
         <div className='sso-only-signup'>
             <div className='sso-only-signup-container'>
-                {/* Top right login link */}
-                <div className='sso-only-signup-header'>
-                    <AlternateLinkLayout
-                        className='sso-only-signup-alternate-link'
-                        alternateMessage={formatMessage({
-                            id: 'signup_user_completed.haveAccount',
-                            defaultMessage: 'Already have an account?',
-                        })}
-                        alternateLinkPath='/login'
-                        alternateLinkLabel={formatMessage({
-                            id: 'signup_user_completed.signIn',
-                            defaultMessage: 'Log in',
-                        })}
-                    />
-                </div>
-
                 {/* Main content card */}
                 <div className='sso-only-signup-card'>
                     {/* Back button inside card */}
@@ -98,6 +82,21 @@ const SSOOnlySignup = ({
                             label={openIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Daakia Connect'})}
                             style={{color: openIdButtonColor, borderColor: openIdButtonColor}}
                             onClick={handleSSOClick}
+                        />
+                    </div>
+                    {/* Login link inside card */}
+                    <div className='sso-only-signup-login-link'>
+                        <AlternateLinkLayout
+                            className='sso-only-signup-alternate-link'
+                            alternateMessage={formatMessage({
+                                id: 'signup_user_completed.haveAccount',
+                                defaultMessage: 'Already have an account?',
+                            })}
+                            alternateLinkPath='/login'
+                            alternateLinkLabel={formatMessage({
+                                id: 'signup_user_completed.signIn',
+                                defaultMessage: 'Log in',
+                            })}
                         />
                     </div>
                 </div>

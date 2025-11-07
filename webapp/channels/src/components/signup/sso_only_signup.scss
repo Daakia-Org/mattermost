@@ -17,31 +17,12 @@ body:has(.sso-only-signup) {
 }
 
 .sso-only-signup {
-    background: #2F60F7;
-    min-height: 100vh;
-
     .sso-only-signup-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 100vh;
-        padding: 40px 24px;
         position: relative;
-    }
-
-    .sso-only-signup-header {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        padding: 24px;
-
-        .sso-only-signup-alternate-link {
-            margin: 0;
-        }
     }
 
     .sso-only-signup-card {
@@ -114,6 +95,33 @@ body:has(.sso-only-signup) {
         }
     }
 
+    .sso-only-signup-login-link {
+        margin-top: 24px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .sso-only-signup-alternate-link {
+            margin: 0;
+            font-size: 14px;
+            color: black;
+
+            .alternate-link__message {
+                color: black !important;
+                font-size: 14px;
+            }
+
+            a {
+                color: black !important;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline !important;
+                }
+            }
+        }
+    }
+
     .sso-only-signup-footer {
         width: 100%;
         max-width: 540px;
@@ -141,10 +149,6 @@ body:has(.sso-only-signup) {
 
     @media screen and (max-width: 768px) {
         .sso-only-signup-container {
-            padding: 16px;
-        }
-
-        .sso-only-signup-header {
             padding: 16px;
         }
 
@@ -177,10 +181,6 @@ body:has(.sso-only-signup) {
 
     @media screen and (max-width: 480px) {
         .sso-only-signup-container {
-            padding: 12px;
-        }
-
-        .sso-only-signup-header {
             padding: 12px;
         }
 
