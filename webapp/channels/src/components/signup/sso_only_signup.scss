@@ -93,6 +93,35 @@ body:has(.sso-only-signup) {
             font-size: 16px;
             font-weight: 600;
         }
+
+        // Style OpenID button specifically for SSO-only signup
+        a#openid.external-login-button.openid {
+            background-color: var(--button-bg);
+            color: white !important;
+            border-color: var(--button-bg);
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+
+            &:hover {
+                background-color: var(--button-bg);
+                opacity: 0.9;
+            }
+
+            &:active {
+                opacity: 0.8;
+            }
+
+            // Style SVG icon to be white
+            svg {
+                fill: white;
+                color: white;
+            }
+
+            // Ensure text is white
+            span,
+            .external-login-button__text {
+                color: white !important;
+            }
+        }
     }
 
     .sso-only-signup-login-link {
