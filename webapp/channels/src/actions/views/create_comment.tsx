@@ -17,10 +17,11 @@ import {
     getLatestInteractablePostId,
     getLatestPostToEdit,
 } from 'mattermost-redux/selectors/entities/posts';
-import {isCustomGroupsEnabled} from 'mattermost-redux/selectors/entities/preferences';
+import {getTeammateNameDisplaySetting, isCustomGroupsEnabled} from 'mattermost-redux/selectors/entities/preferences';
 import {haveIChannelPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
-import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
+import {getCurrentUserId, getUsers} from 'mattermost-redux/selectors/entities/users';
+import {displayUsername} from 'mattermost-redux/utils/user_utils';
 
 import type {ExecuteCommandReturnType} from 'actions/command';
 import {executeCommand} from 'actions/command';
@@ -50,9 +51,77 @@ export function submitPost(
 
         const time = Utils.getTimestamp();
 
+        // ============================================================================
+        // FEATURE: Display Name to Username Conversion for Mentions
+        // ============================================================================
+        // This section converts display names (e.g., "@John Doe") back to usernames
+        // (e.g., "@john.doe") before sending the post to the server.
+        //
+        // WHY: When "Teammate Name Display" is set to "Show first and last name",
+        //      users see full names in the text field when selecting mentions from
+        //      autocomplete. However, the server requires usernames for proper
+        //      mention parsing and notifications. This conversion ensures:
+        //      1. Users see friendly display names in the UI
+        //      2. Server receives correct usernames for processing
+        //      3. Notifications and mentions work correctly
+        //
+        // HOW IT WORKS:
+        // 1. Build a reverse mapping of display names -> usernames for all users
+        // 2. Only map users whose display name differs from username and contains spaces
+        // 3. Escape special regex characters in display names for safe pattern matching
+        // 4. Sort display names by length (longest first) to handle nested names
+        // 5. Replace @displayName patterns with @username in the message
+        //
+        // RELATED CHANGES:
+        // - at_mention_provider.tsx: Modified to insert display names in text field
+        // - This file: Converts display names to usernames before server submission
+        // ============================================================================
+        let message = draft.message;
+        const users = getUsers(state);
+        const teammateNameDisplay = getTeammateNameDisplaySetting(state);
+
+        // Create a reverse mapping: display name -> username
+        // This map will be used to convert display names back to usernames
+        const displayNameToUsername = new Map<string, string>();
+        for (const userId in users) {
+            if (Object.hasOwn(users, userId)) {
+                const user = users[userId];
+                const displayName = displayUsername(user, teammateNameDisplay);
+
+                // Only map if display name is different from username and has spaces (full name)
+                // This ensures we only convert actual full names, not usernames that happen to match
+                if (displayName !== user.username && displayName.includes(' ')) {
+                    // Escape special regex characters in display name to prevent regex injection
+                    // Characters like . * + ? ^ $ { } ( ) | [ ] \ need to be escaped
+                    const escapedDisplayName = displayName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    displayNameToUsername.set(escapedDisplayName, user.username);
+                }
+            }
+        }
+
+        // Replace @displayName with @username in the message
+        if (displayNameToUsername.size > 0) {
+            // Sort by length (longest first) to handle cases where one display name contains another
+            // Example: "John Doe" and "John Doe Jr" - we want to match "John Doe Jr" first
+            const sortedDisplayNames = Array.from(displayNameToUsername.keys()).sort((a, b) => b.length - a.length);
+            for (const displayName of sortedDisplayNames) {
+                const username = displayNameToUsername.get(displayName)!;
+
+                // Match @displayName with word boundaries, handling spaces
+                // Pattern: @displayName followed by whitespace, end of string, or non-word character
+                // This ensures we match complete names, not partial matches
+                const regex = new RegExp(`@${displayName}(?=\\s|$|[^\\w\\s-])`, 'g');
+                message = message.replace(regex, `@${username}`);
+            }
+        }
+
+        // ============================================================================
+        // END OF DISPLAY NAME TO USERNAME CONVERSION
+        // ============================================================================
+
         let post = {
             file_ids: [],
-            message: draft.message,
+            message,
             channel_id: channelId,
             root_id: rootId,
             pending_post_id: `${userId}:${time}`,
