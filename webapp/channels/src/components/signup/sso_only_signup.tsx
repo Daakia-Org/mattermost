@@ -10,7 +10,7 @@ import {Client4} from 'mattermost-redux/client';
 import ExternalLink from 'components/external_link';
 import ExternalLoginButton from 'components/external_login_button/external_login_button';
 import AlternateLinkLayout from 'components/header_footer_route/content_layouts/alternate_link';
-import LoginOpenIDIcon from 'components/widgets/icons/login_openid_icon';
+import DaakiaConnectIcon from 'components/widgets/icons/daakia_connect_icon';
 
 import './sso_only_signup.scss';
 
@@ -78,7 +78,7 @@ const SSOOnlySignup = ({
                         <ExternalLoginButton
                             id='openid'
                             url={url}
-                            icon={<LoginOpenIDIcon/>}
+                            icon={<DaakiaConnectIcon/>}
                             label={openIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Daakia Connect'})}
                             style={{color: openIdButtonColor, borderColor: openIdButtonColor}}
                             onClick={handleSSOClick}
