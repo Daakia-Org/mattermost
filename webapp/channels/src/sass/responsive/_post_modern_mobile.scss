@@ -7,6 +7,45 @@
 
 @media screen and (max-width: 768px) {
     .post {
+        
+        // ============================================================================
+        // 0. GENERAL MOBILE MODERN MODE - POST MENU VISIBILITY & POSITIONING
+        // ============================================================================
+        // Make post menu always visible on mobile (no hover needed)
+        // Position: Left messages -> menu on RIGHT, Right messages -> menu on LEFT
+        
+        &.post--modern {
+            .post__header {
+                .post-menu,
+                .post-menu--modern {
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    transform: scale(1) !important;
+                }
+            }
+        }
+        
+        // Position menu for left side messages (other users) - on the RIGHT
+        &.post--modern:not(.current--user) {
+            .post__header {
+                .post-menu,
+                .post-menu--modern {
+                    left: auto !important;
+                    right: 0 !important;
+                }
+            }
+        }
+        
+        // Position menu for right side messages (current user) - on the LEFT
+        &.post--modern.current--user {
+            .post__header {
+                .post-menu,
+                .post-menu--modern {
+                    left: 0 !important;
+                    right: auto !important;
+                }
+            }
+        }
 
         // ============================================================================
         // 1. OTHER USERS (LEFT-ALIGNED MESSAGES) - MOBILE
@@ -55,6 +94,30 @@
                         opacity: 0.73;
                         line-height: 1.2;
                         font-weight: normal;
+                    }
+                }
+            }
+            
+            // ----------------------------------------------------------------------------
+            // 1.2.1 Hide Custom Status (to match right side behavior) - DM Channels Only
+            // ----------------------------------------------------------------------------
+            
+            // Only hide custom status in DM (Direct Message) channels
+            &[data-channel-type="D"] {
+                .post__header {
+                    .col__name {
+                        // Hide custom status emoji (rendered by PostHeaderCustomStatus)
+                        // The custom status can be:
+                        // 1. A span.emoticon (direct or wrapped in WithTooltip span)
+                        // 2. A button with class post__header-set-custom-status
+                        // We target direct children and nested spans to catch all cases
+                        > span.emoticon[data-emoticon],
+                        > span > span.emoticon[data-emoticon],
+                        // Hide the "update status" button
+                        > .post__header-set-custom-status,
+                        > button.post__header-set-custom-status {
+                            display: none !important;
+                        }
                     }
                 }
             }
@@ -232,8 +295,13 @@
             // ----------------------------------------------------------------------------
             
             .post__header .post-menu {
-                left: 0;
-                right: auto;
+                // Position for right side messages - menu on the LEFT
+                left: 0 !important;
+                right: auto !important;
+                // Make menu always visible on mobile (no hover needed)
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: scale(1) !important;
             }
             
             // ----------------------------------------------------------------------------
