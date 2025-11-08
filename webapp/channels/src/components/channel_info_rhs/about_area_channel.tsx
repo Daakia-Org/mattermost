@@ -79,7 +79,8 @@ const AboutAreaChannel = ({channel, canEditChannelProperties, actions}: Props) =
                 </ChannelPurpose>
             )}
 
-            {(channel.header || canEditChannelProperties) && (
+            {/* Commented out - Header editing disabled for all channel types */}
+            {/* {(channel.header || canEditChannelProperties) && (
                 <ChannelHeader>
 
                     <EditableArea
@@ -98,7 +99,7 @@ const AboutAreaChannel = ({channel, canEditChannelProperties, actions}: Props) =
                         emptyLabel={formatMessage({id: 'channel_info_rhs.about_area.add_channel_header', defaultMessage: 'Add a channel header'})}
                     />
                 </ChannelHeader>
-            )}
+            )} */}
 
             {/* <ChannelId>
                 {formatMessage({id: 'channel_info_rhs.about_area_id', defaultMessage: 'ID:'})} {channel.id}

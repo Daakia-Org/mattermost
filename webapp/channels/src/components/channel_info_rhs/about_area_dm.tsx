@@ -128,7 +128,8 @@ const AboutAreaDM = ({channel, dmUser, actions}: Props) => {
                 </UserInfo>
             </UserInfoContainer>
 
-            {!dmUser.user.is_bot && (
+            {/* Commented out - Header editing disabled for all channel types */}
+            {/* {!dmUser.user.is_bot && (
                 <ChannelHeader>
                     <EditableArea
                         content={channel.header && (
@@ -146,7 +147,7 @@ const AboutAreaDM = ({channel, dmUser, actions}: Props) => {
                         emptyLabel={formatMessage({id: 'channel_info_rhs.about_area.add_channel_header', defaultMessage: 'Add a channel header'})}
                     />
                 </ChannelHeader>
-            )}
+            )} */}
 
             {/* <ChannelId>
                 {formatMessage({id: 'channel_info_rhs.about_area_id', defaultMessage: 'ID:'})} {channel.id}

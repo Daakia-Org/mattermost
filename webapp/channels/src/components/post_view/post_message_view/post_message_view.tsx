@@ -34,6 +34,7 @@ type Props = {
     enableFormatting?: boolean; /* Set to enable Markdown formatting */
     options?: TextFormattingOptions; /* Options specific to text formatting */
     compactDisplay?: boolean; /* Set to render post body compactly */
+    modernDisplay?: boolean; /* Set to render post in modern chat mode */
     isRHS?: boolean; /* Flags if the post_message_view is for the RHS (Reply). */
     isRHSOpen?: boolean; /* Whether or not the RHS is visible */
     isRHSExpanded?: boolean; /* Whether or not the RHS is expanded */
@@ -156,24 +157,30 @@ export default class PostMessageView extends React.PureComponent<Props, State> {
         const channel = getChannel(store.getState(), post.channel_id);
         const isSharedChannel = channel?.shared || false;
 
+        // Check if message is empty or whitespace-only
+        const isMessageEmpty = !message || message.trim().length === 0;
+        const modernDisplay = this.props.modernDisplay;
+
         const body = (
             <>
-                <div
-                    id={id}
-                    className='post-message__text'
-                    dir='auto'
-                    onClick={this.handleFormattedTextClick}
-                >
-                    <PostMarkdown
-                        message={message}
-                        imageProps={this.imageProps}
-                        options={options}
-                        post={post}
-                        channelId={post.channel_id}
-                        showPostEditedIndicator={this.props.showPostEditedIndicator}
-                        isRHS={isRHS}
-                    />
-                </div>
+                {!isMessageEmpty && (
+                    <div
+                        id={id}
+                        className='post-message__text'
+                        dir='auto'
+                        onClick={this.handleFormattedTextClick}
+                    >
+                        <PostMarkdown
+                            message={message}
+                            imageProps={this.imageProps}
+                            options={options}
+                            post={post}
+                            channelId={post.channel_id}
+                            showPostEditedIndicator={this.props.showPostEditedIndicator}
+                            isRHS={isRHS}
+                        />
+                    </div>
+                )}
                 {(!isSharedChannel || this.props.sharedChannelsPluginsEnabled) && (
                     <Pluggable
                         pluggableName='PostMessageAttachment'
@@ -185,6 +192,12 @@ export default class PostMessageView extends React.PureComponent<Props, State> {
         );
 
         if (FULL_HEIGHT_POST_TYPES.has(postType)) {
+            return body;
+        }
+
+        // In modern mode, if message is empty, don't render ShowMore wrapper (which creates .post-message div)
+        // Just return the body directly (which will only have attachments)
+        if (modernDisplay && isMessageEmpty) {
             return body;
         }
 
