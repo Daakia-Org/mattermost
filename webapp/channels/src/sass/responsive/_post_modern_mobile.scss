@@ -99,25 +99,22 @@
             }
             
             // ----------------------------------------------------------------------------
-            // 1.2.1 Hide Custom Status (to match right side behavior) - DM Channels Only
+            // 1.2.1 Hide Custom Status (to match right side behavior)
             // ----------------------------------------------------------------------------
             
-            // Only hide custom status in DM (Direct Message) channels
-            &[data-channel-type="D"] {
-                .post__header {
-                    .col__name {
-                        // Hide custom status emoji (rendered by PostHeaderCustomStatus)
-                        // The custom status can be:
-                        // 1. A span.emoticon (direct or wrapped in WithTooltip span)
-                        // 2. A button with class post__header-set-custom-status
-                        // We target direct children and nested spans to catch all cases
-                        > span.emoticon[data-emoticon],
-                        > span > span.emoticon[data-emoticon],
-                        // Hide the "update status" button
-                        > .post__header-set-custom-status,
-                        > button.post__header-set-custom-status {
-                            display: none !important;
-                        }
+            .post__header {
+                .col__name {
+                    // Hide custom status emoji (rendered by PostHeaderCustomStatus)
+                    // The custom status can be:
+                    // 1. A span.emoticon (direct or wrapped in WithTooltip span)
+                    // 2. A button with class post__header-set-custom-status
+                    // We target direct children and nested spans to catch all cases
+                    > span.emoticon[data-emoticon],
+                    > span > span.emoticon[data-emoticon],
+                    // Hide the "update status" button
+                    > .post__header-set-custom-status,
+                    > button.post__header-set-custom-status {
+                        display: none !important;
                     }
                 }
             }
