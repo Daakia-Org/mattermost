@@ -117,14 +117,22 @@ const AtMentionSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Item
             </span>
         );
     } else {
-        itemname = item.username;
+        // Swapped: Use full name as main text, username in description only if no full name
+        const fullName = Utils.getFullName(item);
+        itemname = fullName || item.username;
 
-        if (item.isCurrentUser) {
-            if (item.first_name || item.last_name) {
-                description = <span>{Utils.getFullName(item)}</span>;
+        // Determine description based on whether full name exists
+        if (fullName) {
+            // Full name exists: only show nickname if available (no username)
+            if (item.nickname) {
+                description = <span>{`(${item.nickname})`}</span>;
             }
-        } else if (item.first_name || item.last_name || item.nickname) {
-            description = <span>{`${Utils.getFullName(item)} ${item.nickname ? `(${item.nickname})` : ''}`.trim()}</span>;
+        } else if (item.isCurrentUser && item.username) {
+            // No full name, current user: show username
+            description = <span>{item.username}</span>;
+        } else if (!fullName && (item.username || item.nickname)) {
+            // No full name, other users: show username (nickname)
+            description = <span>{`${item.username || ''} ${item.nickname ? `(${item.nickname})` : ''}`.trim()}</span>;
         }
 
         icon = (

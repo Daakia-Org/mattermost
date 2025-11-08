@@ -1037,24 +1037,33 @@ export function displayEntireNameForUser(user: UserProfile): React.ReactNode {
     let displayName: React.ReactNode = '';
     const fullName = getFullName(user);
 
-    if (fullName) {
-        displayName = ' - ' + fullName;
-    }
-
+    // Build additional info part (nickname and position)
+    let additionalInfo = '';
     if (user.nickname) {
-        displayName = displayName + ' (' + user.nickname + ')';
+        additionalInfo = additionalInfo + ' (' + user.nickname + ')';
     }
-
     if (user.position) {
-        displayName = displayName + ' - ' + user.position;
+        additionalInfo = additionalInfo + ' - ' + user.position;
     }
 
-    displayName = (
-        <span id={'displayedUserName' + user.username}>
-            {'@' + user.username}
-            <span className='light'>{displayName}</span>
-        </span>
-    );
+    // Show full name first, username only if no full name
+    if (fullName) {
+        // Full name exists: show full name with additional info, no username
+        displayName = (
+            <span id={'displayedUserName' + user.username}>
+                {fullName}
+                {additionalInfo && <span className='light'>{additionalInfo}</span>}
+            </span>
+        );
+    } else {
+        // No full name: show username with additional info
+        const usernamePart = '@' + user.username + additionalInfo;
+        displayName = (
+            <span id={'displayedUserName' + user.username}>
+                {usernamePart}
+            </span>
+        );
+    }
 
     return displayName;
 }
