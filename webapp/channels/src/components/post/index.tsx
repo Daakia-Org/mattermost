@@ -164,6 +164,18 @@ function makeMapStateToProps() {
             Preferences.LINK_PREVIEW_DISPLAY_DEFAULT === 'true',
         );
 
+        // Get base modernDisplay preference
+        const baseModernDisplay = get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.MESSAGE_DISPLAY, Preferences.MESSAGE_DISPLAY_DEFAULT) === Preferences.MESSAGE_DISPLAY_MODERN;
+
+        // Disable modernDisplay only for search and mentions in RHS drawer, but keep it for:
+        // - Center channel posts (always use modern if enabled)
+        // - Threads in RHS (RHS_ROOT or RHS_COMMENT)
+        const isCenterPost = ownProps.location === Locations.CENTER;
+        const isThread = ownProps.location === Locations.RHS_ROOT || ownProps.location === Locations.RHS_COMMENT;
+        const isSearchInRHS = ownProps.location === Locations.SEARCH || (rhsState === RHSStates.SEARCH || rhsState === RHSStates.MENTION);
+        const isSearchOrMention = !isCenterPost && !isThread && isSearchInRHS;
+        const modernDisplay = baseModernDisplay && !isSearchOrMention; // Disable only for search/mentions in RHS, keep for center and threads
+
         return {
             enableEmojiPicker,
             enablePostUsernameOverride,
@@ -181,7 +193,7 @@ function makeMapStateToProps() {
             previousPostIsComment,
             isFlagged: isPostFlagged(state, post.id),
             compactDisplay: get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.MESSAGE_DISPLAY, Preferences.MESSAGE_DISPLAY_DEFAULT) === Preferences.MESSAGE_DISPLAY_COMPACT,
-            modernDisplay: get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.MESSAGE_DISPLAY, Preferences.MESSAGE_DISPLAY_DEFAULT) === Preferences.MESSAGE_DISPLAY_MODERN,
+            modernDisplay,
             colorizeUsernames: get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.COLORIZE_USERNAMES, Preferences.COLORIZE_USERNAMES_DEFAULT) === 'true',
             shouldShowActionsMenu: shouldShowActionsMenu(state, post),
             currentTeam,

@@ -30,7 +30,7 @@ const (
 	ChannelTypeDirect  ChannelType = "D"
 	ChannelTypeGroup   ChannelType = "G"
 
-	ChannelGroupMaxUsers       = 8
+	ChannelGroupMaxUsers       = 100
 	ChannelGroupMinUsers       = 3
 	DefaultChannelName         = "town-square"
 	ChannelDisplayNameMaxRunes = 64

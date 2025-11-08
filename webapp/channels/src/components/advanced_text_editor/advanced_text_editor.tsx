@@ -161,7 +161,6 @@ const AdvancedTextEditor = ({
 
     const currentUserId = useSelector(getCurrentUserId);
     const channel = useSelector((state: GlobalState) => getChannelSelector(state, channelId));
-    const channelDisplayName = channel?.display_name || '';
     const channelType = channel?.type || '';
     const isChannelShared = channel?.shared;
     const draftFromStore = useSelector((state: GlobalState) => getDraftSelector(state, channelId, rootId, storageKey));
@@ -627,9 +626,8 @@ const AdvancedTextEditor = ({
         createMessage = formatMessage(
             {
                 id: 'create_post.write',
-                defaultMessage: 'Write to {channelDisplayName}',
+                defaultMessage: 'Type your message here',
             },
-            {channelDisplayName},
         );
     } else if (readOnlyChannel) {
         createMessage = formatMessage(
