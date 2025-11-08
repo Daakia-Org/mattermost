@@ -1,6 +1,6 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-
+/*eslint-disable*/
 import React from 'react';
 import {useIntl} from 'react-intl';
 import styled from 'styled-components';
@@ -127,7 +127,8 @@ const AboutAreaGM = ({channel, gmUsers, actions}: Props) => {
                 )}
             </UsersArea>
 
-            <ChannelHeader>
+            {/* Commented out - Header editing disabled for all channel types */}
+            {/* <ChannelHeader>
                 <EditableArea
                     content={channel.header && (
                         <LineLimiter
@@ -143,7 +144,7 @@ const AboutAreaGM = ({channel, gmUsers, actions}: Props) => {
                     onEdit={actions.editChannelHeader}
                     emptyLabel={formatMessage({id: 'channel_info_rhs.about_area.add_channel_header', defaultMessage: 'Add a channel header'})}
                 />
-            </ChannelHeader>
+            </ChannelHeader> */}
 
             {/* <ChannelId>
                 {formatMessage({id: 'channel_info_rhs.about_area_id', defaultMessage: 'ID:'})} {channel.id}

@@ -469,6 +469,7 @@ function PostComponent(props: Props) {
             pluginPostTypes={props.pluginPostTypes}
             isRHS={isRHS}
             compactDisplay={props.compactDisplay}
+            modernDisplay={props.modernDisplay}
         />
     );
 

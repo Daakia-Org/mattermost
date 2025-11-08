@@ -83,6 +83,12 @@
         align-items: flex-start;
         width: 100%;
         padding: 0;
+        
+        // Add small margin-bottom when post has both text and attachments
+        &:has(.post-message):has(.attachment, .attachment__list, .file-preview, .file-preview__container, .post-image, .post-image__columns, .file-view--single),
+        &:has(.post-message__text):has(.attachment, .attachment__list, .file-preview, .file-preview__container, .post-image, .post-image__columns, .file-view--single) {
+            margin-bottom: 8px;
+        }
     }
 
     .post-message {
@@ -237,6 +243,12 @@
             direction: ltr;
             color: var(--button-color);
         }
+        
+        // Add small margin-bottom when post has both text and attachments
+        &:has(.post-message):has(.attachment, .attachment__list, .file-preview, .file-preview__container, .post-image, .post-image__columns, .file-view--single),
+        &:has(.post-message__text):has(.attachment, .attachment__list, .file-preview, .file-preview__container, .post-image, .post-image__columns, .file-view--single) {
+            margin-bottom: 8px;
+        }
     }
 
     .post-message {
@@ -334,6 +346,11 @@
         margin-left: auto;
         direction: ltr;
         text-align: left;
+        
+        // Remove right margin from file columns to align with message bubbles
+        .post-image__column {
+            margin-right: 0 !important;
+        }
     }
 
     .file-view--single {
@@ -476,6 +493,28 @@
     
     .post-message {
         margin-top: 0;
+    }
+    
+    // ----------------------------------------------------------------------------
+    // 3.3 Fix Left Side Spacing Only (Right Side Was Already Good)
+    // ----------------------------------------------------------------------------
+    
+    // Only fix left side (other users) - reduce gap and avatar margin to match right side spacing
+    &:not(.current--user) {
+        // Remove gap to match right side (which has no gap since no avatar)
+        .post__content {
+            gap: 0 !important;
+        }
+        
+        // Remove avatar top margin for consecutive messages
+        .post__img--modern {
+            margin-top: 0;
+        }
+        
+        // Add small margin to content to compensate for removed gap and maintain alignment
+        .post__content--modern {
+            margin-left: 6px;
+        }
     }
 }
 
