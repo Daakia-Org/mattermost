@@ -64,7 +64,7 @@ export default {
         SHOW_FULLNAME: 'full_name',
     },
     SPECIAL_MENTIONS: ['all', 'channel', 'here'],
-    MAX_USERS_IN_GM: 8,
+    MAX_USERS_IN_GM: 100,
     MIN_USERS_IN_GM: 3,
     MAX_GROUP_CHANNELS_FOR_PROFILES: 50,
     DEFAULT_LOCALE: 'en',

@@ -1673,7 +1673,7 @@ export const Constants = {
     ],
     MONTHS: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     MAX_DMS: 20,
-    MAX_USERS_IN_GM: 8,
+    MAX_USERS_IN_GM: 100,
     MIN_USERS_IN_GM: 3,
     MAX_CHANNEL_POPOVER_COUNT: 100,
     DM_AND_GM_SHOW_COUNTS: [10, 15, 20, 40],

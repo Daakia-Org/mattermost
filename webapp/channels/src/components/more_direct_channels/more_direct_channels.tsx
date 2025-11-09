@@ -335,7 +335,14 @@ export default class MoreDirectChannels extends React.PureComponent<Props, State
             />
         );
 
-        const modalHeaderText = (
+        // Dynamically change header based on number of selected users
+        const selectedCount = this.state.values.length;
+        const modalHeaderText = selectedCount > 1 ? (
+            <FormattedMessage
+                id='more_direct_channels.title.group'
+                defaultMessage='Group Message'
+            />
+        ) : (
             <FormattedMessage
                 id='more_direct_channels.title'
                 defaultMessage='Direct Messages'

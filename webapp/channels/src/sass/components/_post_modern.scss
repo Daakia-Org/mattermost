@@ -74,6 +74,27 @@
     }
     
     // ----------------------------------------------------------------------------
+    // 1.2.1 Hide Custom Status (to match right side behavior)
+    // ----------------------------------------------------------------------------
+    
+    .post__header {
+        .col__name {
+            // Hide custom status emoji (rendered by PostHeaderCustomStatus)
+            // The custom status can be:
+            // 1. A span.emoticon (direct or wrapped in WithTooltip span)
+            // 2. A button with class post__header-set-custom-status
+            // We target direct children and nested spans to catch all cases
+            > span.emoticon[data-emoticon],
+            > span > span.emoticon[data-emoticon],
+            // Hide the "update status" button
+            > .post__header-set-custom-status,
+            > button.post__header-set-custom-status {
+                display: none !important;
+            }
+        }
+    }
+    
+    // ----------------------------------------------------------------------------
     // 1.3 Message Body & Bubble
     // ----------------------------------------------------------------------------
     

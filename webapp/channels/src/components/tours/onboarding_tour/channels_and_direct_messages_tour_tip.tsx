@@ -53,7 +53,7 @@ export const ChannelsAndDirectMessagesTour = ({firstChannelName}: Props) => {
             <p>
                 <FormattedMessage
                     id='onboardingTour.ChannelsAndDirectMessagesTour.townSquare'
-                    defaultMessage='We’ve also added the <b>{townSquare}</b> and <b>{offTopic}</b> channels for everyone on your team.'
+                    defaultMessage='We’ve also added the <b>{townSquare}</b> channels for everyone on your team.'
                     values={{townSquare: townSquareDisplayName, offTopic: offTopicDisplayName, b: (value) => <b>{value}</b>}}
                 />
             </p>
