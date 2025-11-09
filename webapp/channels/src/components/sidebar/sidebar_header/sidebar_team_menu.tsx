@@ -76,7 +76,7 @@ export default function SidebarTeamMenu(props: Props) {
             <div className='sidebar-team-label'>
                 <FormattedMessage
                     id='sidebar.teams'
-                    defaultMessage='Teams'
+                    defaultMessage='ORG'
                 />
             </div>
             <Menu.Container
