@@ -30,7 +30,7 @@ export const FormattingBarSpacer = styled.div`
     height: 48px;
     transition: height 0.25s ease;
     align-items: end;
-    background: var(--center-channel-bg);
+    background: transparent;
 `;
 
 const FormattingBarContainer = styled.div`

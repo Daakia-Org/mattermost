@@ -92,22 +92,40 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
   }
 
   // Extract organization_name from claims and store in Props.
-  // The provider may send a string or an array; store arrays as JSON to preserve all values.
+  // The provider sends an array of organization objects with:
+  // - organization_name: string (required)
+  // - user_role: "admin" | "guest"
+  // - is_active: boolean
   if raw, ok := claims["organization_name"]; ok {
     var value string
 
     switch v := raw.(type) {
     case string:
+      // Legacy format: plain string (for backward compatibility)
       value = v
     case []interface{}:
-      names := make([]string, 0, len(v))
-      for _, it := range v {
-        if s, ok := it.(string); ok && s != "" {
-          names = append(names, s)
+      // New format: array of organization objects
+      orgs := make([]map[string]interface{}, 0, len(v))
+      for _, item := range v {
+        if orgObj, ok := item.(map[string]interface{}); ok {
+          // Validate required field exists (organization_name only)
+          if orgName, hasName := orgObj["organization_name"]; hasName && orgName != nil {
+            // Valid organization object - add to array
+            orgs = append(orgs, orgObj)
+          }
+        } else if s, ok := item.(string); ok && s != "" {
+          // Legacy format: array of strings (for backward compatibility)
+          orgs = append(orgs, map[string]interface{}{
+            "organization_name": s,
+          })
         }
       }
-      if b, err := json.Marshal(names); err == nil {
+      
+      // Marshal the array of organization objects to JSON string
+      if len(orgs) > 0 {
+        if b, err := json.Marshal(orgs); err == nil {
         value = string(b)
+        }
       }
     }
 
@@ -140,8 +158,32 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
   // Fail if organization_name is missing or empty
   // Check for empty string or empty JSON array "[]"
   if orgName == "" || orgName == "[]" {
-    return nil, model.NewAppError("GetUserFromJSON", "api.user.login_by_oauth.missing_org.app_error",
+    return nil, model.NewAppError("GetUserFromJSON", "daakia.invalid_active_org.app_error",
       map[string]any{"Field": "organization_name"}, "organization_name is required for SSO login", http.StatusBadRequest)
+  }
+
+  // Validate that organization_name contains at least one valid organization object
+  // Try to parse as JSON array to ensure it's valid
+  var orgsArray []interface{}
+  if err := json.Unmarshal([]byte(orgName), &orgsArray); err == nil {
+    // Valid JSON array - check if it has at least one valid organization
+    validOrgCount := 0
+    for _, item := range orgsArray {
+      if orgObj, ok := item.(map[string]interface{}); ok {
+        // Check for required field: organization_name only
+        if orgName, hasName := orgObj["organization_name"]; hasName && orgName != nil {
+          validOrgCount++
+        }
+      } else if s, ok := item.(string); ok && s != "" {
+        // Legacy format: string is valid
+        validOrgCount++
+      }
+    }
+    
+    if validOrgCount == 0 {
+      return nil, model.NewAppError("GetUserFromJSON", "daakia.invalid_active_org.app_error",
+        map[string]any{"Field": "organization_name"}, "organization_name must contain at least one valid organization", http.StatusBadRequest)
+    }
   }
 
   return user, nil

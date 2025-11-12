@@ -6,6 +6,9 @@ import React from 'react';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import type {IntlShape} from 'react-intl';
 
+// Hidden imports (commented out but kept for reference):
+// LinkVariantIcon - used for Copy Link
+// PinIcon, PinOutlineIcon - used for Pin to Channel
 import {
     ArrowRightBoldOutlineIcon,
     BookmarkIcon,
@@ -13,14 +16,16 @@ import {
     ContentCopyIcon,
     DotsHorizontalIcon,
     EmoticonPlusOutlineIcon,
-    LinkVariantIcon,
+
+    // LinkVariantIcon,
     MarkAsUnreadIcon,
     MessageArrowRightOutlineIcon,
     MessageCheckOutlineIcon,
     MessageMinusOutlineIcon,
     PencilOutlineIcon,
-    PinIcon,
-    PinOutlineIcon,
+
+    // PinIcon,
+    // PinOutlineIcon,
     ReplyOutlineIcon,
     TrashCanOutlineIcon,
 } from '@mattermost/compass-icons/components';
@@ -416,6 +421,9 @@ export class DotMenuClass extends React.PureComponent<Props, State> {
         const isMobile = this.props.isMobileView;
         const isSystemMessage = PostUtils.isSystemMessage(this.props.post);
 
+        // Hidden features - set to true to re-enable
+        const SHOW_PIN_AND_COPY_LINK = false;
+
         this.canPostBeForwarded = !(isSystemMessage);
 
         const forwardPostItemText = (
@@ -472,19 +480,20 @@ export class DotMenuClass extends React.PureComponent<Props, State> {
             />
         );
 
-        const pinPost = (
-            <FormattedMessage
-                id='post_info.pin'
-                defaultMessage='Pin'
-            />
-        );
+        // Pin to Channel - Hidden
+        // const pinPost = (
+        //     <FormattedMessage
+        //         id='post_info.pin'
+        //         defaultMessage='Pin'
+        //     />
+        // );
 
-        const unPinPost = (
-            <FormattedMessage
-                id='post_info.unpin'
-                defaultMessage='Unpin'
-            />
-        );
+        // const unPinPost = (
+        //     <FormattedMessage
+        //         id='post_info.unpin'
+        //         defaultMessage='Unpin'
+        //     />
+        // );
 
         return (
             <Menu.Container
@@ -609,16 +618,27 @@ export class DotMenuClass extends React.PureComponent<Props, State> {
                         onClick={this.handleFlagMenuItemActivated}
                     />
                 }
-                {Boolean(!isSystemMessage && !this.props.isReadOnly) &&
+                {/* Pin to Channel - Hidden */}
+                {SHOW_PIN_AND_COPY_LINK && Boolean(!isSystemMessage && !this.props.isReadOnly) && (
                     <Menu.Item
                         id={`${this.props.post.is_pinned ? 'unpin' : 'pin'}_post_${this.props.post.id}`}
                         data-testid={`pin_post_${this.props.post.id}`}
-                        labels={this.props.post.is_pinned ? unPinPost : pinPost}
-                        leadingElement={this.props.post.is_pinned ? <PinIcon size={18}/> : <PinOutlineIcon size={18}/>}
+                        labels={this.props.post.is_pinned ? (
+                            <FormattedMessage
+                                id='post_info.unpin'
+                                defaultMessage='Unpin'
+                            />
+                        ) : (
+                            <FormattedMessage
+                                id='post_info.pin'
+                                defaultMessage='Pin'
+                            />
+                        )}
+                        leadingElement={null}
                         trailingElements={<ShortcutKey shortcutKey='P'/>}
                         onClick={this.handlePinMenuItemActivated}
                     />
-                }
+                )}
                 {Boolean(!isSystemMessage && this.props.canMove) &&
                     <Menu.Item
                         id={`move_thread_${this.props.post.id}`}
@@ -632,8 +652,11 @@ export class DotMenuClass extends React.PureComponent<Props, State> {
                         onClick={this.handleMoveThreadMenuItemActivated}
                     />
                 }
+                {/* Separator - Hidden (was before Copy Link/Edit section)
                 {!isSystemMessage && (this.state.canEdit || this.state.canDelete) && <Menu.Separator/>}
-                {!isSystemMessage &&
+                */}
+                {/* Copy Link - Hidden */}
+                {SHOW_PIN_AND_COPY_LINK && !isSystemMessage && (
                     <Menu.Item
                         id={`permalink_${this.props.post.id}`}
                         data-testid={`permalink_${this.props.post.id}`}
@@ -642,12 +665,14 @@ export class DotMenuClass extends React.PureComponent<Props, State> {
                                 id='post_info.permalink'
                                 defaultMessage='Copy Link'
                             />}
-                        leadingElement={<LinkVariantIcon size={18}/>}
+                        leadingElement={null}
                         trailingElements={<ShortcutKey shortcutKey='K'/>}
                         onClick={this.copyLink}
                     />
-                }
+                )}
+                {/* Separator - Hidden (was after Copy Link)
                 {!isSystemMessage && <Menu.Separator/>}
+                */}
                 {this.state.canEdit &&
                     <Menu.Item
                         id={`edit_post_${this.props.post.id}`}
