@@ -411,11 +411,11 @@ func (a *App) CreateOAuthUser(rctx request.CTX, service string, userData io.Read
 	if appErr := a.AddUserToTeamByOrganization(rctx, ruser); appErr != nil {
 		// Check if it's a critical error that should fail login
 		if appErr.Id == "api.team.join_user_to_team.allowed_domains.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.no_active_org.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.multiple_active_org.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.active_guest_team_not_found.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.invalid_active_org.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.invalid_role.app_error" {
+		appErr.Id == "daakia.user_not_added_to_org.app_error" ||
+		appErr.Id == "daakia.multiple_active_org.app_error" ||
+		appErr.Id == "daakia.guest_workspace_not_found.app_error" ||
+		appErr.Id == "api.user.login_by_oauth.invalid_active_org.app_error" ||
+		appErr.Id == "api.user.login_by_oauth.invalid_role.app_error" {
 			return nil, appErr
 		}
 		// For other errors, log but don't fail login
@@ -497,30 +497,42 @@ func (a *App) AddUserToTeamByOrganization(rctx request.CTX, user *model.User) *m
         return false
     }
 
-    // STEP 1: Find active organization (is_active: true)
+    // STEP 1: Find active organization (is_active: true) - with early exit
     var activeOrg map[string]interface{}
     activeOrgCount := 0
     for _, org := range orgsArray {
         if getBool(org, "is_active") {
             activeOrg = org
             activeOrgCount++
+            // Early exit: if we find second active org, return error immediately
+            if activeOrgCount > 1 {
+                return model.NewAppError("AddUserToTeamByOrganization",
+                    "daakia.multiple_active_org.app_error",
+                    nil, "Multiple active organizations found",
+                    http.StatusBadRequest)
+            }
         }
     }
 
     // Validate exactly one active organization
     if activeOrgCount == 0 {
+        // Check if user is already in any team (existing user)
+        teamMembers, err := a.GetTeamMembersForUser(rctx, user.Id, "", false)
+        if err == nil && len(teamMembers) > 0 {
+            // User has existing teams - allow login without team assignment
+            rctx.Logger().Info("AddUserToTeamByOrganization: No active org, but user has existing teams - allowing login", 
+                mlog.String("user_id", user.Id), mlog.Int("team_count", len(teamMembers)))
+            return nil
+        }
+        
+        // New user with no teams - show error
         return model.NewAppError("AddUserToTeamByOrganization",
-            "api.user.login_by_oauth.no_active_org.app_error",
+            "daakia.user_not_added_to_org.app_error",
             nil, "No active organization found for user",
             http.StatusBadRequest)
     }
 
-    if activeOrgCount > 1 {
-        return model.NewAppError("AddUserToTeamByOrganization",
-            "api.user.login_by_oauth.multiple_active_org.app_error",
-            nil, "Multiple active organizations found",
-            http.StatusBadRequest)
-    }
+    // activeOrgCount == 1 at this point (we already checked > 1 in loop)
 
     // Extract active org details
     activeOrgName := getString(activeOrg, "organization_name")
@@ -590,7 +602,7 @@ func (a *App) AddUserToTeamByOrganization(rctx request.CTX, user *model.User) *m
         // Guest: join if found, error if not found
         if !teamExists {
             return model.NewAppError("AddUserToTeamByOrganization",
-                "api.user.login_by_oauth.active_guest_team_not_found.app_error",
+                "daakia.guest_workspace_not_found.app_error",
                 map[string]any{"TeamName": teamName, "OrganizationName": activeOrgName},
                 fmt.Sprintf("Active organization team %s does not exist and cannot be created for guest user", teamName),
                 http.StatusBadRequest)
@@ -2608,11 +2620,11 @@ func (a *App) UpdateOAuthUserAttrs(rctx request.CTX, userData io.Reader, user *m
 	if appErr := a.AddUserToTeamByOrganization(rctx, user); appErr != nil {
 		// Check if it's a critical error that should fail login
 		if appErr.Id == "api.team.join_user_to_team.allowed_domains.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.no_active_org.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.multiple_active_org.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.active_guest_team_not_found.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.invalid_active_org.app_error" ||
-			appErr.Id == "api.user.login_by_oauth.invalid_role.app_error" {
+		appErr.Id == "daakia.user_not_added_to_org.app_error" ||
+		appErr.Id == "daakia.multiple_active_org.app_error" ||
+		appErr.Id == "daakia.guest_workspace_not_found.app_error" ||
+		appErr.Id == "api.user.login_by_oauth.invalid_active_org.app_error" ||
+		appErr.Id == "api.user.login_by_oauth.invalid_role.app_error" {
 			// Logout user by revoking all sessions
 			if revokeErr := a.RevokeAllSessions(rctx, user.Id); revokeErr != nil {
 				rctx.Logger().Error("Failed to revoke sessions for user with organization error", 

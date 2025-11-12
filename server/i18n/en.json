@@ -4335,6 +4335,18 @@
     "translation": "Could not parse auth data out of {{.Service}} user object."
   },
   {
+    "id": "daakia.guest_workspace_not_found.app_error",
+    "translation": "Access denied: Your organization workspace needs to be created by an administrator before you can sign in, or you have not been added to use this by your organization administrator."
+  },
+  {
+    "id": "daakia.user_not_added_to_org.app_error",
+    "translation": "You are not added to any organization. Please contact your organization administrator."
+  },
+  {
+    "id": "daakia.multiple_active_org.app_error",
+    "translation": "Something went wrong. Please contact support at support@daakia.co.in"
+  },
+  {
     "id": "api.user.login_cws.license.error",
     "translation": "CWS login is forbidden."
   },
