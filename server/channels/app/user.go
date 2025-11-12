@@ -414,8 +414,8 @@ func (a *App) CreateOAuthUser(rctx request.CTX, service string, userData io.Read
 		appErr.Id == "daakia.user_not_added_to_org.app_error" ||
 		appErr.Id == "daakia.multiple_active_org.app_error" ||
 		appErr.Id == "daakia.guest_workspace_not_found.app_error" ||
-		appErr.Id == "api.user.login_by_oauth.invalid_active_org.app_error" ||
-		appErr.Id == "api.user.login_by_oauth.invalid_role.app_error" {
+		appErr.Id == "daakia.invalid_active_org.app_error" ||
+		appErr.Id == "daakia.invalid_role.app_error" {
 			return nil, appErr
 		}
 		// For other errors, log but don't fail login
@@ -540,7 +540,7 @@ func (a *App) AddUserToTeamByOrganization(rctx request.CTX, user *model.User) *m
 
     if activeOrgName == "" {
         return model.NewAppError("AddUserToTeamByOrganization",
-            "api.user.login_by_oauth.invalid_active_org.app_error",
+            "daakia.invalid_active_org.app_error",
             nil, "Active organization is missing required fields",
             http.StatusBadRequest)
     }
@@ -630,7 +630,7 @@ func (a *App) AddUserToTeamByOrganization(rctx request.CTX, user *model.User) *m
 
     // Unknown role
     return model.NewAppError("AddUserToTeamByOrganization",
-        "api.user.login_by_oauth.invalid_role.app_error",
+        "daakia.invalid_role.app_error",
         nil, fmt.Sprintf("Unknown role: %s", role),
         http.StatusBadRequest)
 }
@@ -2623,8 +2623,8 @@ func (a *App) UpdateOAuthUserAttrs(rctx request.CTX, userData io.Reader, user *m
 		appErr.Id == "daakia.user_not_added_to_org.app_error" ||
 		appErr.Id == "daakia.multiple_active_org.app_error" ||
 		appErr.Id == "daakia.guest_workspace_not_found.app_error" ||
-		appErr.Id == "api.user.login_by_oauth.invalid_active_org.app_error" ||
-		appErr.Id == "api.user.login_by_oauth.invalid_role.app_error" {
+		appErr.Id == "daakia.invalid_active_org.app_error" ||
+		appErr.Id == "daakia.invalid_role.app_error" {
 			// Logout user by revoking all sessions
 			if revokeErr := a.RevokeAllSessions(rctx, user.Id); revokeErr != nil {
 				rctx.Logger().Error("Failed to revoke sessions for user with organization error", 

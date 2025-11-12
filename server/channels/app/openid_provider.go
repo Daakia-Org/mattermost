@@ -158,7 +158,7 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
   // Fail if organization_name is missing or empty
   // Check for empty string or empty JSON array "[]"
   if orgName == "" || orgName == "[]" {
-    return nil, model.NewAppError("GetUserFromJSON", "api.user.login_by_oauth.missing_org.app_error",
+    return nil, model.NewAppError("GetUserFromJSON", "daakia.invalid_active_org.app_error",
       map[string]any{"Field": "organization_name"}, "organization_name is required for SSO login", http.StatusBadRequest)
   }
 
@@ -181,7 +181,7 @@ func (o *OpenIDProvider) GetUserFromJSON(rctx request.CTX, data io.Reader, token
     }
     
     if validOrgCount == 0 {
-      return nil, model.NewAppError("GetUserFromJSON", "api.user.login_by_oauth.invalid_org.app_error",
+      return nil, model.NewAppError("GetUserFromJSON", "daakia.invalid_active_org.app_error",
         map[string]any{"Field": "organization_name"}, "organization_name must contain at least one valid organization", http.StatusBadRequest)
     }
   }
