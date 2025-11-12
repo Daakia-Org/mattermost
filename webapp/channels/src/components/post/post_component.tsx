@@ -569,111 +569,6 @@ function PostComponent(props: Props) {
                     className={`post__content ${props.center ? 'center' : ''}`}
                     data-testid='postContent'
                 >
-                    <div className='post__img'>
-                        {profilePic}
-                    </div>
-                    <div>
-                        <div
-                            className='post__header'
-                            ref={postHeaderRef}
-                        >
-                            <PostUserProfile
-                                {...props}
-                                isSystemMessage={isSystemMessage}
-                            />
-                            <div className='col d-flex align-items-center'>
-                                {((!hideProfilePicture && props.location === Locations.CENTER) || hover || props.location !== Locations.CENTER) &&
-                                    <PostTime
-                                        isPermalink={!(Posts.POST_DELETED === post.state || isPostPendingOrFailed(post))}
-                                        teamName={props.team?.name}
-                                        eventTime={post.create_at}
-                                        postId={post.id}
-                                        location={props.location}
-                                        timestampProps={{...props.timestampProps, style: props.isConsecutivePost && !props.compactDisplay ? 'narrow' : undefined}}
-                                    />
-                                }
-                                {priority}
-                                {Boolean(post.props && post.props.ai_generated_by && post.props.ai_generated_by_username) &&
-                                    typeof post.props.ai_generated_by === 'string' &&
-                                    typeof post.props.ai_generated_by_username === 'string' && (
-                                    <AiGeneratedIndicator
-                                        userId={post.props.ai_generated_by}
-                                        username={post.props.ai_generated_by_username}
-                                        postAuthorId={post.user_id}
-                                    />
-                                )}
-                                {Boolean(post.props && post.props.card) &&
-                                    <WithTooltip
-                                        title={
-                                            <FormattedMessage
-                                                id='post_info.info.view_additional_info'
-                                                defaultMessage='View additional info'
-                                            />
-                                        }
-                                    >
-                                        <button
-                                            className={'card-icon__container icon--show style--none ' + (props.isCardOpen ? 'active' : '')}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                handleCardClick(post);
-                                            }}
-                                        >
-                                            <InfoSmallIcon
-                                                className='icon icon__info'
-                                                aria-hidden='true'
-                                            />
-                                        </button>
-                                    </WithTooltip>
-                                }
-                                {visibleMessage}
-                            </div>
-                            {!props.isPostBeingEdited &&
-                            <PostOptions
-                                {...props}
-                                teamId={teamId}
-                                handleDropdownOpened={handleDropdownOpened}
-                                handleCommentClick={handleCommentClick}
-                                hover={hover || a11yActive}
-                                removePost={props.actions.removePost}
-                                handleJumpClick={handleJumpClick}
-                                isPostHeaderVisible={getPostHeaderVisible()}
-                            />
-                            }
-                        </div>
-                        {comment}
-                        <div
-                            className={postClass}
-                            id={isRHS ? undefined : `${post.id}_message`}
-                        >
-                            {post.failed && <FailedPostOptions post={post}/>}
-                            <AutoHeightSwitcher
-                                showSlot={slotBasedOnEditOrMessageView}
-                                shouldScrollIntoView={props.isPostBeingEdited}
-                                slot1={message}
-                                slot2={<EditPost/>}
-                                onTransitionEnd={() => document.dispatchEvent(new Event(AppEvents.FOCUS_EDIT_TEXTBOX))}
-                            />
-                            {
-                                showFileAttachments &&
-                                <FileAttachmentListContainer
-                                    post={post}
-                                    compactDisplay={props.compactDisplay}
-                                    handleFileDropdownOpened={handleFileDropdownOpened}
-                                />
-                            }
-                            <div className='post__body-reactions-acks'>
-                                {props.isPostAcknowledgementsEnabled && post.metadata?.priority?.requested_ack && (
-                                    <PostAcknowledgements
-                                        authorId={post.user_id}
-                                        isDeleted={post.state === Posts.POST_DELETED}
-                                        postId={post.id}
-                                    />
-                                )}
-                                {showReactions && <ReactionList post={post}/>}
-                            </div>
-                            {threadFooter}
-                        </div>
-                    </div>
                     {/* Conditional avatar rendering for Modern mode */}
                     {props.modernDisplay ? (
 
@@ -703,6 +598,15 @@ function PostComponent(props: Props) {
                                             />
                                         }
                                         {priority}
+                                        {Boolean(post.props && post.props.ai_generated_by && post.props.ai_generated_by_username) &&
+                                            typeof post.props.ai_generated_by === 'string' &&
+                                            typeof post.props.ai_generated_by_username === 'string' && (
+                                            <AiGeneratedIndicator
+                                                userId={post.props.ai_generated_by}
+                                                username={post.props.ai_generated_by_username}
+                                                postAuthorId={post.user_id}
+                                            />
+                                        )}
                                         {Boolean(post.props && post.props.card) &&
                                             <WithTooltip
                                                 title={
@@ -804,6 +708,15 @@ function PostComponent(props: Props) {
                                             />
                                         }
                                         {priority}
+                                        {Boolean(post.props && post.props.ai_generated_by && post.props.ai_generated_by_username) &&
+                                            typeof post.props.ai_generated_by === 'string' &&
+                                            typeof post.props.ai_generated_by_username === 'string' && (
+                                            <AiGeneratedIndicator
+                                                userId={post.props.ai_generated_by}
+                                                username={post.props.ai_generated_by_username}
+                                                postAuthorId={post.user_id}
+                                            />
+                                        )}
                                         {Boolean(post.props && post.props.card) &&
                                             <WithTooltip
                                                 title={
