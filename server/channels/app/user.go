@@ -407,10 +407,15 @@ func (a *App) CreateOAuthUser(rctx request.CTX, service string, userData io.Read
 	}
 
 	// Auto-create/join team from organization_name
-	// If this fails due to domain restrictions, fail the login
+	// If this fails due to domain restrictions or active team issues, fail the login
 	if appErr := a.AddUserToTeamByOrganization(rctx, ruser); appErr != nil {
-		// Check if it's a domain restriction error - if so, fail login
-		if appErr.Id == "api.team.join_user_to_team.allowed_domains.app_error" {
+		// Check if it's a critical error that should fail login
+		if appErr.Id == "api.team.join_user_to_team.allowed_domains.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.no_active_org.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.multiple_active_org.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.active_guest_team_not_found.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.invalid_active_org.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.invalid_role.app_error" {
 			return nil, appErr
 		}
 		// For other errors, log but don't fail login
@@ -449,8 +454,7 @@ func (a *App) AddUserToTeamByInviteIfNeeded(rctx request.CTX, user *model.User, 
 	return nil
 }
 
-// AddUserToTeamByOrganization ensures the user is added to a team derived from organization_name.
-// Non-blocking; returns nil on missing data or on recoverable errors after logging.
+// AddUserToTeamByOrganization processes the active organization and ensures the user is added to the team.
 func (a *App) AddUserToTeamByOrganization(rctx request.CTX, user *model.User) *model.AppError {
     if user == nil || user.Id == "" {
         return nil
@@ -463,74 +467,160 @@ func (a *App) AddUserToTeamByOrganization(rctx request.CTX, user *model.User) *m
         return nil
     }
 
-    // Extract first organization name from JSON array or plain string
-    org := ""
-    trimmed := strings.TrimSpace(raw)
-    if strings.HasPrefix(trimmed, "[") {
-        var arr []string
-        if err := json.Unmarshal([]byte(trimmed), &arr); err == nil {
-            if len(arr) > 0 {
-                org = strings.TrimSpace(arr[0])
+    // Parse organization array from JSON string
+    var orgsArray []map[string]interface{}
+    if err := json.Unmarshal([]byte(raw), &orgsArray); err != nil {
+        rctx.Logger().Warn("AddUserToTeamByOrganization: Failed to parse organization_name", mlog.Err(err))
+        return nil
+    }
+
+    if len(orgsArray) == 0 {
+        return nil
+    }
+
+    // Helper functions
+    getString := func(org map[string]interface{}, key string) string {
+        if val, ok := org[key]; ok {
+            if str, ok := val.(string); ok {
+                return strings.TrimSpace(str)
             }
         }
-    } else {
-        org = trimmed
-    }
-    if org == "" {
-        return nil
+        return ""
     }
 
-    // DisplayName: strip parenthetical segments and collapse whitespace; retain natural casing
-    reParen := regexp.MustCompile(`\s*\([^)]*\)`) // remove " ( ... )" segments
-    displayName := strings.TrimSpace(reParen.ReplaceAllString(org, ""))
-    reWS := regexp.MustCompile(`\s+`)
-    displayName = reWS.ReplaceAllString(displayName, " ")
-    if displayName == "" {
-        return nil
-    }
-
-    // Slug (team.Name): lowercase and hyphenated
-    name := strings.ToLower(displayName)
-    reNon := regexp.MustCompile(`[^a-z0-9]+`)
-    name = reNon.ReplaceAllString(name, "-")
-    name = strings.Trim(name, "-")
-    if name == "" {
-        return nil
-    }
-
-    // Try to get team by slug
-    team, getErr := a.GetTeamByName(name)
-    if getErr != nil {
-        // Not found -> create private (invite-only) team; user becomes admin via CreateTeamWithUser
-        newTeam := &model.Team{
-            DisplayName:     displayName,
-            Name:            name,
-            Type:            model.TeamInvite, // private/invite-only
-            AllowOpenInvite: false,
+    getBool := func(org map[string]interface{}, key string) bool {
+        if val, ok := org[key]; ok {
+            if b, ok := val.(bool); ok {
+                return b
+            }
         }
-        _, createErr := a.CreateTeamWithUser(rctx, newTeam, user.Id)
-        if createErr != nil {
-            rctx.Logger().Error("AddUserToTeamByOrganization: FAILED - could not create team", mlog.Err(createErr), mlog.String("user_id", user.Id), mlog.String("slug", name))
-            return createErr
+        return false
+    }
+
+    // STEP 1: Find active organization (is_active: true)
+    var activeOrg map[string]interface{}
+    activeOrgCount := 0
+    for _, org := range orgsArray {
+        if getBool(org, "is_active") {
+            activeOrg = org
+            activeOrgCount++
         }
+    }
+
+    // Validate exactly one active organization
+    if activeOrgCount == 0 {
+        return model.NewAppError("AddUserToTeamByOrganization",
+            "api.user.login_by_oauth.no_active_org.app_error",
+            nil, "No active organization found for user",
+            http.StatusBadRequest)
+    }
+
+    if activeOrgCount > 1 {
+        return model.NewAppError("AddUserToTeamByOrganization",
+            "api.user.login_by_oauth.multiple_active_org.app_error",
+            nil, "Multiple active organizations found",
+            http.StatusBadRequest)
+    }
+
+    // Extract active org details
+    activeOrgName := getString(activeOrg, "organization_name")
+    role := getString(activeOrg, "user_role")
+
+    if activeOrgName == "" {
+        return model.NewAppError("AddUserToTeamByOrganization",
+            "api.user.login_by_oauth.invalid_active_org.app_error",
+            nil, "Active organization is missing required fields",
+            http.StatusBadRequest)
+    }
+
+    // STEP 2: Match team by organization_name (slug) -> team Name
+    teamName := model.CleanTeamName(activeOrgName)
+    rctx.Logger().Info("AddUserToTeamByOrganization: Processing active org", mlog.String("team_name", teamName), mlog.String("org_name", activeOrgName), mlog.String("role", role), mlog.String("user_id", user.Id))
+    team, getErr := a.GetTeamByName(teamName)
+    teamExists := (getErr == nil && team != nil)
+
+    // STEP 3: Handle based on role
+    if role == "admin" {
+        // Admin: create if not found, then join
+        if !teamExists {
+            // Create team
+            displayName := strings.TrimSpace(regexp.MustCompile(`\s*\([^)]*\)`).ReplaceAllString(activeOrgName, ""))
+            reWS := regexp.MustCompile(`\s+`)
+            displayName = reWS.ReplaceAllString(displayName, " ")
+            if displayName == "" {
+                displayName = activeOrgName // Fallback
+            }
+
+            newTeam := &model.Team{
+                DisplayName:     displayName,
+                Name:            teamName,
+                Type:            model.TeamInvite,
+                AllowOpenInvite: false,
+                CompanyName:     displayName, // Store organization display name
+            }
+            createdTeam, createErr := a.CreateTeamWithUser(rctx, newTeam, user.Id)
+            if createErr != nil {
+                rctx.Logger().Error("AddUserToTeamByOrganization: Failed to create team",
+                    mlog.Err(createErr), mlog.String("user_id", user.Id), mlog.String("team_name", teamName))
+                return createErr
+            }
+            team = createdTeam
+        }
+
+        // Join team (check domain restrictions first)
+        if !a.ch.srv.teamService.IsTeamEmailAllowed(user, team) {
+            return model.NewAppError("AddUserToTeamByOrganization",
+                "api.team.join_user_to_team.allowed_domains.app_error",
+                map[string]any{"Team": team.DisplayName, "AllowedDomains": team.AllowedDomains},
+                fmt.Sprintf("User %s with email %s cannot join team %s due to domain restrictions: %s",
+                    user.Id, user.Email, team.Name, team.AllowedDomains),
+                http.StatusForbidden)
+        }
+
+        if _, err := a.JoinUserToTeam(rctx, team, user, ""); err != nil {
+            rctx.Logger().Error("AddUserToTeamByOrganization: Failed to join team",
+                mlog.Err(err), mlog.String("user_id", user.Id), mlog.String("team", team.Name))
+            return err
+        }
+
+        rctx.Logger().Info("AddUserToTeamByOrganization: User joined team", mlog.String("user_id", user.Id), mlog.String("team_id", team.Id), mlog.String("role", role))
+        return nil
+
+    } else if role == "guest" {
+        // Guest: join if found, error if not found
+        if !teamExists {
+            return model.NewAppError("AddUserToTeamByOrganization",
+                "api.user.login_by_oauth.active_guest_team_not_found.app_error",
+                map[string]any{"TeamName": teamName, "OrganizationName": activeOrgName},
+                fmt.Sprintf("Active organization team %s does not exist and cannot be created for guest user", teamName),
+                http.StatusBadRequest)
+        }
+
+        // Join team (check domain restrictions first)
+        if !a.ch.srv.teamService.IsTeamEmailAllowed(user, team) {
+            return model.NewAppError("AddUserToTeamByOrganization",
+                "api.team.join_user_to_team.allowed_domains.app_error",
+                map[string]any{"Team": team.DisplayName, "AllowedDomains": team.AllowedDomains},
+                fmt.Sprintf("User %s with email %s cannot join team %s due to domain restrictions: %s",
+                    user.Id, user.Email, team.Name, team.AllowedDomains),
+                http.StatusForbidden)
+        }
+
+        if _, err := a.JoinUserToTeam(rctx, team, user, ""); err != nil {
+            rctx.Logger().Error("AddUserToTeamByOrganization: Failed to join team",
+                mlog.Err(err), mlog.String("user_id", user.Id), mlog.String("team", team.Name))
+            return err
+        }
+
+        rctx.Logger().Info("AddUserToTeamByOrganization: User joined team", mlog.String("user_id", user.Id), mlog.String("team_id", team.Id), mlog.String("role", role))
         return nil
     }
 
-    // Team exists: Check email domain restrictions BEFORE joining
-    if !a.ch.srv.teamService.IsTeamEmailAllowed(user, team) {
-        rctx.Logger().Error("AddUserToTeamByOrganization: FAILED - user email domain not allowed", mlog.String("user_email", user.Email), mlog.String("team", team.Name), mlog.String("allowed_domains", team.AllowedDomains))
-        return model.NewAppError("AddUserToTeamByOrganization", "api.team.join_user_to_team.allowed_domains.app_error", 
-            map[string]any{"Team": team.DisplayName, "AllowedDomains": team.AllowedDomains}, 
-            fmt.Sprintf("User %s with email %s cannot join team %s due to domain restrictions: %s", user.Id, user.Email, team.Name, team.AllowedDomains), 
-            http.StatusForbidden)
-    }
-
-    // Ensure membership if team exists and domain check passed
-    if _, err := a.JoinUserToTeam(rctx, team, user, ""); err != nil {
-        rctx.Logger().Error("AddUserToTeamByOrganization: FAILED - could not join team", mlog.Err(err), mlog.String("user_id", user.Id), mlog.String("team", team.Name))
-        return err
-    }
-    return nil
+    // Unknown role
+    return model.NewAppError("AddUserToTeamByOrganization",
+        "api.user.login_by_oauth.invalid_role.app_error",
+        nil, fmt.Sprintf("Unknown role: %s", role),
+        http.StatusBadRequest)
 }
 
 func (a *App) GetUser(userID string) (*model.User, *model.AppError) {
@@ -2514,13 +2604,18 @@ func (a *App) UpdateOAuthUserAttrs(rctx request.CTX, userData io.Reader, user *m
 	}
 
 	// Ensure team membership based on organization_name after updating props
-	// If this fails due to domain restrictions, fail the login and logout user
+	// If this fails due to domain restrictions or active team issues, fail the login and logout user
 	if appErr := a.AddUserToTeamByOrganization(rctx, user); appErr != nil {
-		// Check if it's a domain restriction error - if so, logout and fail login
-		if appErr.Id == "api.team.join_user_to_team.allowed_domains.app_error" {
+		// Check if it's a critical error that should fail login
+		if appErr.Id == "api.team.join_user_to_team.allowed_domains.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.no_active_org.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.multiple_active_org.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.active_guest_team_not_found.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.invalid_active_org.app_error" ||
+			appErr.Id == "api.user.login_by_oauth.invalid_role.app_error" {
 			// Logout user by revoking all sessions
 			if revokeErr := a.RevokeAllSessions(rctx, user.Id); revokeErr != nil {
-				rctx.Logger().Error("Failed to revoke sessions for user with domain restriction", 
+				rctx.Logger().Error("Failed to revoke sessions for user with organization error", 
 					mlog.String("user_id", user.Id), mlog.Err(revokeErr))
 			}
 			return appErr
