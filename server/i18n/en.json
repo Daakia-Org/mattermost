@@ -3388,11 +3388,11 @@
   },
   {
     "id": "api.team.is_team_creation_allowed.disabled.app_error",
-    "translation": "Team creation has been disabled. Please ask your System Administrator for details."
+    "translation": "Team creation has been disabled. Please ask your Organization Administrator for details."
   },
   {
     "id": "api.team.is_team_creation_allowed.domain.app_error",
-    "translation": "The user cannot be added as the domain associated with the account is not permitted. Contact your System Administrator for additional details."
+    "translation": "The user cannot be added as the domain associated with the account is not permitted. Contact your Organization Administrator for additional details."
   },
   {
     "id": "api.team.join_team.post_and_forget",
@@ -3400,7 +3400,7 @@
   },
   {
     "id": "api.team.join_user_to_team.allowed_domains.app_error",
-    "translation": "The user cannot be added as the domain associated with the account is not permitted. Contact your System Administrator for additional details."
+    "translation": "The user cannot be added as the domain associated with the account is not permitted. Contact your Organization Administrator for additional details."
   },
   {
     "id": "api.team.leave.left",
@@ -4357,6 +4357,26 @@
   {
     "id": "api.user.login_by_oauth.parse.app_error",
     "translation": "Could not parse auth data out of {{.Service}} user object."
+  },
+  {
+    "id": "daakia.guest_workspace_not_found.app_error",
+    "translation": "Access denied: Your organization workspace needs to be created by an administrator before you can sign in, or you have not been added to use this by your organization administrator."
+  },
+  {
+    "id": "daakia.user_not_added_to_org.app_error",
+    "translation": "You are not added to any organization. Please contact your organization administrator."
+  },
+  {
+    "id": "daakia.multiple_active_org.app_error",
+    "translation": "Something went wrong. Please contact support at support@daakia.co.in"
+  },
+  {
+    "id": "daakia.invalid_role.app_error",
+    "translation": "Something went wrong. Please contact support at support@daakia.co.in"
+  },
+  {
+    "id": "daakia.invalid_active_org.app_error",
+    "translation": "You are not part of any organization. Please contact your administrator."
   },
   {
     "id": "api.user.login_cws.license.error",

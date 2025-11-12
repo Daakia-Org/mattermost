@@ -124,10 +124,24 @@
         word-break: break-word;
         display: inline-block;
         
-        // Links & Mentions
-        a, .mention, .channel-link {
+        // Links & Channel Links
+        a, .channel-link {
             color: var(--link-color) !important;
+            text-decoration: underline;
             opacity: 0.9;
+        }
+        
+        // Mentions - Darker yellow text only, no background for all mention types (left side)
+        .mention,
+        .mention--highlight,
+        .mention-link,
+        .non-notification-highlight {
+            background: none !important;
+            background-color: transparent !important;
+            color: #CC9900 !important; // Darker yellow color
+            padding: 0 !important;
+            border-radius: 0 !important;
+            font-weight: normal !important;
         }
         
         // Code blocks
@@ -141,10 +155,6 @@
         // Media
         img, video {
             opacity: 1;
-        }
-        
-        .mention-link {
-            color: var(--mention-color) !important;
         }
     }
     
@@ -290,13 +300,17 @@
             text-decoration: underline;
         }
         
-        // Mentions
-        .mention {
-            background: var(--mention-bg);
-            color: var(--mention-color) !important;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
+        // Mentions - Very light bright yellow text only, no background for all mention types (right side)
+        .mention,
+        .mention--highlight,
+        .mention-link,
+        .non-notification-highlight {
+            background: none !important;
+            background-color: transparent !important;
+            color: #FFFF99 !important; // Very light bright yellow color
+            padding: 0 !important;
+            border-radius: 0 !important;
+            font-weight: normal !important;
         }
         
         // Code blocks
@@ -308,10 +322,6 @@
         // Media
         img, video {
             opacity: 1;
-        }
-        
-        .mention-link {
-            color: var(--mention-color) !important;
         }
     }
 
@@ -326,12 +336,17 @@
             text-decoration: underline;
         }
         
-        .mention {
-            background: var(--mention-bg);
-            color: var(--mention-color) !important;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
+        // Mentions - Very light bright yellow text only, no background for all mention types (right side)
+        .mention,
+        .mention--highlight,
+        .mention-link,
+        .non-notification-highlight {
+            background: none !important;
+            background-color: transparent !important;
+            color: #FFFF99 !important; // Very light bright yellow color
+            padding: 0 !important;
+            border-radius: 0 !important;
+            font-weight: normal !important;
         }
         
         code {
