@@ -46,17 +46,17 @@ const SSOOnlyLogin = ({
                 <div className='sso-only-login-card'>
                     <div className='sso-only-login-card-content'>
                         <h1 className='sso-only-login-card-title'>
-                            {formatMessage({id: 'sso_only_login.title', defaultMessage: 'Welcome back'})}
+                            {formatMessage({id: 'sso_only_login.title', defaultMessage: 'Welcome'})}
                         </h1>
                         <p className='sso-only-login-card-subtitle'>
-                            {formatMessage({id: 'sso_only_login.subtitle', defaultMessage: 'Sign in to your Daakia account to access your workspace and collaborate with your team.'})}
+                            {formatMessage({id: 'sso_only_login.subtitle', defaultMessage: 'Sign in to your Konnect by Daakia account to access your workspace and collaborate with your team.'})}
                         </p>
                         <div className='sso-only-login-button-container'>
                             <ExternalLoginButton
                                 id='openid'
                                 url={url}
                                 icon={<DaakiaConnectIcon/>}
-                                label={openIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Daakia Connect'})}
+                                label={openIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Konnect by Daakia Connect'})}
                                 style={{color: openIdButtonColor, borderColor: openIdButtonColor}}
                                 onClick={handleSSOClick}
                             />
@@ -71,7 +71,7 @@ const SSOOnlyLogin = ({
                             id='signup.agreement'
                             defaultMessage='By proceeding to create your account and use {siteName}, you agree to our <termsOfUseLink>Terms of Use</termsOfUseLink> and <privacyPolicyLink>Privacy Policy</privacyPolicyLink>. If you do not agree, you cannot use {siteName}.'
                             values={{
-                                siteName: 'Daakia',
+                                siteName: 'Konnect by Daakia',
                                 termsOfUseLink: (chunks: React.ReactNode) => (
                                     <ExternalLink
                                         href={termsOfServiceLink as string}

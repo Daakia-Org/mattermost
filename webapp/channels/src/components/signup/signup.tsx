@@ -354,7 +354,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                 id: 'signup.title',
                 defaultMessage: 'Create Account | {siteName}',
             },
-            {siteName: SiteName || 'Daakia'},
+            {siteName: SiteName || 'Konnect by Daakia'},
         );
     }, [formatMessage, SiteName]);
 
@@ -416,7 +416,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
             <p className='signup-body-message-subtitle'>
                 {formatMessage({
                     id: 'signup_user_completed.subtitle',
-                    defaultMessage: 'Create your Daakia account to start collaborating with your team',
+                    defaultMessage: 'Create your Konnect by Daakia account to start collaborating with your team',
                 })}
             </p>
         );
