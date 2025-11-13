@@ -96,7 +96,7 @@ export default function AboutBuildModal(props: Props) {
     let subTitle = (
         <FormattedMessage
             id='about.teamEditionSt'
-            defaultMessage='All your team communication in one place, instantly searchable and accessible anywhere.'
+            defaultMessage='Konnect by Daakia - Empowering teams with seamless communication and collaboration.'
         />
     );
 
@@ -104,14 +104,8 @@ export default function AboutBuildModal(props: Props) {
         <div>
             <FormattedMessage
                 id='about.teamEditionLearn'
-                defaultMessage='Join the Daakia community at '
+                defaultMessage='Made with ❤️ by Team Daakia'
             />
-            <ExternalLink
-                location='about_build_modal'
-                href='https://www.daakia.co.in/community/'
-            >
-                {'www.daakia.co.in/community/'}
-            </ExternalLink>
         </div>
     );
 
@@ -367,16 +361,11 @@ export default function AboutBuildModal(props: Props) {
                         <div className='about-modal__copyright'>
                             <FormattedMessage
                                 id='about.copyright'
-                                defaultMessage='Copyright 2015 - {currentYear} Daakia, Inc. All rights reserved'
+                                defaultMessage='© {currentYear} Konnect by Daakia. Made with love by Team Daakia.'
                                 values={{
                                     currentYear: new Date().getFullYear(),
                                 }}
                             />
-                        </div>
-                        <div className='about-modal__links'>
-                            {termsOfService}
-                            {' - '}
-                            {privacyPolicy}
                         </div>
                     </div>
                 </div>
@@ -384,7 +373,7 @@ export default function AboutBuildModal(props: Props) {
                     <p>
                         <FormattedMessage
                             id='about.notice'
-                            defaultMessage='Daakia - Modern team communication platform built for enterprise needs.'
+                            defaultMessage='Konnect by Daakia - Building the future of team collaboration, one connection at a time.'
                         />
                     </p>
                 </div>

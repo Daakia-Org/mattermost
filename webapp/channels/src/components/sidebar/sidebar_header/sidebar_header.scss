@@ -61,3 +61,18 @@
         }
     }
 }
+
+// Hide "Invite people" menu items
+.invite-people-menu-item-hidden {
+    display: none !important;
+}
+
+// Hide separator before "Invite people" menu item
+.invite-people-separator-hidden {
+    display: none !important;
+}
+
+// Hide "Copy Link" button in channel info
+.copy-link-button-hidden {
+    display: none !important;
+}

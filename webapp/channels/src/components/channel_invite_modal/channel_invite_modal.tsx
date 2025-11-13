@@ -565,26 +565,28 @@ const ChannelInviteModalComponent = (props: Props) => {
         );
     };
 
-    const customNoOptionsMessage = (
-        <div
-            className='custom-no-options-message'
-        >
-            <FormattedMessage
-                id='channel_invite.no_options_message'
-                defaultMessage='No matches found - <InvitationModalLink>Invite them to the team</InvitationModalLink>'
-                values={{
-                    InvitationModalLink: (chunks) => (
-                        <InviteModalLink
-                            id='customNoOptionsMessageLink'
-                            abacChannelPolicyEnforced={props.channel.policy_enforced}
-                        >
-                            {chunks}
-                        </InviteModalLink>
-                    ),
-                }}
-            />
-        </div>
-    );
+    // Commented out - hide "Invite them to the team" button in no matches message
+    // const customNoOptionsMessage = (
+    //     <div
+    //         className='custom-no-options-message'
+    //     >
+    //         <FormattedMessage
+    //             id='channel_invite.no_options_message'
+    //             defaultMessage='No matches found - <InvitationModalLink>Invite them to the team</InvitationModalLink>'
+    //             values={{
+    //                 InvitationModalLink: (chunks) => (
+    //                     <InviteModalLink
+    //                         id='customNoOptionsMessageLink'
+    //                         abacChannelPolicyEnforced={props.channel.policy_enforced}
+    //                     >
+    //                         {chunks}
+    //                     </InviteModalLink>
+    //                 ),
+    //             }}
+    //         />
+    //     </div>
+    // );
+    const customNoOptionsMessage = null;
 
     const content = (
         <MultiSelect

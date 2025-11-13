@@ -71,7 +71,7 @@ const SSOOnlySignup = ({
                     <p className='sso-only-signup-description'>
                         {formatMessage({
                             id: 'signup.sso_only.description',
-                            defaultMessage: 'Sign up with your Daakia account to get started.',
+                            defaultMessage: 'Sign up with your Konnect by Daakia account to get started.',
                         })}
                     </p>
                     <div className='sso-only-signup-button-container'>
@@ -79,7 +79,7 @@ const SSOOnlySignup = ({
                             id='openid'
                             url={url}
                             icon={<DaakiaConnectIcon/>}
-                            label={openIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Daakia Connect'})}
+                            label={openIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Konnect by Daakia Connect'})}
                             style={{color: openIdButtonColor, borderColor: openIdButtonColor}}
                             onClick={handleSSOClick}
                         />

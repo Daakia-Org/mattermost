@@ -2354,7 +2354,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'defaultUnlicensedReportAProblemLink',
                             label: defineMessage({id: 'admin.support.reportAProblemDefaultLinkTitle', defaultMessage: 'Default Report a Problem Link:'}),
                             help_text: defineMessage({id: 'admin.support.reportAProblemDefaultLinkDescription', defaultMessage: 'Users will be directed to this link when they choose ‘Report a Problem’.'}),
-                            default: 'https://mattermost.com/pl/report_a_problem_unlicensed',
+                            default: 'https://www.daakia.co.in/contact-us',
                             isDisabled: it.all(),
                             isHidden: it.any(
                                 it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),

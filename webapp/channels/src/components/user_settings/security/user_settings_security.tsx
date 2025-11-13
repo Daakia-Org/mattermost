@@ -1067,8 +1067,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                     {oauthSection}
                     <div className='divider-light'/>
                     {tokensSection}
-                    <div className='divider-light'/>
-                    {signInSection}
                     <div className='divider-dark'/>
                     <br/>
                     <ToggleModalButton

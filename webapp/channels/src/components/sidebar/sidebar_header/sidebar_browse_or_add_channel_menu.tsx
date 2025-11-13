@@ -149,6 +149,7 @@ export default function SidebarBrowserOrAddChannelMenu(props: Props) {
             )}
             trailingElements={showInvitePeopleTutorialTip && <InvitePeopleTour/>}
             aria-haspopup='true'
+            className='invite-people-menu-item-hidden'
         />
     );
 
@@ -179,7 +180,7 @@ export default function SidebarBrowserOrAddChannelMenu(props: Props) {
                 <Menu.Separator/>
             } */}
             {/* {createNewCategoryMenuItem} */}
-            <Menu.Separator/>
+            <Menu.Separator className='invite-people-separator-hidden'/>
             {invitePeopleMenuItem}
         </Menu.Container>
     );

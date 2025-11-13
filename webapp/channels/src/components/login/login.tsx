@@ -289,7 +289,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
     }, []);
 
     const configureTitle = useCallback(() => {
-        document.title = sessionExpired ? '* Session Expired - Daakia' : 'Log in - Daakia';
+        document.title = sessionExpired ? '* Session Expired - Konnect by Daakia' : 'Log in - Konnect by Daakia';
     }, [sessionExpired]);
 
     const showSessionExpiredNotificationIfNeeded = useCallback(() => {

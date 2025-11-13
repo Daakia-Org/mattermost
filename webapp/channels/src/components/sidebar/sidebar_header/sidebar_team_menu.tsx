@@ -167,6 +167,7 @@ function InvitePeopleMenuItem(props: Menu.FirstMenuItemProps) {
                 </>
             )}
             aria-haspopup='dialog'
+            className='invite-people-menu-item-hidden'
             {...props}
         />
     );

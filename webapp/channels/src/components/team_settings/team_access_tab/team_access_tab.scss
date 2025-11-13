@@ -12,21 +12,26 @@
     }
 
     .access-invite-section {
-        gap: 0;
-
-        #teamInviteContainer {
-            display: flex;
-            align-items: center;
-
-            .Input_container {
-                margin-right: 8px;
-
-                #teamInviteId {
-                    background-color: unset;
-                }
-            }
-        }
+        display: none !important;
     }
+
+    // Commented out - hide Invite Code section
+    // .access-invite-section {
+    //     gap: 0;
+
+    //     #teamInviteContainer {
+    //         display: flex;
+    //         align-items: center;
+
+    //         .Input_container {
+    //             margin-right: 8px;
+
+    //             #teamInviteId {
+    //                 background-color: unset;
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 .modal-header {

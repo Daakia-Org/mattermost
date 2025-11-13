@@ -11,9 +11,7 @@ import {getCurrentUserId} from 'mattermost-redux/selectors/entities/common';
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
 import {isCurrentUserGuestUser, isCurrentUserSystemAdmin, isFirstAdmin} from 'mattermost-redux/selectors/entities/users';
 
-import {openModal} from 'actions/views/modals';
 import {
-    openInvitationsModal,
     setShowOnboardingCompleteProfileTour,
     setShowOnboardingVisitConsoleTour,
     switchToChannels,
@@ -23,10 +21,7 @@ import {getOnboardingTaskPreferences} from 'selectors/onboarding';
 
 import Channels from 'components/common/svg_images_components/channels_svg';
 import Gears from 'components/common/svg_images_components/gears_svg';
-import Handshake from 'components/common/svg_images_components/handshake_svg';
-import Security from 'components/common/svg_images_components/security_svg';
 import Sunglasses from 'components/common/svg_images_components/sunglasses_svg';
-import LearnMoreTrialModal from 'components/learn_more_trial_modal/learn_more_trial_modal';
 import {openMenu} from 'components/menu';
 import {
     AutoTourStatus,
@@ -37,8 +32,6 @@ import {
     TutorialTourName,
 } from 'components/tours';
 import {ELEMENT_ID_FOR_USER_ACCOUNT_MENU_BUTTON} from 'components/user_account_menu/user_account_menu';
-
-import {ModalIdentifiers} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
@@ -55,14 +48,15 @@ const useGetTaskDetails = () => {
                 defaultMessage: 'Take a tour of Channels.',
             }),
         },
-        [OnboardingTasksName.INVITE_PEOPLE]: {
-            id: 'task_invite_team_members',
-            svg: Handshake,
-            message: formatMessage({
-                id: 'onboardingTask.checklist.task_invite_team_members',
-                defaultMessage: 'Invite team members to the workspace.',
-            }),
-        },
+
+        // [OnboardingTasksName.INVITE_PEOPLE]: {
+        //     id: 'task_invite_team_members',
+        //     svg: Handshake,
+        //     message: formatMessage({
+        //         id: 'onboardingTask.checklist.task_invite_team_members',
+        //         defaultMessage: 'Invite team members to the workspace.',
+        //     }),
+        // },
         [OnboardingTasksName.COMPLETE_YOUR_PROFILE]: {
             id: 'task_complete_your_profile',
             svg: Sunglasses,
@@ -89,14 +83,16 @@ const useGetTaskDetails = () => {
                 defaultMessage: 'Visit the System Console to configure your workspace.',
             }),
         },
-        [OnboardingTasksName.START_TRIAL]: {
-            id: 'task_start_enterprise_trial',
-            svg: Security,
-            message: formatMessage({
-                id: 'onboardingTask.checklist.task_start_enterprise_trial',
-                defaultMessage: 'Learn more about Enterprise-level high-security features.',
-            }),
-        },
+
+        // Commented out - Trial modal disabled for Konnect by Daakia
+        // [OnboardingTasksName.START_TRIAL]: {
+        //     id: 'task_start_enterprise_trial',
+        //     svg: Security,
+        //     message: formatMessage({
+        //         id: 'onboardingTask.checklist.task_start_enterprise_trial',
+        //         defaultMessage: 'Learn more about Enterprise-level high-security features.',
+        //     }),
+        // },
     };
 };
 
@@ -106,7 +102,6 @@ export const useTasksList = () => {
     const isPrevLicensed = prevTrialLicense?.IsLicensed;
     const isCurrentLicensed = license?.IsLicensed;
     const isUserAdmin = useSelector((state: GlobalState) => isCurrentUserSystemAdmin(state));
-    const isGuestUser = useSelector((state: GlobalState) => isCurrentUserGuestUser(state));
     const isUserFirstAdmin = useSelector(isFirstAdmin);
 
     // Cloud conditions
@@ -132,10 +127,7 @@ export const useTasksList = () => {
         delete list.START_TRIAL;
     }
 
-    // invite other users is hidden for guest users
-    if (isGuestUser) {
-        delete list.INVITE_PEOPLE;
-    }
+    // INVITE_PEOPLE is commented out in OnboardingTasksName, so it won't appear in the list
 
     return Object.values(list);
 };
@@ -243,17 +235,19 @@ export const useHandleOnBoardingTaskTrigger = () => {
             handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED);
             break;
         }
-        case OnboardingTasksName.INVITE_PEOPLE: {
-            localStorage.setItem(OnboardingTaskCategory, 'true');
 
-            if (inAdminConsole) {
-                dispatch(openInvitationsModal(1000));
-            } else {
-                dispatch(openInvitationsModal());
-            }
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
-            break;
-        }
+        // Commented out - Invite people task removed
+        // case OnboardingTasksName.INVITE_PEOPLE: {
+        //     localStorage.setItem(OnboardingTaskCategory, 'true');
+
+        //     if (inAdminConsole) {
+        //         dispatch(openInvitationsModal(1000));
+        //     } else {
+        //         dispatch(openInvitationsModal());
+        //     }
+        //     handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
+        //     break;
+        // }
 
         // case OnboardingTasksName.DOWNLOAD_APP: {
 
@@ -268,15 +262,16 @@ export const useHandleOnBoardingTaskTrigger = () => {
         //     window.open('https://mattermost.com/download#desktop', '_blank', 'noopener,noreferrer');
         //     break;
         // } // Commented out - Coming Soon
-        case OnboardingTasksName.START_TRIAL: {
-            dispatch(openModal({
-                modalId: ModalIdentifiers.LEARN_MORE_TRIAL_MODAL,
-                dialogType: LearnMoreTrialModal,
-            }));
+        // Commented out - Trial modal disabled for Konnect by Daakia
+        // case OnboardingTasksName.START_TRIAL: {
+        //     dispatch(openModal({
+        //         modalId: ModalIdentifiers.LEARN_MORE_TRIAL_MODAL,
+        //         dialogType: LearnMoreTrialModal,
+        //     }));
 
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
-            break;
-        }
+        //     handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
+        //     break;
+        // }
         default:
         }
     };

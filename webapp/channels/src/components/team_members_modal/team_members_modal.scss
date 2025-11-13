@@ -5,6 +5,12 @@
         justify-content: space-between;
     }
 
+    // Hide "Invite People" button
+    #invitePeople,
+    .invite-people-btn {
+        display: none !important;
+    }
+
     @media screen and (max-width: 640px) {
         .GenericModal__header {
             flex-direction: column;

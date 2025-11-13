@@ -271,12 +271,12 @@ const OnBoardingTaskList = (): JSX.Element | null => {
                     ) : (
                         <>
                             <h1>
-                                Welcome to Daakia
+                                {'Konnect by Daakia'}
                             </h1>
                             <p>
                                 <FormattedMessage
                                     id='onboardingTask.checklist.main_subtitle'
-                                    defaultMessage="Let's get up and running."
+                                    defaultMessage='Hope you will like the product'
                                 />
                             </p>
                             {tasksList.map((task) => (
