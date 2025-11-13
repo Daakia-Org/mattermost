@@ -11,7 +11,6 @@ import {getCurrentUserId} from 'mattermost-redux/selectors/entities/common';
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
 import {isCurrentUserGuestUser, isCurrentUserSystemAdmin, isFirstAdmin} from 'mattermost-redux/selectors/entities/users';
 
-import {openModal} from 'actions/views/modals';
 import {
     setShowOnboardingCompleteProfileTour,
     setShowOnboardingVisitConsoleTour,
@@ -22,9 +21,7 @@ import {getOnboardingTaskPreferences} from 'selectors/onboarding';
 
 import Channels from 'components/common/svg_images_components/channels_svg';
 import Gears from 'components/common/svg_images_components/gears_svg';
-import Security from 'components/common/svg_images_components/security_svg';
 import Sunglasses from 'components/common/svg_images_components/sunglasses_svg';
-import LearnMoreTrialModal from 'components/learn_more_trial_modal/learn_more_trial_modal';
 import {openMenu} from 'components/menu';
 import {
     AutoTourStatus,
@@ -35,8 +32,6 @@ import {
     TutorialTourName,
 } from 'components/tours';
 import {ELEMENT_ID_FOR_USER_ACCOUNT_MENU_BUTTON} from 'components/user_account_menu/user_account_menu';
-
-import {ModalIdentifiers} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
@@ -88,14 +83,16 @@ const useGetTaskDetails = () => {
                 defaultMessage: 'Visit the System Console to configure your workspace.',
             }),
         },
-        [OnboardingTasksName.START_TRIAL]: {
-            id: 'task_start_enterprise_trial',
-            svg: Security,
-            message: formatMessage({
-                id: 'onboardingTask.checklist.task_start_enterprise_trial',
-                defaultMessage: 'Learn more about Enterprise-level high-security features.',
-            }),
-        },
+
+        // Commented out - Trial modal disabled for Konnect by Daakia
+        // [OnboardingTasksName.START_TRIAL]: {
+        //     id: 'task_start_enterprise_trial',
+        //     svg: Security,
+        //     message: formatMessage({
+        //         id: 'onboardingTask.checklist.task_start_enterprise_trial',
+        //         defaultMessage: 'Learn more about Enterprise-level high-security features.',
+        //     }),
+        // },
     };
 };
 
@@ -265,15 +262,16 @@ export const useHandleOnBoardingTaskTrigger = () => {
         //     window.open('https://mattermost.com/download#desktop', '_blank', 'noopener,noreferrer');
         //     break;
         // } // Commented out - Coming Soon
-        case OnboardingTasksName.START_TRIAL: {
-            dispatch(openModal({
-                modalId: ModalIdentifiers.LEARN_MORE_TRIAL_MODAL,
-                dialogType: LearnMoreTrialModal,
-            }));
+        // Commented out - Trial modal disabled for Konnect by Daakia
+        // case OnboardingTasksName.START_TRIAL: {
+        //     dispatch(openModal({
+        //         modalId: ModalIdentifiers.LEARN_MORE_TRIAL_MODAL,
+        //         dialogType: LearnMoreTrialModal,
+        //     }));
 
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
-            break;
-        }
+        //     handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
+        //     break;
+        // }
         default:
         }
     };

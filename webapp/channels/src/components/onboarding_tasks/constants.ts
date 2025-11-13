@@ -13,7 +13,8 @@ export const OnboardingTasksName = {
     // DOWNLOAD_APP: 'download_app', // Commented out - Coming Soon
     COMPLETE_YOUR_PROFILE: 'complete_your_profile',
     VISIT_SYSTEM_CONSOLE: 'visit_system_console',
-    START_TRIAL: 'start_trial',
+
+    // START_TRIAL: 'start_trial', // Commented out - Trial modal disabled for Konnect by Daakia
 };
 
 export const OnboardingTaskList = {
@@ -37,6 +38,6 @@ export const TaskNameMapToSteps = {
     [OnboardingTasksName.VISIT_SYSTEM_CONSOLE]: GenericTaskSteps,
 
     // [OnboardingTasksName.INVITE_PEOPLE]: GenericTaskSteps, // Commented out - Invite people task removed
-    [OnboardingTasksName.START_TRIAL]: GenericTaskSteps,
+    // [OnboardingTasksName.START_TRIAL]: GenericTaskSteps, // Commented out - Trial modal disabled for Konnect by Daakia
 };
 
