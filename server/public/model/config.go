@@ -143,12 +143,12 @@ const (
 
 	EmailSettingsDefaultFeedbackOrganization = ""
 
-	SupportSettingsDefaultTermsOfServiceLink = "https://mattermost.com/pl/terms-of-use/"
+	SupportSettingsDefaultTermsOfServiceLink = "https://www.daakia.co.in/end-user-agreement"
 	SupportSettingsDefaultPrivacyPolicyLink  = "hhttps://www.daakia.co.in/privacy-policy"
 	SupportSettingsDefaultAboutLink          = "https://www.daakia.co.in/about-us"
-	SupportSettingsDefaultHelpLink           = "https://mattermost.com/pl/help/"
-	SupportSettingsDefaultReportAProblemLink = "https://mattermost.com/pl/report-a-bug"
-	SupportSettingsDefaultSupportEmail       = ""
+	SupportSettingsDefaultHelpLink           = "https://www.daakia.co.in/contact-us"
+	SupportSettingsDefaultReportAProblemLink = "https://www.daakia.co.in/contact-us"
+	SupportSettingsDefaultSupportEmail       = "support@daakia.co.in"
 	SupportSettingsDefaultReAcceptancePeriod = 365
 
 	SupportSettingsReportAProblemTypeLink    = "link"
@@ -190,9 +190,9 @@ const (
 	SamlSettingsCanonicalAlgorithmC14n11  = "Canonical1.1"
 	SamlSettingsDefaultCanonicalAlgorithm = SamlSettingsCanonicalAlgorithmC14n
 
-	NativeappSettingsDefaultAppDownloadLink        = "https://mattermost.com/pl/download-apps"
-	NativeappSettingsDefaultAndroidAppDownloadLink = "https://mattermost.com/pl/android-app/"
-	NativeappSettingsDefaultIosAppDownloadLink     = "https://mattermost.com/pl/ios-app/"
+	NativeappSettingsDefaultAppDownloadLink        = ""
+	NativeappSettingsDefaultAndroidAppDownloadLink = ""
+	NativeappSettingsDefaultIosAppDownloadLink     = ""
 
 	ExperimentalSettingsDefaultLinkMetadataTimeoutMilliseconds                       = 5000
 	ExperimentalSettingsDefaultUsersStatusAndProfileFetchingPollIntervalMilliseconds = 3000
