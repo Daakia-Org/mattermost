@@ -3540,7 +3540,7 @@
   },
   {
     "id": "api.templates.cloud_welcome_email.download_mm_info",
-    "translation": "Download the Konnect App"
+    "translation": "Download the Konnect by Daakia App"
   },
   {
     "id": "api.templates.cloud_welcome_email.info",
@@ -3640,7 +3640,7 @@
   },
   {
     "id": "api.templates.email_footer_v2",
-    "translation": "© 2022 Konnect, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301"
+    "translation": "© 2025 Konnect by Daakia"
   },
   {
     "id": "api.templates.email_info1",
@@ -3672,7 +3672,7 @@
   },
   {
     "id": "api.templates.invite_body.subTitle",
-    "translation": "Start collaborating with your team on Konnect"
+    "translation": "Start collaborating with your team on Konnect by Daakia"
   },
   {
     "id": "api.templates.invite_body.title",
@@ -3684,7 +3684,7 @@
   },
   {
     "id": "api.templates.invite_body_footer.info",
-    "translation": "Konnect is a flexible, open source messaging platform that enables secure team collaboration."
+    "translation": "Konnect by Daakia is a flexible, open source messaging platform that enables secure team collaboration."
   },
   {
     "id": "api.templates.invite_body_footer.learn_more",
@@ -3692,7 +3692,7 @@
   },
   {
     "id": "api.templates.invite_body_footer.title",
-    "translation": "What is Konnect?"
+    "translation": "What is Konnect by Daakia?"
   },
   {
     "id": "api.templates.invite_body_guest.subTitle",
@@ -3764,11 +3764,11 @@
   },
   {
     "id": "api.templates.license_up_for_renewal_subtitle",
-    "translation": "{{.UserName}}, your subscription is set to expire in {{.Days}} days. We hope you’re experiencing the flexible, secure team collaboration that Konnect enables. Renew soon to ensure your team can keep enjoying these benefits."
+    "translation": "{{.UserName}}, your subscription is set to expire in {{.Days}} days. We hope you're experiencing the flexible, secure team collaboration that Konnect by Daakia enables. Renew soon to ensure your team can keep enjoying these benefits."
   },
   {
     "id": "api.templates.license_up_for_renewal_title",
-    "translation": "Your Konnect subscription is up for renewal"
+    "translation": "Your Konnect by Daakia subscription is up for renewal"
   },
   {
     "id": "api.templates.mfa_activated_body.info",
@@ -3820,7 +3820,7 @@
   },
   {
     "id": "api.templates.remove_expired_license.subject",
-    "translation": "Konnect Enterprise license has been disabled."
+    "translation": "Konnect by Daakia Enterprise license has been disabled."
   },
   {
     "id": "api.templates.reset_body.button",
@@ -3888,7 +3888,7 @@
   },
   {
     "id": "api.templates.verify_body.info",
-    "translation": "This email address was used to create an account with Konnect."
+    "translation": "This email address was used to create an account with Konnect by Daakia."
   },
   {
     "id": "api.templates.verify_body.info1",
@@ -3932,7 +3932,7 @@
   },
   {
     "id": "api.templates.welcome_body.info",
-    "translation": "This email address was used to create an account with Konnect."
+    "translation": "This email address was used to create an account with Konnect by Daakia."
   },
   {
     "id": "api.templates.welcome_body.info1",

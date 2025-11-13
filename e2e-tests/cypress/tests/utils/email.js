@@ -17,7 +17,7 @@ export function getEmailResetEmailTemplate(userEmail) {
         'You updated your email',
         '----------------------',
         '',
-        `Your email address for Mattermost has been changed to ${userEmail}.`,
+        `Your email address for Konnect by Daakia has been changed to ${userEmail}.`,
         'If you did not make this change, please contact the system administrator.',
         '',
         'To change your notification preferences, log in to your team site and go to Settings > Notifications.',
@@ -29,15 +29,15 @@ export function getJoinEmailTemplate(sender, userEmail, team, isGuest = false) {
 
     return [
         `${sender} invited you to join the ${team.display_name} team.`,
-        `${isGuest ? 'You were invited as a guest to collaborate with the team' : 'Start collaborating with your team on Mattermost'}`,
+        `${isGuest ? 'You were invited as a guest to collaborate with the team' : 'Start collaborating with your team on Konnect by Daakia'}`,
         '',
         `<join-link-check> Join now ( ${baseUrl}/signup_user_complete/?d=${encodeURIComponent(JSON.stringify({display_name: team.display_name.replace(' ', '+'), email: userEmail, name: team.name}))}&t=<actual-token> )`,
         '',
-        'What is Mattermost?',
-        'Mattermost is a flexible, open source messaging platform that enables secure team collaboration.',
+        'What is Konnect by Daakia?',
+        'Konnect by Daakia is a flexible messaging platform that enables secure team collaboration.',
         'Learn more ( mattermost.com )',
         '',
-        '© 2022 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301',
+        'Konnect by Daakia',
     ];
 }
 
@@ -48,7 +48,7 @@ export function getMentionEmailTemplate(sender, message, postId, siteName, teamN
         `@${sender} mentioned you in a message`,
         `While you were away, @${sender} mentioned you in the ${channelDisplayName} channel.`,
         '',
-        `Reply in Mattermost ( ${baseUrl}/landing#/${teamName}/pl/${postId} )`,
+        `Reply in Konnect ( ${baseUrl}/landing#/${teamName}/pl/${postId} )`,
         '',
         `@${sender}`,
         '<skip-local-time-check>',
@@ -59,7 +59,7 @@ export function getMentionEmailTemplate(sender, message, postId, siteName, teamN
         'Want to change your notifications settings?',
         `Login to ${siteName} ( ${baseUrl} ) and go to Settings > Notifications`,
         '',
-        '© 2022 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301',
+        'Konnect by Daakia',
     ];
 }
 
@@ -74,7 +74,7 @@ export function getPasswordResetEmailTemplate() {
         '',
         'The password reset link expires in 24 hours.',
         '',
-        '© 2022 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301',
+        'Konnect by Daakia',
     ];
 }
 
@@ -88,10 +88,10 @@ export function getEmailVerifyEmailTemplate(userEmail) {
         '',
         `<email-verify-link-check> Verify Email ( ${baseUrl}/do_verify_email?token=<actual-token>&email=${encodeURIComponent(userEmail)} )`,
         '',
-        'This email address was used to create an account with Mattermost.',
+        'This email address was used to create an account with Konnect by Daakia.',
         'If it was not you, you can safely ignore this email.',
         '',
-        '© 2022 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301',
+        'Konnect by Daakia',
     ];
 }
 
@@ -113,7 +113,7 @@ export function getWelcomeEmailTemplate(userEmail, siteName, teamName) {
         '',
         'Download ( https://mattermost.com/pl/download-apps )',
         '',
-        '© 2022 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301',
+        'Konnect by Daakia',
     ];
 }
 
