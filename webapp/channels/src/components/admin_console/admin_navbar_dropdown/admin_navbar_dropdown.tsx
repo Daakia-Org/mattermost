@@ -78,7 +78,7 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
 
         let commercialSupport = (
             <Menu.ItemExternalLink
-                url='https://mattermost.com/support/'
+                url='https://www.daakia.co.in/contact-us'
                 text={formatMessage({id: 'admin.nav.commercialSupport', defaultMessage: 'Commercial Support'})}
             />
         );
@@ -93,9 +93,9 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
             );
         }
 
-        let adminGuideLink = 'https://docs.mattermost.com/guides/administration.html';
+        let adminGuideLink = 'https://www.daakia.co.in';
         if (isCloud) {
-            adminGuideLink = 'https://docs.mattermost.com/guides/administration.html#cloud-workspace-management';
+            adminGuideLink = 'https://www.daakia.co.in';
         }
 
         return (
@@ -110,7 +110,7 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
                         text={formatMessage({id: 'admin.nav.administratorsGuide', defaultMessage: 'Administrator Guide'})}
                     />
                     <Menu.ItemExternalLink
-                        url={'https://forum.mattermost.com/t/how-to-use-the-troubleshooting-forum/150'}
+                        url={'https://www.daakia.co.in'}
                         text={formatMessage({id: 'admin.nav.troubleshootingForum', defaultMessage: 'Troubleshooting Forum'})}
                     />
                     {commercialSupport}

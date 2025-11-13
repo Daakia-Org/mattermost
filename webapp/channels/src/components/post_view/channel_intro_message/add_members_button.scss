@@ -22,3 +22,8 @@
     flex-direction: row;
     gap: 8px;
 }
+
+// Hide "Invite others to the workspace" button
+#introTextInvite {
+    display: none !important;
+}

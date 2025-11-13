@@ -257,7 +257,7 @@ export default function TopButtons({
                 >
                     <CopyButton
                         onClick={copyLink.onClick}
-                        className={copyLink.copiedRecently ? 'success' : ''}
+                        className={`copy-link-button-hidden ${copyLink.copiedRecently ? 'success' : ''}`}
                         aria-label={copyText}
                     >
                         <div>

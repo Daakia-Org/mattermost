@@ -665,6 +665,10 @@ $sidebarOpacityAnimationDuration: 0.15s;
         }
     }
 
+    #inviteMembersButton {
+        display: none !important;
+    }
+
     .SidebarChannelNavigator_inviteUsersSticky {
         position: absolute;
         z-index: 2;
