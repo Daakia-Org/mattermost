@@ -13,7 +13,6 @@ import {isCurrentUserGuestUser, isCurrentUserSystemAdmin, isFirstAdmin} from 'ma
 
 import {openModal} from 'actions/views/modals';
 import {
-    openInvitationsModal,
     setShowOnboardingCompleteProfileTour,
     setShowOnboardingVisitConsoleTour,
     switchToChannels,
@@ -23,7 +22,6 @@ import {getOnboardingTaskPreferences} from 'selectors/onboarding';
 
 import Channels from 'components/common/svg_images_components/channels_svg';
 import Gears from 'components/common/svg_images_components/gears_svg';
-import Handshake from 'components/common/svg_images_components/handshake_svg';
 import Security from 'components/common/svg_images_components/security_svg';
 import Sunglasses from 'components/common/svg_images_components/sunglasses_svg';
 import LearnMoreTrialModal from 'components/learn_more_trial_modal/learn_more_trial_modal';
@@ -55,14 +53,15 @@ const useGetTaskDetails = () => {
                 defaultMessage: 'Take a tour of Channels.',
             }),
         },
-        [OnboardingTasksName.INVITE_PEOPLE]: {
-            id: 'task_invite_team_members',
-            svg: Handshake,
-            message: formatMessage({
-                id: 'onboardingTask.checklist.task_invite_team_members',
-                defaultMessage: 'Invite team members to the workspace.',
-            }),
-        },
+
+        // [OnboardingTasksName.INVITE_PEOPLE]: {
+        //     id: 'task_invite_team_members',
+        //     svg: Handshake,
+        //     message: formatMessage({
+        //         id: 'onboardingTask.checklist.task_invite_team_members',
+        //         defaultMessage: 'Invite team members to the workspace.',
+        //     }),
+        // },
         [OnboardingTasksName.COMPLETE_YOUR_PROFILE]: {
             id: 'task_complete_your_profile',
             svg: Sunglasses,
@@ -106,7 +105,6 @@ export const useTasksList = () => {
     const isPrevLicensed = prevTrialLicense?.IsLicensed;
     const isCurrentLicensed = license?.IsLicensed;
     const isUserAdmin = useSelector((state: GlobalState) => isCurrentUserSystemAdmin(state));
-    const isGuestUser = useSelector((state: GlobalState) => isCurrentUserGuestUser(state));
     const isUserFirstAdmin = useSelector(isFirstAdmin);
 
     // Cloud conditions
@@ -132,10 +130,7 @@ export const useTasksList = () => {
         delete list.START_TRIAL;
     }
 
-    // invite other users is hidden for guest users
-    if (isGuestUser) {
-        delete list.INVITE_PEOPLE;
-    }
+    // INVITE_PEOPLE is commented out in OnboardingTasksName, so it won't appear in the list
 
     return Object.values(list);
 };
@@ -243,17 +238,19 @@ export const useHandleOnBoardingTaskTrigger = () => {
             handleSaveData(taskName, TaskNameMapToSteps[taskName].STARTED);
             break;
         }
-        case OnboardingTasksName.INVITE_PEOPLE: {
-            localStorage.setItem(OnboardingTaskCategory, 'true');
 
-            if (inAdminConsole) {
-                dispatch(openInvitationsModal(1000));
-            } else {
-                dispatch(openInvitationsModal());
-            }
-            handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
-            break;
-        }
+        // Commented out - Invite people task removed
+        // case OnboardingTasksName.INVITE_PEOPLE: {
+        //     localStorage.setItem(OnboardingTaskCategory, 'true');
+
+        //     if (inAdminConsole) {
+        //         dispatch(openInvitationsModal(1000));
+        //     } else {
+        //         dispatch(openInvitationsModal());
+        //     }
+        //     handleSaveData(taskName, TaskNameMapToSteps[taskName].FINISHED);
+        //     break;
+        // }
 
         // case OnboardingTasksName.DOWNLOAD_APP: {
 
