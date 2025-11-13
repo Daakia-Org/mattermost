@@ -1,6 +1,6 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-
+/*eslint-disable */
 import type {ReactNode} from 'react';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
@@ -11,7 +11,8 @@ import type {UserProfile} from '@mattermost/types/users';
 import {Permissions} from 'mattermost-redux/constants';
 import {isGuest} from 'mattermost-redux/utils/user_utils';
 
-import ChannelMoveToSubMenu from 'components/channel_move_to_sub_menu';
+// Commented out - Move to menu item removed
+// import ChannelMoveToSubMenu from 'components/channel_move_to_sub_menu';
 import * as Menu from 'components/menu';
 import ChannelPermissionGate from 'components/permissions_gates/channel_permission_gate';
 
@@ -152,8 +153,9 @@ const ChannelHeaderPublicMenu = ({channel, user, isMuted, isDefault, isMobile, i
                 </>
             )}
 
-            <Menu.Separator/>
-            <ChannelMoveToSubMenu channel={channel}/>
+            {/* Commented out - Move to menu item and separator */}
+            {/* <Menu.Separator/> */}
+            {/* <ChannelMoveToSubMenu channel={channel}/> */}
             {!isMobile && (
                 <MenuItemPluginItems pluginItems={pluginItems}/>
             )}

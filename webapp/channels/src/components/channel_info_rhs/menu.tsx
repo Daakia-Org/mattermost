@@ -172,7 +172,8 @@ export default function Menu(props: MenuProps) {
                     onClick={() => actions.showChannelMembers(channel.id)}
                 />
             )}
-            <MenuItem
+            {/* Commented out - Pinned messages menu item */}
+            {/* <MenuItem
                 icon={<i className='icon icon-pin-outline'/>}
                 text={formatMessage({
                     id: 'channel_info_rhs.menu.pinned',
@@ -181,7 +182,7 @@ export default function Menu(props: MenuProps) {
                 opensSubpanel={true}
                 badge={channelStats?.pinnedpost_count}
                 onClick={() => actions.showPinnedPosts(channel.id)}
-            />
+            /> */}
             <MenuItem
                 icon={<i className='icon icon-file-text-outline'/>}
                 text={formatMessage({
@@ -192,7 +193,8 @@ export default function Menu(props: MenuProps) {
                 badge={loadingStats ? <LoadingSpinner/> : fileCount}
                 onClick={() => actions.showChannelFiles(channel.id)}
             />
-            <MenuItem
+            {/* Commented out - Sync Calendar menu item */}
+            {/* <MenuItem
                 icon={<i className='icon icon-calendar-outline'/>}
                 text={formatMessage({
                     id: 'channel_info_rhs.menu.sync_calendar',
@@ -201,8 +203,9 @@ export default function Menu(props: MenuProps) {
                 opensSubpanel={true}
                 badge={0}
                 onClick={() => {}}
-            />
-            <MenuItem
+            /> */}
+            {/* Commented out - Recorded Calls & Captions menu item */}
+            {/* <MenuItem
                 icon={<i className='icon icon-microphone-outline'/>}
                 text={formatMessage({
                     id: 'channel_info_rhs.menu.recorded_calls',
@@ -211,8 +214,9 @@ export default function Menu(props: MenuProps) {
                 opensSubpanel={true}
                 badge={0}
                 onClick={() => {}}
-            />
-            <MenuItem
+            /> */}
+            {/* Commented out - Teams menu item */}
+            {/* <MenuItem
                 icon={<i className='icon icon-account-multiple-outline'/>}
                 text={formatMessage({
                     id: 'channel_info_rhs.menu.teams',
@@ -221,7 +225,7 @@ export default function Menu(props: MenuProps) {
                 opensSubpanel={true}
                 badge={0}
                 onClick={() => {}}
-            />
+            /> */}
             <MenuItem
                 icon={<i className='icon icon-link-variant'/>}
                 text={formatMessage({

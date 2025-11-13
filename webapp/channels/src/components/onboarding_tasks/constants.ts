@@ -8,11 +8,13 @@ export const OnboardingTaskCategory = 'onboarding_task_list';
 // Whole task list is based on these
 export const OnboardingTasksName = {
     CHANNELS_TOUR: 'channels_tour',
-    INVITE_PEOPLE: 'invite_people',
+
+    // INVITE_PEOPLE: 'invite_people', // Commented out - Invite people task removed
     // DOWNLOAD_APP: 'download_app', // Commented out - Coming Soon
     COMPLETE_YOUR_PROFILE: 'complete_your_profile',
     VISIT_SYSTEM_CONSOLE: 'visit_system_console',
-    START_TRIAL: 'start_trial',
+
+    // START_TRIAL: 'start_trial', // Commented out - Trial modal disabled for Konnect by Daakia
 };
 
 export const OnboardingTaskList = {
@@ -31,9 +33,11 @@ export const GenericTaskSteps = {
 export const TaskNameMapToSteps = {
     [OnboardingTasksName.CHANNELS_TOUR]: GenericTaskSteps,
     [OnboardingTasksName.COMPLETE_YOUR_PROFILE]: GenericTaskSteps,
+
     // [OnboardingTasksName.DOWNLOAD_APP]: GenericTaskSteps, // Commented out - Coming Soon
     [OnboardingTasksName.VISIT_SYSTEM_CONSOLE]: GenericTaskSteps,
-    [OnboardingTasksName.INVITE_PEOPLE]: GenericTaskSteps,
-    [OnboardingTasksName.START_TRIAL]: GenericTaskSteps,
+
+    // [OnboardingTasksName.INVITE_PEOPLE]: GenericTaskSteps, // Commented out - Invite people task removed
+    // [OnboardingTasksName.START_TRIAL]: GenericTaskSteps, // Commented out - Trial modal disabled for Konnect by Daakia
 };
 

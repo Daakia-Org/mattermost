@@ -55,10 +55,12 @@ export const useHandleNavigationAndExtraActions = (tourCategory: string) => {
                 openMenu(ELEMENT_ID_FOR_BROWSE_OR_ADD_CHANNEL_MENU_BUTTON);
                 break;
             }
-            case OnboardingTourSteps.INVITE_PEOPLE : {
-                openMenu(ELEMENT_ID_FOR_BROWSE_OR_ADD_CHANNEL_MENU_BUTTON);
-                break;
-            }
+
+            // Commented out - Invite people step removed
+            // case OnboardingTourSteps.INVITE_PEOPLE : {
+            //     openMenu(ELEMENT_ID_FOR_BROWSE_OR_ADD_CHANNEL_MENU_BUTTON);
+            //     break;
+            // }
             case OnboardingTourSteps.SEND_MESSAGE : {
                 dispatch(switchToChannels());
                 break;
@@ -111,10 +113,12 @@ export const useHandleNavigationAndExtraActions = (tourCategory: string) => {
                 dismissMenu();
                 break;
             }
-            case OnboardingTourSteps.INVITE_PEOPLE : {
-                dismissMenu();
-                break;
-            }
+
+            // Commented out - Invite people step removed
+            // case OnboardingTourSteps.INVITE_PEOPLE : {
+            //     dismissMenu();
+            //     break;
+            // }
             default:
             }
         } else if (tourCategory === TutorialTourName.CRT_TUTORIAL_STEP) {

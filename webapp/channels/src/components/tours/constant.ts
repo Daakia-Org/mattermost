@@ -28,9 +28,10 @@ export const TutorialTourName = {
 export const OnboardingTourSteps = {
     CHANNELS_AND_DIRECT_MESSAGES: 0,
     CREATE_AND_JOIN_CHANNELS: 1,
-    INVITE_PEOPLE: 2,
-    SEND_MESSAGE: 3,
-    CUSTOMIZE_EXPERIENCE: 4,
+
+    // INVITE_PEOPLE: 2, // Commented out - Invite people step removed
+    SEND_MESSAGE: 2, // Changed from 3 to 2
+    CUSTOMIZE_EXPERIENCE: 3, // Changed from 4 to 3
     FINISHED,
 };
 

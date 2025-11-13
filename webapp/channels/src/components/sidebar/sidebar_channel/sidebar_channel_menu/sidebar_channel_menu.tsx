@@ -1,6 +1,6 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
-
+/*eslint-disable */
 import React, {useRef, memo} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
@@ -17,7 +17,7 @@ import {
 } from '@mattermost/compass-icons/components';
 
 import ChannelInviteModal from 'components/channel_invite_modal';
-import ChannelMoveToSubmenu from 'components/channel_move_to_sub_menu';
+// import ChannelMoveToSubmenu from 'components/channel_move_to_sub_menu';
 import * as Menu from 'components/menu';
 
 import Constants, {ModalIdentifiers} from 'utils/constants';
@@ -301,8 +301,9 @@ const SidebarChannelMenu = ({
             {markAsReadUnreadMenuItem}
             {favoriteUnfavoriteMenuItem}
             {muteUnmuteChannelMenuItem}
-            <Menu.Separator/>
-            <ChannelMoveToSubmenu channel={channel}/>
+            {/* Commented out - Move to menu item and separator */}
+            {/* <Menu.Separator/> */}
+            {/* <ChannelMoveToSubmenu channel={channel}/> */}
             {(copyLinkMenuItem || addMembersMenuItem) && <Menu.Separator/>}
             {copyLinkMenuItem}
             {addMembersMenuItem}

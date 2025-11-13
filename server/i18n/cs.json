@@ -109,7 +109,7 @@
   },
   {
     "id": "oauth.gitlab.tos.error",
-    "translation": "Podmínky služby GitLab byly aktualizovány. Přejděte na {{.URL}}, abyste je přijali, a poté se pokuste znovu přihlásit do Mattermostu."
+    "translation": "Podmínky služby GitLab byly aktualizovány. Přejděte na {{.URL}}, abyste je přijali, a poté se pokuste znovu přihlásit do Konnectu."
   },
   {
     "id": "model.utils.decode_json.app_error",
@@ -1601,7 +1601,7 @@
   },
   {
     "id": "app.bot.get_disable_bot_sysadmin_message",
-    "translation": "{{if .disableBotsSetting}}{{if .printAllBots}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval následující účty robotů, které byly nyní též zneplatněny.\n\n{{.BotNames}}{{else}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval určitý počet ({{.NumBots}}) účty robotů, které byly nyní též zneplatněny. Jsou to také tyto:\n\n{{.BotNames}}{{end}}Můžeš převzít vlastnictví každého robota tím, že to povolíš v nabídce **Integrace > Účty robotů** a vytvoříš nového peška pro robota.\n\nPro více informací, viz naše [dokumentace](https://docs.mattermost.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).{{else}}{{if .printAllBots}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval následující účty robotů, které jsou stále zplatněny.\n\n{{.BotNames}}\n{{else}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval určitý počet ({{.NumBots}}) účty robotů, , které jsou stále zplatněny. Jsou to také tyto:\n\n{{.BotNames}}{{end}}Silně doporučujeme převzít vlastiství nad těmito roboty tím, že je povolíš v nabídce **Integrace > Účty robotů** a vytvoříš nového peška pro robota.\n\nPro více informací, viz naše [dokumentace](https://docs.mattermost.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).\n\nPokud chceš, aby se účty robotů automaticky zneplatniIy po zneplatnění uživatele, nastav na hodnotu \"pravda\" položku \"Zneplatnit účty robotů po zneplatnění uživatele\" v nabídce **Konzola Systému > Integrace > Účty robotů**.{{end}}"
+    "translation": "{{if .disableBotsSetting}}{{if .printAllBots}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval následující účty robotů, které byly nyní též zneplatněny.\n\n{{.BotNames}}{{else}}Uživatel {{.UserName}} byl zneplatněn. Uživatel spravoval určitý počet ({{.NumBots}}) účty robotů, které byly nyní též zneplatněny. Jsou to také tyto:\n\n{{.BotNames}}{{end}}Můžeš převzít vlastnictví každého robota tím, že to povolíš v nabídce **Integrace > Účty robotů** a vytvoříš nového peška pro robota.\n\nPro více informací, viz naše [dokumentace](https://daakia.co.in.com/developer/bot-accounts.html#what-happens-when-a-user-who-owns-bot-accounts-is-disabled).\n\nPokud chceš, aby se účty robotů automaticky zneplatniIy po zneplatnění uživatele, nastav na hodnotu \"pravda\" položku \"Zneplatnit účty robotů po zneplatnění uživatele\" v nabídce **Konzola Systému > Integrace > Účty robotů**.{{end}}"
   },
   {
     "id": "app.bot.createbot.internal_error",
@@ -2248,8 +2248,8 @@
     "translation": "Neplatný MFA token."
   },
   {
-    "id": "mattermost.bulletin.subject",
-    "translation": "Bezpečnostní zpravodaj Mattermostu"
+    "id": "daakia.bulletin.subject",
+    "translation": "Bezpečnostní zpravodaj Konnectu"
   },
   {
     "id": "manaultesting.test_autolink.unable.app_error",
@@ -2341,7 +2341,7 @@
   },
   {
     "id": "ent.migration.migratetosaml.username_already_used_by_other_user",
-    "translation": "Uživatelské jméno již použivá jiný uživatel Mattermost."
+    "translation": "Uživatelské jméno již použivá jiný uživatel Konnect."
   },
   {
     "id": "ent.migration.migratetosaml.user_not_found_in_users_mapping_file",
@@ -2393,11 +2393,11 @@
   },
   {
     "id": "ent.ldap.syncronize.search_failure_size_exceeded.app_error",
-    "translation": "Překročen limit velikosti. Zkuste zvýšit nastavení maximální velikosti stránky. Další podrobnosti najdete na: https://docs.mattermost.com/onboard/ad-ldap.html#i-see-the-log-error-ldap-result-code-4-size-limit-exceeded."
+    "translation": "Překročen limit velikosti. Zkuste zvýšit nastavení maximální velikosti stránky. Další podrobnosti najdete na: https://daakia.co.in.com/onboard/ad-ldap.html#i-see-the-log-error-ldap-result-code-4-size-limit-exceeded."
   },
   {
     "id": "ent.ldap.syncronize.search_failure.app_error",
-    "translation": "Nepodařilo se vyhletat uživatele na AD/LDAP serveru. Otestujte zda se Mattermost dokáže připojit k AD/LDAP serveru a zkuste to znova."
+    "translation": "Nepodařilo se vyhletat uživatele na AD/LDAP serveru. Otestujte zda se Konnect dokáže připojit k AD/LDAP serveru a zkuste to znova."
   },
   {
     "id": "ent.ldap.syncronize.populate_syncables",
@@ -2417,7 +2417,7 @@
   },
   {
     "id": "ent.ldap.do_login.user_filtered.app_error",
-    "translation": "Váš účet AD / LDAP nemá oprávnění používat tento Mattermost server. Požádejte správce systému, aby zkontroloval uživatelský filtr AD/LDAP."
+    "translation": "Váš účet AD / LDAP nemá oprávnění používat tento Konnect server. Požádejte správce systému, aby zkontroloval uživatelský filtr AD/LDAP."
   },
   {
     "id": "ent.ldap.do_login.unable_to_connect.app_error",
@@ -2465,7 +2465,7 @@
   },
   {
     "id": "ent.elasticsearch.test_config.license.error",
-    "translation": "Vaše licence Mattermost nepodporuje indexované vyhledávání."
+    "translation": "Vaše licence Konnect nepodporuje indexované vyhledávání."
   },
   {
     "id": "ent.elasticsearch.test_config.indexing_disabled.error",
@@ -2689,7 +2689,7 @@
   },
   {
     "id": "api.templates.welcome_body.info",
-    "translation": "Tato e-mailová adresa byla použita k vytvoření účtu v Mattermostu."
+    "translation": "Tato e-mailová adresa byla použita k vytvoření účtu v Konnectu."
   },
   {
     "id": "api.templates.welcome_body.button",
@@ -2709,7 +2709,7 @@
   },
   {
     "id": "api.templates.verify_body.info",
-    "translation": "Tato e-mailová adresa byla použita k vytvoření účtu v Mattermostu."
+    "translation": "Tato e-mailová adresa byla použita k vytvoření účtu v Konnectu."
   },
   {
     "id": "api.templates.verify_body.button",
@@ -2769,7 +2769,7 @@
   },
   {
     "id": "api.templates.post_body.button",
-    "translation": "Odpovědět v Mattermostu"
+    "translation": "Odpovědět v Konnectu"
   },
   {
     "id": "api.templates.password_change_subject",
@@ -2981,7 +2981,7 @@
   },
   {
     "id": "api.slackimport.slack_import.log",
-    "translation": "Log importu ze Slacku do Mattermostu\n"
+    "translation": "Log importu ze Slacku do Konnectu\n"
   },
   {
     "id": "api.slackimport.slack_add_users.unable_import",
@@ -2993,11 +2993,11 @@
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing_failed",
-    "translation": "Slack uživatel byl propojen s existujícím Mattermost uživatelem se shodným emailem {{.Email}} a uživatelským jménem {{.Username}}, avšak nemohl být přidán do týmu.\n"
+    "translation": "Slack uživatel byl propojen s existujícím Konnect uživatelem se shodným emailem {{.Email}} a uživatelským jménem {{.Username}}, avšak nemohl být přidán do týmu.\n"
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing",
-    "translation": "Slack uživatel byl propojen s existujícím Mattermost uživatelem se shodným emailem {{.Email}} a uživatelským jménem {{.Username}}.\n"
+    "translation": "Slack uživatel byl propojen s existujícím Konnect uživatelem se shodným emailem {{.Email}} a uživatelským jménem {{.Username}}.\n"
   },
   {
     "id": "api.slackimport.slack_add_users.email_pwd",
@@ -3009,7 +3009,7 @@
   },
   {
     "id": "api.slackimport.slack_add_channels.merge",
-    "translation": "Slack kanál {{.DisplayName}} již existuje jako aktivní kanál Mattermostu. Oba kanály byly sloučeny.\n"
+    "translation": "Slack kanál {{.DisplayName}} již existuje jako aktivní kanál Konnectu. Oba kanály byly sloučeny.\n"
   },
   {
     "id": "api.slackimport.slack_add_channels.import_failed",
@@ -3989,7 +3989,7 @@
   },
   {
     "id": "api.command_mute.no_channel.error",
-    "translation": "Zadaný kanál nebyl nalezen. Použijte prosím [identifikátor kanálu](https://docs.mattermost.com/messaging/managing-channels.html#naming-a-channel) k určení kanálů."
+    "translation": "Zadaný kanál nebyl nalezen. Použijte prosím [identifikátor kanálu](https://daakia.co.in.com/messaging/managing-channels.html#naming-a-channel) k určení kanálů."
   },
   {
     "id": "api.command_mute.name",
@@ -4001,7 +4001,7 @@
   },
   {
     "id": "api.command_mute.error",
-    "translation": "Kanál {{.Channel}} nebyl nalezen. Použijte prosím [identifikátor kanálu](https://about.mattermost.com/default-channel-handle-documentation) k identifikaci kanálů."
+    "translation": "Kanál {{.Channel}} nebyl nalezen. Použijte prosím [identifikátor kanálu](https://daakia.co.in.com/default-channel-handle-documentation) k identifikaci kanálů."
   },
   {
     "id": "api.command_mute.desc",
@@ -4053,7 +4053,7 @@
   },
   {
     "id": "api.command_logout.desc",
-    "translation": "Odhlásit se z Mattermost"
+    "translation": "Odhlásit se z Konnect"
   },
   {
     "id": "api.command_leave.name",
@@ -4117,7 +4117,7 @@
   },
   {
     "id": "api.command_invite.private_channel.app_error",
-    "translation": "Nelze najít kanál {{.Channel}}. K identifikaci kanálů prosím použijte [channel handle](https://docs.mattermost.com/messaging/managing-channels.html#naming-a-channel)."
+    "translation": "Nelze najít kanál {{.Channel}}. K identifikaci kanálů prosím použijte [channel handle](https://daakia.co.in.com/messaging/managing-channels.html#naming-a-channel)."
   },
   {
     "id": "api.command_invite.permission.app_error",
@@ -4153,7 +4153,7 @@
   },
   {
     "id": "api.command_invite.channel.error",
-    "translation": "Nelze najít kanál {{.Channel}}. Použijte prosím [channel handle](https://about.mattermost.com/default-channel-handle-documentation) k identifikaci kanálů."
+    "translation": "Nelze najít kanál {{.Channel}}. Použijte prosím [channel handle](https://daakia.co.in.com/default-channel-handle-documentation) k identifikaci kanálů."
   },
   {
     "id": "api.command_invite.channel.app_error",
@@ -4165,7 +4165,7 @@
   },
   {
     "id": "api.command_help.desc",
-    "translation": "Zobrazit nápovědu k Mattermostu"
+    "translation": "Zobrazit nápovědu k Konnectu"
   },
   {
     "id": "api.command_groupmsg.permission.app_error",
@@ -4589,7 +4589,7 @@
   },
   {
     "id": "api.command.invite_people.desc",
-    "translation": "Odešlete e-mailovou pozvánku do svého týmu v Mattermostu"
+    "translation": "Odešlete e-mailovou pozvánku do svého týmu v Konnectu"
   },
   {
     "id": "api.command.execute_command.start.app_error",
@@ -4877,7 +4877,7 @@
   },
   {
     "id": "api.bot.teams_channels.add_message_mobile",
-    "translation": "Přidejte mě prosím do týmů a kanálů, ve kterých chcete abych interagoval. Pro tuto akci využijte prohlížeč nebo aplikaci Mattermost Desktop."
+    "translation": "Přidejte mě prosím do týmů a kanálů, ve kterých chcete abych interagoval. Pro tuto akci využijte prohlížeč nebo aplikaci Konnect Desktop."
   },
   {
     "id": "api.bot.create_disabled",
@@ -4909,7 +4909,7 @@
   },
   {
     "id": "api.admin.test_email.subject",
-    "translation": "Mattermost - Testování Nastavení E-Mailu"
+    "translation": "Konnect - Testování Nastavení E-Mailu"
   },
   {
     "id": "api.admin.test_email.reenter_password",
@@ -4921,7 +4921,7 @@
   },
   {
     "id": "api.admin.test_email.body",
-    "translation": "Zdá se, že váš e-mail pro Mattermost je nastaven správně!"
+    "translation": "Zdá se, že váš e-mail pro Konnect je nastaven správně!"
   },
   {
     "id": "api.admin.saml.set_certificate_from_metadata.missing_content_type.app_error",
@@ -5065,7 +5065,7 @@
   },
   {
     "id": "api.templates.remove_expired_license.subject",
-    "translation": "Licence na Mattermost Enterprise byla deaktivována."
+    "translation": "Licence na Konnect Enterprise byla deaktivována."
   },
   {
     "id": "api.templates.remove_expired_license.body.title",
@@ -5089,11 +5089,11 @@
   },
   {
     "id": "api.license.request_trial_license.app_error",
-    "translation": "Nelze získat zkušební licenci, prosím zkuste to znovu nebo kontaktujte support@mattermost.com."
+    "translation": "Nelze získat zkušební licenci, prosím zkuste to znovu nebo kontaktujte support@daakia.com."
   },
   {
     "id": "api.license.request-trial.bad-request.terms-not-accepted",
-    "translation": "Chcete-li požádat o licenci, musíte odsouhlasit Dohodu o vyhodnocování softwaru Mattermost a Zásady ochrany osobních údajů."
+    "translation": "Chcete-li požádat o licenci, musíte odsouhlasit Dohodu o vyhodnocování softwaru Konnect a Zásady ochrany osobních údajů."
   },
   {
     "id": "api.license.request-trial.bad-request",
@@ -5809,43 +5809,43 @@
   },
   {
     "id": "api.upgrade_to_enterprise_status.signature.app_error",
-    "translation": "Mattermost nemohl být aktualizován na Enterprise edici. Digitální podpis staženého souboru nemohl být ověřen."
+    "translation": "Konnect nemohl být aktualizován na Enterprise edici. Digitální podpis staženého souboru nemohl být ověřen."
   },
   {
     "id": "api.upgrade_to_enterprise_status.app_error",
-    "translation": "Mattermost nemohl být aktualizován na Enterprise edici."
+    "translation": "Konnect nemohl být aktualizován na Enterprise edici."
   },
   {
     "id": "api.upgrade_to_enterprise.system_not_supported.app_error",
-    "translation": "Nepodařilo se aktualizovat Mattermost na Enterprise edici. Toto vylepšení funguje pouze na Linuxových systémech s architekturou x86-64."
+    "translation": "Nepodařilo se aktualizovat Konnect na Enterprise edici. Toto vylepšení funguje pouze na Linuxových systémech s architekturou x86-64."
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user.app_error",
-    "translation": "Nepodařilo se aktualizovat Mattermost na Enterprise edici. Systémový uživatel {{.MattermostUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícího příkazu na serveru, kde je Mattermost instalován:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Mattermostu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\n```"
+    "translation": "Nepodařilo se aktualizovat Konnect na Enterprise edici. Systémový uživatel {{.KonnectUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícího příkazu na serveru, kde je Konnect instalován:\n\n```\nchown {{.KonnectUsername}} \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Konnectu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user-and-permission.app_error",
-    "translation": "Nepodařilo se aktualizovat Mattermost na Enterprise edici. Systémový uživatel {{.MattermostUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícího příkazu na serveru, kde je Mattermost instalován:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\nchmod +w \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Mattermostu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\nchmod -w \"{{.Path}}\"\n```"
+    "translation": "Nepodařilo se aktualizovat Konnect na Enterprise edici. Systémový uživatel {{.KonnectUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícího příkazu na serveru, kde je Konnect instalován:\n\n```\nchown {{.KonnectUsername}} \"{{.Path}}\"\nchmod +w \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Konnectu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\nchmod -w \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-permission.app_error",
-    "translation": "Nepodařilo se aktualizovat Mattermost na Enterprise edici. Systémový uživatel {{.MattermostUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícího příkazu na serveru, kde je Mattermost instalován:\n\n```\nchmod +w \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Mattermostu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchmod -w \"{{.Path}}\"\n```"
+    "translation": "Nepodařilo se aktualizovat Konnect na Enterprise edici. Systémový uživatel {{.KonnectUsername}} nemá oprávnění zápisu do patřičného binárního souboru. Systémový administrátor může upravit oprávnění k souboru spuštěním následujícího příkazu na serveru, kde je Konnect instalován:\n\n```\nchmod +w \"{{.Path}}\"\n```\n\nPo změně oprávnění se pokuste provést aktualizaci Konnectu ještě jednou. Poté, co bude aktualizace dokončena a server restartován, nezapomeňte vrátit oprávnění k souboru na původní hodnotu:\n\n```\nchmod -w \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.generic_error.app_error",
-    "translation": "Mattermost nemohl být aktualizován na Enterprise edici."
+    "translation": "Konnect nemohl být aktualizován na Enterprise edici."
   },
   {
     "id": "api.upgrade_to_enterprise.app_error",
-    "translation": "Aktualizace na Mattermost Enterprise edici již běží."
+    "translation": "Aktualizace na Konnect Enterprise edici již běží."
   },
   {
     "id": "api.upgrade_to_enterprise.already-enterprise.app_error",
-    "translation": "Nelze provést aktualizaci, protože již využíváte Mattermost Enterprise edici."
+    "translation": "Nelze provést aktualizaci, protože již využíváte Konnect Enterprise edici."
   },
   {
     "id": "api.upgrade_to_enterprise.already-done.app_error",
-    "translation": "Již jste upgradovali na Mattermost Enterprise Edition. Prosím, restartujte server, aby byl upgrade dokončen."
+    "translation": "Již jste upgradovali na Konnect Enterprise Edition. Prosím, restartujte server, aby byl upgrade dokončen."
   },
   {
     "id": "api.team.add_team_member.invalid_body.app_error",
@@ -6621,7 +6621,7 @@
   },
   {
     "id": "api.command_remote.accept.help",
-    "translation": "Přijmout pozvánku z externí instance Mattermost"
+    "translation": "Přijmout pozvánku z externí instance Konnect"
   },
   {
     "id": "api.command_remote.accept_invitation",
@@ -6677,7 +6677,7 @@
   },
   {
     "id": "api.command_remote.desc",
-    "translation": "Pozvěte zabezpečená připojení pro komunikaci mezi instancemi Mattermost."
+    "translation": "Pozvěte zabezpečená připojení pro komunikaci mezi instancemi Konnect."
   },
   {
     "id": "api.command_marketplace.unsupported.app_error",
@@ -6701,7 +6701,7 @@
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support",
-    "translation": "Tento prohlížeč již Mattermost nepodporuje"
+    "translation": "Tento prohlížeč již Konnect nepodporuje"
   },
   {
     "id": "web.incoming_webhook.channel_locked.app_error",
@@ -6757,7 +6757,7 @@
   },
   {
     "id": "api.command_remote.invite_summary",
-    "translation": "Externímu správci systému Mattermost odešlete následující pozvánku zašifrovanou 256bitovým algoritmem AES spolu s heslem. K přijetí pozvánky použije příkaz `{{.Command}}` s lomítkem.\n\n```\n{{.Invitation}}\n```\n\n**Zajistěte, aby zabezpečené připojení mohlo přistupovat k vaší instanci Mattermostu prostřednictvím** {{.SiteURL}}"
+    "translation": "Externímu správci systému Konnect odešlete následující pozvánku zašifrovanou 256bitovým algoritmem AES spolu s heslem. K přijetí pozvánky použije příkaz `{{.Command}}` s lomítkem.\n\n```\n{{.Invitation}}\n```\n\n**Zajistěte, aby zabezpečené připojení mohlo přistupovat k vaší instanci Konnectu prostřednictvím** {{.SiteURL}}"
   },
   {
     "id": "api.command_remote.invite_password.hint",
@@ -6789,7 +6789,7 @@
   },
   {
     "id": "api.command_help.success",
-    "translation": "Mattermost je open source platforma pro bezpečnou komunikaci, spolupráci a orchestraci práce napříč nástroji a týmy.\nMattermost obsahuje dva klíčové nástroje:\n\n**Kanály** - Zůstaňte ve spojení se svým týmem prostřednictvím zpráv 1:1 a skupinových zpráv.\n**[Playbooks](/playbooks)** - Vytvářejte a konfigurujte opakovatelné procesy k dosažení konkrétních a předvídatelných výsledků.\n\n[Zobrazit dokumentaci a průvodce]({{.HelpLink}})"
+    "translation": "Konnect je open source platforma pro bezpečnou komunikaci, spolupráci a orchestraci práce napříč nástroji a týmy.\nKonnect obsahuje dva klíčové nástroje:\n\n**Kanály** - Zůstaňte ve spojení se svým týmem prostřednictvím zpráv 1:1 a skupinových zpráv.\n**[Playbooks](/playbooks)** - Vytvářejte a konfigurujte opakovatelné procesy k dosažení konkrétních a předvídatelných výsledků.\n\n[Zobrazit dokumentaci a průvodce]({{.HelpLink}})"
   },
   {
     "id": "api.command_custom_status.clear.app_error",
@@ -6977,7 +6977,7 @@
   },
   {
     "id": "api.command_share.desc",
-    "translation": "Nastaví sdílení aktuálního kanálu s externí instancí Mattermostu."
+    "translation": "Nastaví sdílení aktuálního kanálu s externí instancí Konnectu."
   },
   {
     "id": "api.command_remote.status.help",
@@ -7049,7 +7049,7 @@
   },
   {
     "id": "api.command_share.invite_remote.help",
-    "translation": "Pozve externí instanci Mattermost do aktuálního sdíleného kanálu"
+    "translation": "Pozve externí instanci Konnect do aktuálního sdíleného kanálu"
   },
   {
     "id": "api.command_share.missing_action",
@@ -7349,7 +7349,7 @@
   },
   {
     "id": "api.templates.email_footer_v2",
-    "translation": "© 2022 Mattermost, Inc. 530 Lytton Avenue, druhé patro, Palo Alto, CA, 94301"
+"translation": "© 2025 Konnect by Daakia"
   },
   {
     "id": "api.templates.invite_body.title.reminder",
@@ -7357,7 +7357,7 @@
   },
   {
     "id": "api.templates.invite_body_footer.info",
-    "translation": "Mattermost je flexibilní, open source platforma pro zasílání zpráv, která umožňuje bezpečnou týmovou spolupráci."
+    "translation": "Konnect je flexibilní, open source platforma pro zasílání zpráv, která umožňuje bezpečnou týmovou spolupráci."
   },
   {
     "id": "api.templates.invite_body_footer.learn_more",
@@ -7365,7 +7365,7 @@
   },
   {
     "id": "api.templates.invite_body_footer.title",
-    "translation": "Co je Mattermost?"
+    "translation": "Co je Konnect?"
   },
   {
     "id": "api.templates.invite_body_guest.subTitle",
@@ -7401,7 +7401,7 @@
   },
   {
     "id": "api.templates.invite_body.subTitle",
-    "translation": "Začněte spolupracovat se svým týmem na Mattermostu"
+    "translation": "Začněte spolupracovat se svým týmem na Konnectu"
   },
   {
     "id": "api.post.send_notification_and_forget.push_comment_on_crt_thread",
@@ -7445,7 +7445,7 @@
   },
   {
     "id": "api.config.update.elasticsearch.autocomplete_cannot_be_enabled_error",
-    "translation": "Automatické doplňování kanálů nelze povolit, protože schéma indexu kanálů je zastaralé. Doporučuje se znovu generovat index kanálů. Další informace naleznete v poznámkách k verzím Mattermostu"
+    "translation": "Automatické doplňování kanálů nelze povolit, protože schéma indexu kanálů je zastaralé. Doporučuje se znovu generovat index kanálů. Další informace naleznete v poznámkách k verzím Konnectu"
   },
   {
     "id": "api.context.invitation_expired.error",
@@ -7457,7 +7457,7 @@
   },
   {
     "id": "api.license.request-trial.can-start-trial.not-allowed",
-    "translation": "Nepodařilo se použít novou zkušební licenci. Na této instanci Mattermostu již byla dříve aplikována zkušební licence. Pokud si přejete prodloužit zkušební období, prosím kontaktujte náš obchodní tým."
+    "translation": "Nepodařilo se použít novou zkušební licenci. Na této instanci Konnectu již byla dříve aplikována zkušební licence. Pokud si přejete prodloužit zkušební období, prosím kontaktujte náš obchodní tým."
   },
   {
     "id": "api.remote_cluster.invalid_topic.app_error",
@@ -7525,7 +7525,7 @@
   },
   {
     "id": "api.templates.license_up_for_renewal_subtitle",
-    "translation": "{{.UserName}}, vaše předplatné vyprší za {{.Days}} dnů. Doufáme, že si užíváte flexibilní a bezpečnou týmovou spolupráci, kterou Mattermost nabízí. Obnovte jej co nejdříve, aby váš tým mohl nadále využívat tyto výhody."
+    "translation": "{{.UserName}}, vaše předplatné vyprší za {{.Days}} dnů. Doufáme, že si užíváte flexibilní a bezpečnou týmovou spolupráci, kterou Konnect nabízí. Obnovte jej co nejdříve, aby váš tým mohl nadále využívat tyto výhody."
   },
   {
     "id": "api.templates.welcome_body.subTitle2",
@@ -7537,7 +7537,7 @@
   },
   {
     "id": "api.templates.license_up_for_renewal_title",
-    "translation": "Vaše předplatné služby Mattermost čeká na obnovení"
+    "translation": "Vaše předplatné služby Konnect čeká na obnovení"
   },
   {
     "id": "api.templates.questions_footer.title",
@@ -7705,7 +7705,7 @@
   },
   {
     "id": "api.email_batching.send_batched_email_notification.button",
-    "translation": "Otevřít Mattermost"
+    "translation": "Otevřít Konnect"
   },
   {
     "id": "api.license.request-trial.can-start-trial.error",
@@ -7765,7 +7765,7 @@
   },
   {
     "id": "api.server.cws.disabled",
-    "translation": "Interakce s portálem uživatelské podpory Mattermostu byly vypnuty systémovým administrátorem."
+    "translation": "Interakce s portálem uživatelské podpory Konnectu byly vypnuty systémovým administrátorem."
   },
   {
     "id": "api.server.cws.health_check.app_error",
@@ -7829,7 +7829,7 @@
   },
   {
     "id": "api.templates.cloud_welcome_email.button",
-    "translation": "Otevřít Mattermost"
+    "translation": "Otevřít Konnect"
   },
   {
     "id": "api.templates.cloud_welcome_email.info",
@@ -7837,7 +7837,7 @@
   },
   {
     "id": "api.templates.cloud_welcome_email.download_mm_info",
-    "translation": "Stáhněte si aplikaci Mattermost"
+    "translation": "Stáhněte si aplikaci Konnect"
   },
   {
     "id": "api.templates.ip_filters_changed_footer.send_an_email_to",
@@ -7889,7 +7889,7 @@
   },
   {
     "id": "api.file.cloud_upload.app_error",
-    "translation": "Nahrávání přes mmctl na cloudovou instanci není podporováno. Prosím, podívejte se na dokumentaci zde: https://docs.mattermost.com/manage/cloud-data-export.html."
+    "translation": "Nahrávání přes mmctl na cloudovou instanci není podporováno. Prosím, podívejte se na dokumentaci zde: https://daakia.co.in.com/manage/cloud-data-export.html."
   },
   {
     "id": "api.getThreadsForUser.bad_only_params",
@@ -8229,7 +8229,7 @@
   },
   {
     "id": "app.notification.footer.infoLogin",
-    "translation": "Přihlášení do Mattermost"
+    "translation": "Přihlášení do Konnect"
   },
   {
     "id": "app.channel.gm_conversion_set_categories.delete_all.error",
@@ -9784,8 +9784,8 @@
     "translation": "Neplatná hodnota bajtů při nahrávání licence."
   },
   {
-    "id": "model.oauth.is_valid.mattermost_app_id.app_error",
-    "translation": "Maximální délka MattermostAppID je 32 znaků."
+    "id": "model.oauth.is_valid.Konnect_app_id.app_error",
+    "translation": "Maximální délka KonnectAppID je 32 znaků."
   },
   {
     "id": "model.outgoing_oauth_connection.is_valid.update_at.error",
@@ -9805,7 +9805,7 @@
   },
   {
     "id": "web.error.unsupported_browser.download_app_or_upgrade_browser",
-    "translation": "Stáhněte si aplikaci Mattermost nebo použijte podporovaný prohlížeč pro lepší zážitek."
+    "translation": "Stáhněte si aplikaci Konnect nebo použijte podporovaný prohlížeč pro lepší zážitek."
   },
   {
     "id": "model.config.is_valid.storage_class.app_error",
@@ -9829,7 +9829,7 @@
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support_version",
-    "translation": "Tato verze vašeho prohlížeče již není Mattermostem podporována"
+    "translation": "Tato verze vašeho prohlížeče již není Konnectem podporována"
   },
   {
     "id": "model.config.is_valid.outgoing_integrations_request_timeout.app_error",

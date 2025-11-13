@@ -1,12 +1,11 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
-import {useIntl} from 'react-intl';
-
-import useOpenStartTrialFormModal from 'components/common/hooks/useOpenStartTrialFormModal';
-
-import './start_trial_btn.scss';
+// Trial button disabled for Konnect by Daakia - always return null
+// import React from 'react';
+// import {useIntl} from 'react-intl';
+// import useOpenStartTrialFormModal from 'components/common/hooks/useOpenStartTrialFormModal';
+// import './start_trial_btn.scss';
 
 export type StartTrialBtnProps = {
     onClick?: () => void;
@@ -16,49 +15,49 @@ export type StartTrialBtnProps = {
     disabled?: boolean;
 };
 
-const StartTrialBtn = ({
-    btnClass,
-    onClick,
-    disabled = false,
-    renderAsButton = false,
-}: StartTrialBtnProps) => {
-    const {formatMessage} = useIntl();
-    const openTrialForm = useOpenStartTrialFormModal();
-    const startTrial = async () => {
-        // reading status from here instead of normal flow because
-        // by the time the function needs the updated value from requestLicense,
-        // it will be too late to wait for the render cycle to happen again
-        // to close over the updated value
-        openTrialForm();
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const StartTrialBtn = (_props: StartTrialBtnProps): JSX.Element | null => {
+    // Trial button disabled for Konnect by Daakia - always return null
+    return null;
 
-        // on click will execute whatever action is sent from the invoking place, if nothing is sent, open the trial benefits modal
-        if (onClick) {
-            onClick();
-        }
-    };
+    // Original code commented out
+    // const {formatMessage} = useIntl();
+    // const openTrialForm = useOpenStartTrialFormModal();
+    // const startTrial = async () => {
+    //     // reading status from here instead of normal flow because
+    //     // by the time the function needs the updated value from requestLicense,
+    //     // it will be too late to wait for the render cycle to happen again
+    //     // to close over the updated value
+    //     openTrialForm();
 
-    const id = 'start_trial_btn';
+    //     // on click will execute whatever action is sent from the invoking place, if nothing is sent, open the trial benefits modal
+    //     if (onClick) {
+    //         onClick();
+    //     }
+    // };
 
-    const btnText = formatMessage({id: 'admin.ldap_feature_discovery.call_to_action.primary', defaultMessage: 'Start trial'});
+    // const id = 'start_trial_btn';
 
-    return renderAsButton ? (
-        <button
-            id={id}
-            className={btnClass}
-            onClick={startTrial}
-            disabled={disabled}
-        >
-            {btnText}
-        </button>
-    ) : (
-        <a
-            id={id}
-            className='btn btn-secondary'
-            onClick={startTrial}
-        >
-            {btnText}
-        </a>
-    );
+    // const btnText = formatMessage({id: 'admin.ldap_feature_discovery.call_to_action.primary', defaultMessage: 'Start trial'});
+
+    // return renderAsButton ? (
+    //     <button
+    //         id={id}
+    //         className={btnClass}
+    //         onClick={startTrial}
+    //         disabled={disabled}
+    //     >
+    //         {btnText}
+    //     </button>
+    // ) : (
+    //     <a
+    //         id={id}
+    //         className='btn btn-secondary'
+    //         onClick={startTrial}
+    //     >
+    //         {btnText}
+    //     </a>
+    // );
 };
 
 export default StartTrialBtn;
