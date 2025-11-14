@@ -12,7 +12,8 @@ import type {ClientConfig, ClientLicense} from '@mattermost/types/config';
 // import CopyButton from 'components/copy_button'; // Commented out - not used in simplified UI
 import ExternalLink from 'components/external_link';
 import Nbsp from 'components/html_entities/nbsp';
-import MattermostLogo from 'components/widgets/icons/mattermost_logo';
+
+import KonnectLogoCircular from 'images/KonnectlogoColoredBgCircular.png';
 
 import {AboutLinks} from 'utils/constants';
 import {getSkuDisplayName} from 'utils/subscription';
@@ -313,7 +314,13 @@ export default function AboutBuildModal(props: Props) {
             <Modal.Body>
                 <div className='about-modal__content'>
                     <div className='about-modal__logo'>
-                        <MattermostLogo/>
+                        <img
+                            src={KonnectLogoCircular}
+                            alt='Konnect by Daakia'
+                            width={120}
+                            height={120}
+                            style={{objectFit: 'contain'}}
+                        />
                     </div>
                     <div>
                         <h3 className='about-modal__title'>

@@ -7,7 +7,7 @@ body {
 }
 
 .LoadingScreen {
-    --background-color: #2672ed;
+    --background-color: #1d57d9;
     --background-color-highlight: #f8f6ff;
     --logo-color: #6b46c1;
     position: absolute;
@@ -38,7 +38,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #2672ed;
+    background-color: #1d57d9;
 }
 
 .LoadingScreen--loaded {

@@ -6,11 +6,15 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 
+import type {GlobalState} from '@mattermost/types/store';
+
 import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
 
 import BackButton from 'components/common/back_button';
-import Logo from 'components/common/svg_images_components/logo_dark_blue_svg';
 
+import KonnectLogoLight from 'images/konnectLogo.png';
+import KonnectLogoDark from 'images/konnectLogoDark.png';
 import './header.scss';
 import {LicenseSkus} from 'utils/constants';
 
@@ -23,14 +27,30 @@ export type HeaderProps = {
 const Header = ({alternateLink, backButtonURL, onBackButtonClick}: HeaderProps) => {
     const {SiteName} = useSelector(getConfig);
     const license = useSelector(getLicense);
+    const theme = useSelector((state: GlobalState) => getTheme(state));
 
     const ariaLabel = SiteName || 'Daakia';
 
+    // Determine if we should use dark logo based on theme type
+    // Available themes: Quartz (Light), Onyx (Dark), Indigo (Dark)
+    const isLightTheme = theme.type === 'Light (default)' || theme.type === 'Quartz';
+    const logoSrc = isLightTheme ? KonnectLogoLight : KonnectLogoDark;
+
+    const LogoImage = () => (
+        <img
+            src={logoSrc}
+            alt='Konnect'
+            width={80}
+            height={41}
+            style={{objectFit: 'contain'}}
+        />
+    );
+
     let freeBanner = null;
     if (license.IsLicensed === 'false') {
-        freeBanner = <><Logo/><span className='freeBadge'>{'TEAM EDITION'}</span></>;
+        freeBanner = <><LogoImage/><span className='freeBadge'>{'TEAM EDITION'}</span></>;
     } else if (license.SkuShortName === LicenseSkus.Entry) {
-        freeBanner = <><Logo/><span className='freeBadge'>{'ENTRY EDITION'}</span></>;
+        freeBanner = <><LogoImage/><span className='freeBadge'>{'ENTRY EDITION'}</span></>;
     }
 
     let title: React.ReactNode = SiteName;
@@ -38,7 +58,7 @@ const Header = ({alternateLink, backButtonURL, onBackButtonClick}: HeaderProps) 
         if (freeBanner) {
             title = '';
         } else {
-            title = <Logo/>;
+            title = <LogoImage/>;
         }
     }
 
