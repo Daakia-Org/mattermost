@@ -48,6 +48,12 @@
                 fill: var(--center-channel-color);
             }
 
+            img {
+                width: 80px;
+                height: 41px;
+                object-fit: contain;
+            }
+
             .freeBadge {
                 position: relative;
                 top: 1px;
@@ -87,6 +93,27 @@
             margin-top: 12px;
         }
     }
+
+    &.has-free-banner {
+        .header-logo-link {
+            .freeBadge {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+// Hide freeBadge on login and signup pages
+.header-footer-route {
+    .hfroute-header {
+        &.has-free-banner {
+            .header-logo-link {
+                .freeBadge {
+                    display: none !important;
+                }
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 699px) {
@@ -94,8 +121,15 @@
         padding: 0 24px;
 
         .header-main {
-            .header-logo-link svg {
-                width: 50px;
+            .header-logo-link {
+                svg {
+                    width: 50px;
+                }
+
+                img {
+                    width: 60px;
+                    height: auto;
+                }
             }
         }
 

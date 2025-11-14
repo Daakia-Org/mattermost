@@ -8,7 +8,8 @@ import {FormattedMessage} from 'react-intl';
 import {useSelector} from 'react-redux';
 
 import ExternalLink from 'components/external_link';
-import MattermostLogo from 'components/widgets/icons/mattermost_logo';
+
+import KonnectLogoCircular from 'images/KonnectlogoColoredBgCircular.png';
 
 import type {GlobalState} from 'types/store';
 
@@ -81,7 +82,13 @@ export default function AboutBuildModalCloud(props: Props) {
             <Modal.Body>
                 <div className='about-modal__content'>
                     <div className='about-modal__logo'>
-                        <MattermostLogo/>
+                        <img
+                            src={KonnectLogoCircular}
+                            alt='Konnect by Daakia'
+                            width={120}
+                            height={120}
+                            style={{objectFit: 'contain'}}
+                        />
                     </div>
                     <div>
                         <h3 className='about-modal__title'>
