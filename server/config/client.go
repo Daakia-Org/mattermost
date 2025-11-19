@@ -317,8 +317,8 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 	props["IosAppDownloadLink"] = *c.NativeAppSettings.IosAppDownloadLink
 	props["AndroidSsoHide"] = strconv.FormatBool(*c.NativeAppSettings.AndroidSsoHide)
 	props["IosSsoHide"] = strconv.FormatBool(*c.NativeAppSettings.IosSsoHide)
-	props["AndroidVersionBlock"] = strconv.Itoa(*c.NativeAppSettings.AndroidVersionBlock)
-	props["IosVersionBlock"] = strconv.Itoa(*c.NativeAppSettings.IosVersionBlock)
+	props["AndroidVersionBlock"] = strings.Join(c.NativeAppSettings.AndroidVersionBlock, ",")
+	props["IosVersionBlock"] = strings.Join(c.NativeAppSettings.IosVersionBlock, ",")
 	props["WebSsoHide"] = strconv.FormatBool(*c.ServiceSettings.WebSsoHide)
 	props["MobileExternalBrowser"] = strconv.FormatBool(*c.NativeAppSettings.MobileExternalBrowser)
 

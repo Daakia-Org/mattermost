@@ -62,6 +62,7 @@ import CustomEnableDisableGuestAccountsSetting from './custom_enable_disable_gue
 import CustomTermsOfServiceSettings from './custom_terms_of_service_settings';
 import {messages as customTermsOfServiceMessages, searchableStrings as customTermsOfServiceSearchableStrings} from './custom_terms_of_service_settings/custom_terms_of_service_settings';
 import CustomURLSchemesSetting from './custom_url_schemes_setting';
+import VersionBlockSetting from './version_block_setting';
 import DataRetentionSettings from './data_retention_settings';
 import CustomDataRetentionForm from './data_retention_settings/custom_policy_form';
 import {searchableStrings as dataRetentionSearchableStrings} from './data_retention_settings/data_retention_settings';
@@ -2471,20 +2472,22 @@ const AdminDefinition: AdminDefinitionType = {
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                         },
                         {
-                            type: 'number',
+                            type: 'custom',
+                            component: VersionBlockSetting,
                             key: 'NativeAppSettings.AndroidVersionBlock',
                             label: defineMessage({id: 'admin.daakiaKonnect.androidVersionBlockTitle', defaultMessage: 'Android Version Block:'}),
-                            help_text: defineMessage({id: 'admin.daakiaKonnect.androidVersionBlockDesc', defaultMessage: 'Block Android app versions at or below this version number. Set to 0 to disable version blocking.'}),
-                            placeholder: defineMessage({id: 'admin.daakiaKonnect.androidVersionBlockPlaceholder', defaultMessage: 'E.g.: 100'}),
+                            help_text: defineMessage({id: 'admin.daakiaKonnect.androidVersionBlockDesc', defaultMessage: 'Block specific Android app versions. Type a version (e.g., 2.34.6) and press Enter to add it. Click the X on a tag to remove it.'}),
+                            placeholder: defineMessage({id: 'admin.daakiaKonnect.androidVersionBlockPlaceholder', defaultMessage: 'Type and press Enter to add a version...'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                         },
                         {
-                            type: 'number',
+                            type: 'custom',
+                            component: VersionBlockSetting,
                             key: 'NativeAppSettings.IosVersionBlock',
                             label: defineMessage({id: 'admin.daakiaKonnect.iosVersionBlockTitle', defaultMessage: 'iOS Version Block:'}),
-                            help_text: defineMessage({id: 'admin.daakiaKonnect.iosVersionBlockDesc', defaultMessage: 'Block iOS app versions at or below this version number. Set to 0 to disable version blocking.'}),
-                            placeholder: defineMessage({id: 'admin.daakiaKonnect.iosVersionBlockPlaceholder', defaultMessage: 'E.g.: 100'}),
+                            help_text: defineMessage({id: 'admin.daakiaKonnect.iosVersionBlockDesc', defaultMessage: 'Block specific iOS app versions. Type a version (e.g., 2.34.6) and press Enter to add it. Click the X on a tag to remove it.'}),
+                            placeholder: defineMessage({id: 'admin.daakiaKonnect.iosVersionBlockPlaceholder', defaultMessage: 'Type and press Enter to add a version...'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                         },

@@ -799,8 +799,8 @@ export type NativeAppSettings = {
     IosAppDownloadLink: string;
     AndroidSsoHide: boolean;
     IosSsoHide: boolean;
-    AndroidVersionBlock: number;
-    IosVersionBlock: number;
+    AndroidVersionBlock: string[];
+    IosVersionBlock: string[];
     MobileExternalBrowser: boolean;
     MobileEnableBiometrics: boolean;
     MobilePreventScreenCapture: boolean;

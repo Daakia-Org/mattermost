@@ -2976,8 +2976,8 @@ type NativeAppSettings struct {
 	IosAppDownloadLink            *string  `access:"site_customization,write_restrictable,cloud_restrictable"`
 	AndroidSsoHide                *bool    `access:"site_customization,write_restrictable,cloud_restrictable"`
 	IosSsoHide                     *bool    `access:"site_customization,write_restrictable,cloud_restrictable"`
-	AndroidVersionBlock           *int     `access:"site_customization,write_restrictable,cloud_restrictable"`
-	IosVersionBlock                *int     `access:"site_customization,write_restrictable,cloud_restrictable"`
+	AndroidVersionBlock           []string `access:"site_customization,write_restrictable,cloud_restrictable"`
+	IosVersionBlock                []string `access:"site_customization,write_restrictable,cloud_restrictable"`
 	MobileExternalBrowser         *bool    `access:"site_customization,write_restrictable,cloud_restrictable"`
 	MobileEnableBiometrics        *bool    `access:"site_customization,write_restrictable"`
 	MobilePreventScreenCapture    *bool    `access:"site_customization,write_restrictable"`
@@ -3012,11 +3012,11 @@ func (s *NativeAppSettings) SetDefaults() {
 	}
 
 	if s.AndroidVersionBlock == nil {
-		s.AndroidVersionBlock = NewPointer(0)
+		s.AndroidVersionBlock = []string{}
 	}
 
 	if s.IosVersionBlock == nil {
-		s.IosVersionBlock = NewPointer(0)
+		s.IosVersionBlock = []string{}
 	}
 
 	if s.MobileExternalBrowser == nil {
