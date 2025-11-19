@@ -103,6 +103,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
         ForgotPasswordLink,
         PasswordEnableForgotLink,
     } = useSelector(getConfig);
+    const WebSsoHide = useSelector(getConfig).WebSsoHide;
     const {IsLicensed} = useSelector(getLicense);
     const initializing = useSelector((state: GlobalState) => state.requests.users.logout.status === RequestStatus.SUCCESS || !state.storage.initialized);
     const currentUser = useSelector(getCurrentUser);
@@ -841,9 +842,10 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
             );
         }
 
-        // Show SSO-only login when OpenID is enabled
+        // Show SSO-only login when OpenID is enabled and WebSsoHide is false
         // This provides a clean, focused login experience
-        const isSSOOnly = EnableSignUpWithOpenId === 'true';
+        const webSsoHide = WebSsoHide === 'true';
+        const isSSOOnly = EnableSignUpWithOpenId === 'true' && !webSsoHide;
 
         if (isSSOOnly && !desktopLoginLink && !query.get('server_token')) {
             return (

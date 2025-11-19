@@ -103,6 +103,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         TermsOfServiceLink,
         PrivacyPolicyLink,
     } = config;
+    const WebSsoHide = config.WebSsoHide;
     const {IsLicensed} = useSelector(getLicense);
     const loggedIn = Boolean(useSelector(getCurrentUserId));
     const onboardingFlowEnabled = useSelector(getIsOnboardingFlowEnabled);
@@ -669,9 +670,10 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     };
 
     const getContent = () => {
-        // Show SSO-only signup when OpenID is enabled
+        // Show SSO-only signup when OpenID is enabled and WebSsoHide is false
         // This provides a clean, focused signup experience
-        const isSSOOnly = EnableSignUpWithOpenId === 'true';
+        const webSsoHide = WebSsoHide === 'true';
+        const isSSOOnly = EnableSignUpWithOpenId === 'true' && !webSsoHide;
 
         if (isSSOOnly && !isWaiting && !noOpenServer && !serverError && !usedBefore && !desktopLoginLink) {
             return (

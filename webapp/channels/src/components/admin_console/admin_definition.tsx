@@ -62,6 +62,7 @@ import CustomEnableDisableGuestAccountsSetting from './custom_enable_disable_gue
 import CustomTermsOfServiceSettings from './custom_terms_of_service_settings';
 import {messages as customTermsOfServiceMessages, searchableStrings as customTermsOfServiceSearchableStrings} from './custom_terms_of_service_settings/custom_terms_of_service_settings';
 import CustomURLSchemesSetting from './custom_url_schemes_setting';
+import VersionBlockSetting from './version_block_setting';
 import DataRetentionSettings from './data_retention_settings';
 import CustomDataRetentionForm from './data_retention_settings/custom_policy_form';
 import {searchableStrings as dataRetentionSearchableStrings} from './data_retention_settings/data_retention_settings';
@@ -2434,6 +2435,61 @@ const AdminDefinition: AdminDefinitionType = {
                             label: defineMessage({id: 'admin.customization.enableDesktopLandingPageTitle', defaultMessage: 'Enable Desktop App Landing Page:'}),
                             help_text: defineMessage({id: 'admin.customization.enableDesktopLandingPageDesc', defaultMessage: 'Whether or not to prompt a user to use the Desktop App when they first use Mattermost.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
+                        },
+                    ],
+                },
+            },
+            daakia_konnect_settings: {
+                url: 'site_config/daakia_konnect_settings',
+                title: defineMessage({id: 'admin.sidebar.daakiaKonnectSettings', defaultMessage: 'Daakia Konnect Settings'}),
+                isHidden: it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
+                schema: {
+                    id: 'DaakiaKonnectSettings',
+                    name: defineMessage({id: 'admin.site.daakiaKonnectSettings', defaultMessage: 'Daakia Konnect Settings'}),
+                    settings: [
+                        {
+                            type: 'bool',
+                            key: 'NativeAppSettings.AndroidSsoHide',
+                            label: defineMessage({id: 'admin.daakiaKonnect.androidSsoHideTitle', defaultMessage: 'Hide SSO on Android:'}),
+                            help_text: defineMessage({id: 'admin.daakiaKonnect.androidSsoHideDesc', defaultMessage: 'When enabled, SSO login options will be hidden in the Android mobile app.'}),
+                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
+                            isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
+                        },
+                        {
+                            type: 'bool',
+                            key: 'NativeAppSettings.IosSsoHide',
+                            label: defineMessage({id: 'admin.daakiaKonnect.iosSsoHideTitle', defaultMessage: 'Hide SSO on iOS:'}),
+                            help_text: defineMessage({id: 'admin.daakiaKonnect.iosSsoHideDesc', defaultMessage: 'When enabled, SSO login options will be hidden in the iOS mobile app.'}),
+                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
+                            isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
+                        },
+                        {
+                            type: 'bool',
+                            key: 'ServiceSettings.WebSsoHide',
+                            label: defineMessage({id: 'admin.daakiaKonnect.webSsoHideTitle', defaultMessage: 'Hide SSO on Web:'}),
+                            help_text: defineMessage({id: 'admin.daakiaKonnect.webSsoHideDesc', defaultMessage: 'When enabled, SSO login options will be hidden in the web application.'}),
+                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
+                            isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
+                        },
+                        {
+                            type: 'custom',
+                            component: VersionBlockSetting,
+                            key: 'NativeAppSettings.AndroidVersionBlock',
+                            label: defineMessage({id: 'admin.daakiaKonnect.androidVersionBlockTitle', defaultMessage: 'Android Version Block:'}),
+                            help_text: defineMessage({id: 'admin.daakiaKonnect.androidVersionBlockDesc', defaultMessage: 'Block specific Android app versions. Type a version (e.g., 2.34.6) and press Enter to add it. Click the X on a tag to remove it.'}),
+                            placeholder: defineMessage({id: 'admin.daakiaKonnect.androidVersionBlockPlaceholder', defaultMessage: 'Type and press Enter to add a version...'}),
+                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
+                            isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
+                        },
+                        {
+                            type: 'custom',
+                            component: VersionBlockSetting,
+                            key: 'NativeAppSettings.IosVersionBlock',
+                            label: defineMessage({id: 'admin.daakiaKonnect.iosVersionBlockTitle', defaultMessage: 'iOS Version Block:'}),
+                            help_text: defineMessage({id: 'admin.daakiaKonnect.iosVersionBlockDesc', defaultMessage: 'Block specific iOS app versions. Type a version (e.g., 2.34.6) and press Enter to add it. Click the X on a tag to remove it.'}),
+                            placeholder: defineMessage({id: 'admin.daakiaKonnect.iosVersionBlockPlaceholder', defaultMessage: 'Type and press Enter to add a version...'}),
+                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
+                            isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                         },
                     ],
                 },

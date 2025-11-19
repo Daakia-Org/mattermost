@@ -104,6 +104,7 @@ export type ClientConfig = {
     EnableSignUpWithGoogle: string;
     EnableSignUpWithOffice365: string;
     EnableSignUpWithOpenId: string;
+    WebSsoHide: string;
     EnableSVGs: string;
     EnableTesting: string;
     EnableThemeSelection: string;
@@ -387,6 +388,7 @@ export type ServiceSettings = {
     ExperimentalEnableHardenedMode: boolean;
     ExperimentalStrictCSRFEnforcement: boolean;
     EnableEmailInvitations: boolean;
+    WebSsoHide: boolean;
     DisableBotsWhenOwnerIsDeactivated: boolean;
     EnableBotAccountCreation: boolean;
     EnableSVGs: boolean;
@@ -795,6 +797,10 @@ export type NativeAppSettings = {
     AppDownloadLink: string;
     AndroidAppDownloadLink: string;
     IosAppDownloadLink: string;
+    AndroidSsoHide: boolean;
+    IosSsoHide: boolean;
+    AndroidVersionBlock: string[];
+    IosVersionBlock: string[];
     MobileExternalBrowser: boolean;
     MobileEnableBiometrics: boolean;
     MobilePreventScreenCapture: boolean;
