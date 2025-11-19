@@ -419,6 +419,7 @@ type ServiceSettings struct {
 	ExperimentalEnableHardenedMode                    *bool `access:"experimental_features"`
 	ExperimentalStrictCSRFEnforcement                 *bool `access:"experimental_features,write_restrictable,cloud_restrictable"`
 	EnableEmailInvitations                            *bool `access:"authentication_signup"`
+	WebSsoHide                                         *bool `access:"authentication_openid,write_restrictable,cloud_restrictable"`
 	DisableBotsWhenOwnerIsDeactivated                 *bool `access:"integrations_bot_accounts"`
 	EnableBotAccountCreation                          *bool `access:"integrations_bot_accounts"`
 	EnableSVGs                                        *bool `access:"site_posts"`
@@ -462,6 +463,10 @@ func (s *ServiceSettings) SetDefaults(isUpdate bool) {
 		} else {
 			s.EnableEmailInvitations = NewPointer(true)
 		}
+	}
+
+	if s.WebSsoHide == nil {
+		s.WebSsoHide = NewPointer(false)
 	}
 
 	if s.SiteURL == nil {
@@ -2969,6 +2974,10 @@ type NativeAppSettings struct {
 	AppDownloadLink               *string  `access:"site_customization,write_restrictable,cloud_restrictable"`
 	AndroidAppDownloadLink        *string  `access:"site_customization,write_restrictable,cloud_restrictable"`
 	IosAppDownloadLink            *string  `access:"site_customization,write_restrictable,cloud_restrictable"`
+	AndroidSsoHide                *bool    `access:"site_customization,write_restrictable,cloud_restrictable"`
+	IosSsoHide                     *bool    `access:"site_customization,write_restrictable,cloud_restrictable"`
+	AndroidVersionBlock           *int     `access:"site_customization,write_restrictable,cloud_restrictable"`
+	IosVersionBlock                *int     `access:"site_customization,write_restrictable,cloud_restrictable"`
 	MobileExternalBrowser         *bool    `access:"site_customization,write_restrictable,cloud_restrictable"`
 	MobileEnableBiometrics        *bool    `access:"site_customization,write_restrictable"`
 	MobilePreventScreenCapture    *bool    `access:"site_customization,write_restrictable"`
@@ -2992,6 +3001,22 @@ func (s *NativeAppSettings) SetDefaults() {
 
 	if s.AppCustomURLSchemes == nil {
 		s.AppCustomURLSchemes = GetDefaultAppCustomURLSchemes()
+	}
+
+	if s.AndroidSsoHide == nil {
+		s.AndroidSsoHide = NewPointer(false)
+	}
+
+	if s.IosSsoHide == nil {
+		s.IosSsoHide = NewPointer(false)
+	}
+
+	if s.AndroidVersionBlock == nil {
+		s.AndroidVersionBlock = NewPointer(0)
+	}
+
+	if s.IosVersionBlock == nil {
+		s.IosVersionBlock = NewPointer(0)
 	}
 
 	if s.MobileExternalBrowser == nil {
